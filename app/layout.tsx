@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/ibm-plex-sans";
 import "@fontsource-variable/jetbrains-mono";
 import "./globals.css";
+import "@/components/ui/pixel-swap.css";
 import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
