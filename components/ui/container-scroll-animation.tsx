@@ -12,13 +12,17 @@ import {
 type ContainerScrollProps = {
   titleComponent: string | React.ReactNode;
   children: React.ReactNode;
+  onInteractionReadyChange?: (ready: boolean) => void;
 };
 
 export function ContainerScroll({
   titleComponent,
   children,
+  onInteractionReadyChange,
 }: ContainerScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: containerRef });
   const [isMobile, setIsMobile] = React.useState(false);
@@ -31,6 +35,44 @@ export function ContainerScroll({
     mobileQuery.addEventListener("change", checkMobile);
     return () => mobileQuery.removeEventListener("change", checkMobile);
   }, []);
+
+  React.useEffect(() => {
+    if (!onInteractionReadyChange || typeof IntersectionObserver === "undefined") {
+      return;
+    }
+
+    const header = headerRef.current;
+    const card = cardRef.current;
+    if (!header || !card) return;
+
+    let headerVisible = true;
+    let cardVisible = false;
+
+    const updateReadyState = () => {
+      onInteractionReadyChange(!headerVisible && cardVisible);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === header) {
+            headerVisible = entry.isIntersecting;
+          } else if (entry.target === card) {
+            cardVisible = entry.isIntersecting && entry.intersectionRatio >= 0.55;
+          }
+        });
+
+        updateReadyState();
+      },
+      { threshold: [0, 0.55] },
+    );
+
+    observer.observe(header);
+    observer.observe(card);
+    updateReadyState();
+
+    return () => observer.disconnect();
+  }, [onInteractionReadyChange]);
 
   const rotate = useTransform(
     scrollYProgress,
@@ -54,8 +96,12 @@ export function ContainerScroll({
       className="relative flex min-h-[56rem] items-center justify-center px-3 md:min-h-[72rem] md:px-10"
     >
       <div className="relative w-full py-10 md:py-40 [perspective:1000px]">
-        <Header translate={translate} titleComponent={titleComponent} />
-        <Card rotate={rotate} scale={scale}>
+        <Header
+          headerRef={headerRef}
+          translate={translate}
+          titleComponent={titleComponent}
+        />
+        <Card cardRef={cardRef} rotate={rotate} scale={scale}>
           {children}
         </Card>
       </div>
@@ -64,13 +110,15 @@ export function ContainerScroll({
 }
 
 type HeaderProps = {
+  headerRef: React.Ref<HTMLDivElement>;
   translate: MotionValue<number>;
   titleComponent: string | React.ReactNode;
 };
 
-export function Header({ translate, titleComponent }: HeaderProps) {
+export function Header({ headerRef, translate, titleComponent }: HeaderProps) {
   return (
     <motion.div
+      ref={headerRef}
       style={{ translateY: translate }}
       className="relative -top-10 mx-auto max-w-5xl text-center md:-top-14"
     >
@@ -80,14 +128,16 @@ export function Header({ translate, titleComponent }: HeaderProps) {
 }
 
 type CardProps = {
+  cardRef: React.Ref<HTMLDivElement>;
   rotate: MotionValue<number>;
   scale: MotionValue<number>;
   children: React.ReactNode;
 };
 
-export function Card({ rotate, scale, children }: CardProps) {
+export function Card({ cardRef, rotate, scale, children }: CardProps) {
   return (
     <motion.div
+      ref={cardRef}
       style={{
         rotateX: rotate,
         scale,

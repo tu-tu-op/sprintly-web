@@ -90,6 +90,7 @@ export type PixelSwapProps = {
   onActiveChange?: (active: boolean) => void;
   onComplete?: (active: boolean) => void;
   aspectRatio?: string;
+  hoverEnabled?: boolean;
   className?: string;
   style?: CSSProperties;
 };
@@ -274,6 +275,7 @@ export default function PixelSwap({
   onActiveChange,
   onComplete,
   aspectRatio = "16 / 10",
+  hoverEnabled = true,
   className = "",
   style,
 }: PixelSwapProps) {
@@ -438,8 +440,39 @@ export default function PixelSwap({
     [active, onActiveChange],
   );
 
+  useEffect(() => {
+    if (trigger !== "hover" || hoverEnabled) return;
+
+    if (!desiredActive && !shownActive && !transition) return;
+
+    stopAnimations();
+    if (active === undefined) setInternalActive(false);
+    setShownActive(false);
+    setTransition(null);
+    if (desiredActive) onActiveChange?.(false);
+  }, [
+    active,
+    desiredActive,
+    hoverEnabled,
+    onActiveChange,
+    shownActive,
+    stopAnimations,
+    transition,
+    trigger,
+  ]);
+
+  useEffect(() => {
+    if (trigger !== "hover" || !hoverEnabled) return;
+
+    if (containerRef.current?.matches(":hover")) {
+      requestActive(true);
+    }
+  }, [hoverEnabled, requestActive, trigger]);
+
   const interactionProps = useMemo<InteractionProps>(() => {
     if (trigger === "hover") {
+      if (!hoverEnabled) return {};
+
       return {
         onMouseEnter: () => requestActive(true),
         onMouseLeave: () => requestActive(false),
@@ -464,7 +497,7 @@ export default function PixelSwap({
     }
 
     return {};
-  }, [desiredActive, requestActive, trigger]);
+  }, [desiredActive, hoverEnabled, requestActive, trigger]);
 
   const renderLayer = (content: ReactNode, index: number) => {
     const isShown = index === (shownActive ? 1 : 0);
