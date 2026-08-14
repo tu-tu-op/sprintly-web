@@ -2,8 +2,28 @@
 
 import Image from "next/image";
 import { useState, type ReactNode } from "react";
-import { Activity, EyeOff, Flame, TimerReset } from "lucide-react";
+import {
+  Activity,
+  Braces,
+  Code2,
+  Database,
+  EyeOff,
+  Flame,
+  GitBranch,
+  Globe2,
+  Layers3,
+  Package,
+  Rocket,
+  ShieldCheck,
+  Terminal,
+  TimerReset,
+  Workflow,
+} from "lucide-react";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import {
+  FloatingIconsBackground,
+  type FloatingIconsHeroProps,
+} from "@/components/ui/floating-icons-hero-section";
 import PixelSwap from "@/components/ui/pixel-swap";
 
 type HeroScrollDemoProps = {
@@ -11,16 +31,32 @@ type HeroScrollDemoProps = {
   afterComponent?: ReactNode;
 };
 
+const heroFloatingIcons: FloatingIconsHeroProps["icons"] = [
+  { id: 1, icon: Code2, className: "left-[6%] top-[12%] opacity-60" },
+  { id: 2, icon: GitBranch, className: "right-[9%] top-[18%] opacity-55" },
+  { id: 3, icon: Database, className: "left-[10%] top-[42%] opacity-45" },
+  { id: 4, icon: Globe2, className: "right-[7%] top-[48%] opacity-50" },
+  { id: 5, icon: Braces, className: "left-[24%] top-[8%] opacity-40" },
+  { id: 6, icon: Workflow, className: "right-[26%] top-[10%] opacity-45" },
+  { id: 7, icon: Layers3, className: "left-[22%] top-[72%] opacity-40" },
+  { id: 8, icon: Package, className: "right-[24%] top-[76%] opacity-45" },
+  { id: 9, icon: Rocket, className: "left-[5%] top-[82%] opacity-35" },
+  { id: 10, icon: ShieldCheck, className: "right-[6%] top-[84%] opacity-40" },
+  { id: 11, icon: Terminal, className: "left-[37%] top-[28%] opacity-35" },
+];
+
 export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDemoProps) {
   const [hoverEnabled, setHoverEnabled] = useState(false);
 
   return (
-    <>
-      <ContainerScroll
-        titleComponent={titleComponent}
-        onInteractionReadyChange={setHoverEnabled}
-      >
-      <div className="relative h-full w-full bg-[#0b0d10]">
+    <div className="relative">
+      <FloatingIconsBackground className="z-0" icons={heroFloatingIcons} />
+      <div className="relative z-10">
+        <ContainerScroll
+          titleComponent={titleComponent}
+          onInteractionReadyChange={setHoverEnabled}
+        >
+        <div className="relative h-full w-full bg-[#0b0d10]">
         <PixelSwap
           className="absolute inset-0 h-full w-full"
           firstContent={
@@ -103,9 +139,10 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
             ))}
           </div>
         </div>
+        </div>
+        </ContainerScroll>
+        {afterComponent}
       </div>
-      </ContainerScroll>
-      {afterComponent}
-    </>
+    </div>
   );
 }
