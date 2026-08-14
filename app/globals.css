@@ -58,10 +58,15 @@ button:not(:disabled), a[href] { cursor: pointer; }
   }
 
   .custom-cursor-pointer {
-    width: 24px;
-    height: 29px;
+    width: 32px;
+    height: 32px;
     filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .6));
     transition: opacity 100ms ease;
+  }
+
+  .custom-cursor-element,
+  html.has-custom-cursor .custom-cursor-element {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 2 L27 24 L20 20 L16 25 L12 20 L5 24 Z" fill="%231a1a1a" stroke="white" stroke-width="2" stroke-linejoin="round"/></svg>') 16 2, auto !important;
   }
 
   .custom-cursor-halo {
@@ -84,6 +89,9 @@ button:not(:disabled), a[href] { cursor: pointer; }
 
   .custom-cursor-pointer[data-visible="true"],
   .custom-cursor-halo[data-visible="true"] { opacity: 1; }
+
+  .custom-cursor-pointer[data-native="true"],
+  .custom-cursor-halo[data-native="true"] { opacity: 0 !important; }
 
   .custom-cursor-halo[data-variant="interactive"] {
     width: 38px;

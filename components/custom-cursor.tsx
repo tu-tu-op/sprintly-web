@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 const INTERACTIVE_SELECTOR = "a, button, [role='button'], input, textarea, select, [data-cursor='interactive']";
 const TEXT_SELECTOR = "input, textarea, [contenteditable='true']";
+const NATIVE_CURSOR_SELECTOR = ".custom-cursor-element";
 
 export function CustomCursor() {
   const pointerRef = useRef<SVGSVGElement>(null);
@@ -37,13 +38,16 @@ export function CustomCursor() {
     const onMove = (event: PointerEvent) => {
       targetX = event.clientX;
       targetY = event.clientY;
-      pointer.style.transform = `translate3d(${targetX - 2}px, ${targetY - 2}px, 0)`;
+      pointer.style.transform = `translate3d(${targetX - 16}px, ${targetY - 2}px, 0)`;
       pointer.dataset.visible = "true";
       halo.dataset.visible = "true";
     };
 
     const onOver = (event: PointerEvent) => {
       const target = event.target instanceof Element ? event.target : null;
+      const usesNativeCursor = Boolean(target?.closest(NATIVE_CURSOR_SELECTOR));
+      pointer.dataset.native = String(usesNativeCursor);
+      halo.dataset.native = String(usesNativeCursor);
       halo.dataset.variant = target?.closest(TEXT_SELECTOR)
         ? "text"
         : target?.closest(INTERACTIVE_SELECTOR)
@@ -54,6 +58,8 @@ export function CustomCursor() {
     const onLeave = () => {
       pointer.dataset.visible = "false";
       halo.dataset.visible = "false";
+      pointer.dataset.native = "false";
+      halo.dataset.native = "false";
     };
 
     const onDown = () => { halo.dataset.pressed = "true"; };
@@ -80,8 +86,8 @@ export function CustomCursor() {
   return (
     <>
       <div ref={haloRef} className="custom-cursor-halo" aria-hidden="true" data-visible="false" data-variant="default" />
-      <svg ref={pointerRef} className="custom-cursor-pointer" aria-hidden="true" data-visible="false" viewBox="0 0 24 29">
-        <path d="M2.4 1.7 2.3 23l5.8-5.2 4.5 9.1 4.2-2.1-4.4-8.8 8.5-.9L2.4 1.7Z" fill="#111318" stroke="#F7F5F0" strokeWidth="1.8" strokeLinejoin="round" />
+      <svg ref={pointerRef} className="custom-cursor-pointer" aria-hidden="true" data-visible="false" data-native="false" viewBox="0 0 32 32">
+        <path d="M16 2 L27 24 L20 20 L16 25 L12 20 L5 24 Z" fill="#1a1a1a" stroke="white" strokeWidth="2" strokeLinejoin="round" />
       </svg>
     </>
   );
