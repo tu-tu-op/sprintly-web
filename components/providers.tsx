@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Lenis from "lenis";
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
+import { CustomCursor } from "./custom-cursor";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({ defaultOptions: { queries: { staleTime: 30_000, refetchOnWindowFocus: false } } }));
@@ -16,5 +17,5 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return () => { cancelAnimationFrame(frame); lenis.destroy(); };
   }, []);
 
-  return <QueryClientProvider client={queryClient}>{children}<Toaster theme="dark" position="bottom-right" richColors /></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}>{children}<CustomCursor /><Toaster theme="dark" position="bottom-right" richColors /></QueryClientProvider>;
 }

@@ -42,6 +42,67 @@ button, a, input, select, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button:not(:disabled), a[href] { cursor: pointer; }
 
+@media (pointer: fine) and (hover: hover) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * { cursor: none !important; }
+
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2000;
+    pointer-events: none;
+    opacity: 0;
+    will-change: transform;
+  }
+
+  .custom-cursor-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #f4f2ed;
+    box-shadow: 0 0 14px rgba(155, 140, 255, .7);
+    transition: width 160ms ease, height 160ms ease, opacity 140ms ease, background-color 160ms ease;
+  }
+
+  .custom-cursor-ring {
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(155, 140, 255, .7);
+    border-radius: 999px;
+    background: rgba(124, 108, 242, .04);
+    box-shadow: 0 0 24px rgba(124, 108, 242, .12);
+    transition: width 200ms ease, height 200ms ease, border-radius 200ms ease, border-color 200ms ease, background-color 200ms ease, opacity 140ms ease;
+  }
+
+  .custom-cursor-dot[data-visible="true"],
+  .custom-cursor-ring[data-visible="true"] { opacity: 1; }
+
+  .custom-cursor-ring[data-variant="interactive"] {
+    width: 44px;
+    height: 44px;
+    border-color: rgba(155, 140, 255, .42);
+    background: rgba(124, 108, 242, .14);
+  }
+
+  .custom-cursor-ring[data-variant="text"] {
+    width: 3px;
+    height: 22px;
+    border: 0;
+    border-radius: 2px;
+    background: rgba(244, 242, 237, .9);
+    box-shadow: none;
+  }
+
+  .custom-cursor-ring[data-pressed="true"] {
+    width: 24px;
+    height: 24px;
+    background: rgba(50, 199, 217, .18);
+    border-color: rgba(50, 199, 217, .75);
+  }
+}
+
 :focus-visible {
   outline: 2px solid var(--primary-strong);
   outline-offset: 3px;
