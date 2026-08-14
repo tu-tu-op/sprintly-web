@@ -79,7 +79,6 @@ export function HomePage() {
           <HeroScrollDemo
             titleComponent={
               <motion.div {...reveal} className="mx-auto max-w-[920px] px-3 text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[.035] px-3 py-1.5 text-xs text-[#b0b5bf]"><span className="size-1.5 rounded-full bg-[#36c98f]" /> Built for the hours nobody sees</div>
             <h1 className="text-balance text-[clamp(2.8rem,7vw,6.25rem)] font-semibold leading-[.94] tracking-[-.065em]">Make your coding<br /><span className="bg-gradient-to-r from-[#f4f2ed] via-[#9b8cff] to-[#32c7d9] bg-clip-text text-transparent">progress visible.</span></h1>
             <p className="text-pretty mx-auto mt-7 max-w-2xl text-base leading-7 text-[#9aa1ad] sm:text-lg">Sprintly turns focused coding sessions into a private record of consistency, momentum, and the developer you’re becoming.</p>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
