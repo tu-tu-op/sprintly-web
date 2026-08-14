@@ -84,7 +84,7 @@ function FloatingIcon({ mouse, iconData, index }: { mouse: MousePosition; iconDa
       className={cn("absolute", iconData.className)}
     >
       <motion.div
-        className="flex h-16 w-16 items-center justify-center rounded-3xl border border-white/10 bg-[#10131a]/75 p-3 text-[#b8afff]/75 shadow-xl backdrop-blur-md md:h-20 md:w-20"
+        className="flex h-16 w-16 items-center justify-center rounded-3xl border border-white/30 bg-[#f4f2ed]/[.16] p-3 text-[#f4f2ed] shadow-[0_18px_50px_rgba(244,242,237,.12)] backdrop-blur-md md:h-20 md:w-20"
         animate={{ y: [0, -8, 0, 8, 0], x: [0, 6, 0, -6, 0], rotate: [0, 5, 0, -5, 0] }}
         transition={{
           duration: 6 + (iconData.id % 5),

@@ -15,67 +15,9 @@ type HeroScrollDemoProps = {
   afterComponent?: ReactNode;
 };
 
-const IconGoogle = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M21.9999 12.24C21.9999 11.4933 21.9333 10.76 21.8066 10.0533H12.3333V14.16H17.9533C17.7333 15.3467 17.0133 16.3733 15.9666 17.08V19.68H19.5266C21.1933 18.16 21.9999 15.4533 21.9999 12.24Z" fill="#4285F4" />
-    <path d="M12.3333 22C15.2333 22 17.6866 21.0533 19.5266 19.68L15.9666 17.08C15.0199 17.7333 13.7933 18.16 12.3333 18.16C9.52659 18.16 7.14659 16.28 6.27992 13.84H2.59326V16.5133C4.38659 20.0267 8.05992 22 12.3333 22Z" fill="#34A853" />
-    <path d="M6.2799 13.84C6.07324 13.2267 5.9599 12.58 5.9599 11.92C5.9599 11.26 6.07324 10.6133 6.2799 10L2.59326 7.32667C1.86659 8.78667 1.45326 10.32 1.45326 11.92C1.45326 13.52 1.86659 15.0533 2.59326 16.5133L6.2799 13.84Z" fill="#FBBC05" />
-    <path d="M12.3333 5.68C13.8933 5.68 15.3133 6.22667 16.3866 7.24L19.6 4.02667C17.68 2.29333 15.2266 1.33333 12.3333 1.33333C8.05992 1.33333 4.38659 3.97333 2.59326 7.32667L6.27992 10C7.14659 7.56 9.52659 5.68 12.3333 5.68Z" fill="#EA4335" />
-  </svg>
-);
-
-const IconApple = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="currentColor" className="text-foreground/80" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.482 15.334C16.274 16.146 15.238 17.554 15.238 19.138C15.238 21.694 17.062 22.846 19.33 22.99C21.682 23.122 23.53 21.73 23.53 19.138C23.53 16.57 21.742 15.334 19.438 15.334C18.23 15.334 17.482 15.334 17.482 15.334ZM19.438 1.018C17.074 1.018 15.238 2.41 15.238 4.982C15.238 7.554 17.062 8.702 19.33 8.842C21.682 8.974 23.53 7.582 23.53 4.982C23.518 2.41 21.742 1.018 19.438 1.018Z" />
-  </svg>
-);
-
-const IconMicrosoft = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M11.4 2H2v9.4h9.4V2Z" fill="#F25022" />
-    <path d="M22 2h-9.4v9.4H22V2Z" fill="#7FBA00" />
-    <path d="M11.4 12.6H2V22h9.4V12.6Z" fill="#00A4EF" />
-    <path d="M22 12.6h-9.4V22H22V12.6Z" fill="#FFB900" />
-  </svg>
-);
-
-const IconFigma = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2z" fill="#2C2C2C" />
-    <path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5V7z" fill="#0ACF83" />
-    <path d="M12 12a5 5 0 0 1-5-5 5 5 0 0 1 5-5v10z" fill="#A259FF" />
-    <path d="M12 17a5 5 0 0 1-5-5h10a5 5 0 0 1-5 5z" fill="#F24E1E" />
-    <path d="M7 12a5 5 0 0 0 5 5v-5H7z" fill="#FF7262" />
-  </svg>
-);
-
 const IconGitHub = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor" className="text-foreground/80" xmlns="http://www.w3.org/2000/svg">
     <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-  </svg>
-);
-
-const IconSlack = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M8.5 10a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" fill="#36C5F0" /><path d="M9 15.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" fill="#2EB67D" /><path d="M14 8.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" fill="#ECB22E" /><path d="M15.5 15a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z" fill="#E01E5A" /><path d="M10 14h4v-1.5a1.5 1.5 0 0 0-1.5-1.5h-1a1.5 1.5 0 0 0-1.5 1.5V14Z" fill="#E01E5A" /><path d="M8.5 14a1.5 1.5 0 0 0 1.5 1.5h1.5v-1a1.5 1.5 0 0 0-1.5-1.5H8.5v1Z" fill="#ECB22E" /><path d="M15.5 10a1.5 1.5 0 0 0-1.5-1.5H12.5v4a1.5 1.5 0 0 0 1.5 1.5h1.5v-4Z" fill="#36C5F0" /><path d="M14 8.5a1.5 1.5 0 0 0-1.5-1.5h-1v4a1.5 1.5 0 0 0 1.5 1.5h1v-4Z" fill="#2EB67D" />
-  </svg>
-);
-
-const IconNotion = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="currentColor" className="text-foreground/80" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm.111 5.889h3.222v10.222h-3.222V7.889zm-4.333 0h3.222v10.222H7.778V7.889z" />
-  </svg>
-);
-
-const IconVercel = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="currentColor" className="text-foreground/90" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2L2 22h20L12 2z" />
-  </svg>
-);
-
-const IconStripe = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z" fill="#635BFF" /><path d="M6 7H18V9H6V7Z" fill="white" /><path d="M6 11H18V13H6V11Z" fill="white" /><path d="M6 15H14V17H6V15Z" fill="white" />
   </svg>
 );
 
@@ -91,53 +33,91 @@ const IconX = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const IconSpotify = (props: React.SVGProps<SVGSVGElement>) => (
+const IconInstagram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm4.125 14.175c-.188.3-.563.413-.863.225-2.437-1.5-5.5-1.725-9.15-1.012-.338.088-.675-.15-.763-.488-.088-.337.15-.675.488-.762 3.937-.787 7.287-.525 9.975 1.125.3.187.412.562.225.862zm.9-2.7c-.225.363-.675.488-1.037.263-2.7-1.65-6.825-2.1-9.975-1.162-.413.113-.825-.15-1-.562-.15-.413.15-.825.563-1 .362-.112 3.487-.975 6.6 1.312.362.225.487.675.262 1.038v.112zm.113-2.887c-3.225-1.875-8.55-2.025-11.512-1.125-.487.15-.975-.15-1.125-.637-.15-.488.15-.975.638-1.125 3.337-.975 9.15-.787 12.825 1.312.45.263.6.825.337 1.275-.263.45-.825.6-1.275.337v-.038z" fill="#1DB954" />
+    <defs><linearGradient id="instagram-gradient" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse"><stop stopColor="#FFDC80" /><stop offset=".45" stopColor="#F56040" /><stop offset="1" stopColor="#833AB4" /></linearGradient></defs>
+    <rect x="3" y="3" width="18" height="18" rx="5" stroke="url(#instagram-gradient)" strokeWidth="2" />
+    <circle cx="12" cy="12" r="4" stroke="#F56040" strokeWidth="2" />
+    <circle cx="17.5" cy="6.5" r="1.25" fill="#833AB4" />
   </svg>
 );
 
-const IconDropbox = (props: React.SVGProps<SVGSVGElement>) => (
+const IconTelegram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 8l-6 4 6 4 6-4-6-4z" fill="#0061FF" /><path d="M6 12l6 4 6-4-6-4-6 4z" fill="#007BFF" /><path d="M12 16l6-4-6-4-6 4 6 4z" fill="#4DA3FF" /><path d="M18 12l-6-4-6 4 6 4 6-4z" fill="#0061FF" />
+    <circle cx="12" cy="12" r="10" fill="#2AABEE" />
+    <path d="m5.8 11.7 11.7-4.5c.54-.2 1 .13.82.96l-1.99 9.4c-.15.67-.55.83-1.12.52l-3.1-2.28-1.5 1.45c-.17.17-.31.31-.63.31l.22-3.16 5.76-5.2c.25-.22-.06-.35-.39-.13l-7.12 4.48-3.07-.96c-.67-.21-.68-.67.42-.89Z" fill="white" />
   </svg>
 );
 
-const IconTwitch = (props: React.SVGProps<SVGSVGElement>) => (
+const IconVSCode = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2.149 0L.707 3.028v17.944h5.66v3.028h3.028l3.028-3.028h4.243l7.07-7.07V0H2.15zm19.799 13.434l-3.535 3.535h-4.95l-3.029 3.029v-3.03H5.14V1.414h16.808v12.02z" fill="#9146FF" /><path d="M15.53 5.303h2.12v6.36h-2.12v-6.36zm-4.95 0h2.12v6.36h-2.12v-6.36z" fill="#9146FF" />
+    <path d="m21.2 3.1-5.55-3.02L8.9 6.4 5.1 3.5 2.2 5.1v13.8l2.9 1.6 3.8-2.9 6.75 6.4 5.55-3.02V3.1ZM15 5.25v13.5l-5.9-5.35L15 5.25ZM4.3 7.4 8 10.55 4.3 14.5V7.4Z" fill="#007ACC" />
   </svg>
 );
 
-const IconLinear = (props: React.SVGProps<SVGSVGElement>) => (
+const IconTerminal = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="linear-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#5E5CE6" /><stop offset="100%" stopColor="#2C2C2C" /></linearGradient></defs><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-4 9h8v2H8v-2z" fill="url(#linear-grad)" />
+    <rect x="3" y="4" width="18" height="16" rx="2.5" stroke="#10131A" strokeWidth="1.8" />
+    <path d="m7 9 3 3-3 3M13 15h4" stroke="#7C6CF2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-const IconYouTube = (props: React.SVGProps<SVGSVGElement>) => (
+const IconAntiGravity = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M21.582 6.186A2.482 2.482 0 0 0 19.82 4.42C18.1 4 12 4 12 4s-6.1 0-7.82.42c-.98.26-1.74.98-1.762 1.766C2 7.94 2 12 2 12s0 4.06.418 5.814c.022.786.782 1.506 1.762 1.766C6.1 20 12 20 12 20s6.1 0 7.82-.42c.98-.26 1.74-.98 1.762-1.766C22 16.06 22 12 22 12s0-4.06-.418-5.814zM9.75 15.5V8.5L15.75 12 9.75 15.5z" fill="#FF0000" />
+    <circle cx="12" cy="12" r="8.5" stroke="#8B5CF6" strokeWidth="1.6" strokeDasharray="2.5 2" />
+    <path d="M12 17V7m0 0-3 3m3-3 3 3M7.5 15.5l4.5-8 4.5 8" stroke="#32C7D9" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const IconZed = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="zed-gradient" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop stopColor="#F6A94A" /><stop offset=".5" stopColor="#F06464" /><stop offset="1" stopColor="#9B8CFF" /></linearGradient></defs>
+    <path d="M4 5h16L7 19h13M4 19h3" stroke="url(#zed-gradient)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const IconCursor = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="m4 3 5.2 17 2.9-6.1 6.1-2.9L4 3Z" fill="#10131A" stroke="#10131A" strokeWidth="1.3" strokeLinejoin="round" />
+    <path d="m12.1 13.9 3.7 5.1" stroke="#7C6CF2" strokeWidth="1.8" strokeLinecap="round" />
+  </svg>
+);
+
+const IconKiro = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 4v16M5 12h4l7-8M9 12l8 8" stroke="#32C7D9" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="17" cy="4" r="2" fill="#7C6CF2" />
+  </svg>
+);
+
+const IconClaudeCode = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 3v18M3 12h18M5.64 5.64l12.72 12.72M18.36 5.64 5.64 18.36" stroke="#D97757" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="12" cy="12" r="2.2" fill="#D97757" />
+  </svg>
+);
+
+const IconCodex = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="m12 2 7.8 4.5v9L12 20l-7.8-4.5v-9L12 2Z" fill="#10A37F" />
+    <path d="m9 8-3 4 3 4M15 8l3 4-3 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
 const heroFloatingIcons: FloatingIconsHeroProps["icons"] = [
-  { id: 1, icon: IconGoogle, className: "left-[10%] top-[10%] opacity-60" },
-  { id: 2, icon: IconApple, className: "right-[8%] top-[20%] opacity-55" },
-  { id: 3, icon: IconMicrosoft, className: "left-[10%] top-[80%] opacity-50" },
-  { id: 4, icon: IconFigma, className: "right-[10%] bottom-[10%] opacity-55" },
-  { id: 5, icon: IconGitHub, className: "left-[30%] top-[5%] opacity-45" },
-  { id: 6, icon: IconSlack, className: "right-[30%] top-[5%] opacity-50" },
-  { id: 7, icon: IconVercel, className: "left-[25%] bottom-[8%] opacity-45" },
-  { id: 8, icon: IconStripe, className: "left-[15%] top-[40%] opacity-55" },
-  { id: 9, icon: IconDiscord, className: "right-[25%] top-[75%] opacity-55" },
-  { id: 10, icon: IconX, className: "left-[70%] top-[90%] opacity-45" },
-  { id: 11, icon: IconNotion, className: "right-[5%] top-[50%] opacity-50" },
-  { id: 12, icon: IconSpotify, className: "left-[5%] top-[55%] opacity-55" },
-  { id: 13, icon: IconDropbox, className: "left-[55%] top-[5%] opacity-50" },
-  { id: 14, icon: IconTwitch, className: "right-[45%] bottom-[5%] opacity-50" },
-  { id: 15, icon: IconLinear, className: "right-[20%] top-[25%] opacity-50" },
-  { id: 16, icon: IconYouTube, className: "left-[30%] top-[60%] opacity-50" },
+  { id: 1, icon: IconGitHub, className: "left-[10%] top-[10%] opacity-60" },
+  { id: 2, icon: IconDiscord, className: "right-[8%] top-[20%] opacity-55" },
+  { id: 3, icon: IconX, className: "left-[10%] top-[80%] opacity-50" },
+  { id: 4, icon: IconInstagram, className: "right-[10%] bottom-[10%] opacity-55" },
+  { id: 5, icon: IconTelegram, className: "left-[30%] top-[5%] opacity-50" },
+  { id: 6, icon: IconVSCode, className: "right-[30%] top-[5%] opacity-55" },
+  { id: 7, icon: IconTerminal, className: "left-[25%] bottom-[8%] opacity-50" },
+  { id: 8, icon: IconAntiGravity, className: "left-[15%] top-[40%] opacity-55" },
+  { id: 9, icon: IconZed, className: "right-[25%] top-[75%] opacity-55" },
+  { id: 10, icon: IconCursor, className: "left-[70%] top-[90%] opacity-50" },
+  { id: 11, icon: IconKiro, className: "right-[5%] top-[50%] opacity-55" },
+  { id: 12, icon: IconClaudeCode, className: "right-[45%] bottom-[5%] opacity-55" },
+  { id: 13, icon: IconCodex, className: "left-[30%] top-[60%] opacity-55" },
 ];
 
 export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDemoProps) {
