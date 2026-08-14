@@ -72,7 +72,7 @@ export function Header({ translate, titleComponent }: HeaderProps) {
   return (
     <motion.div
       style={{ translateY: translate }}
-      className="mx-auto max-w-5xl text-center"
+      className="relative -top-10 mx-auto max-w-5xl text-center md:-top-14"
     >
       {titleComponent}
     </motion.div>
