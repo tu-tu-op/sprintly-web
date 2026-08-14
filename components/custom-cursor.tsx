@@ -86,8 +86,8 @@ export function CustomCursor() {
   return (
     <>
       <div ref={haloRef} className="custom-cursor-halo" aria-hidden="true" data-visible="false" data-variant="default" />
-      <svg ref={pointerRef} className="custom-cursor-pointer" aria-hidden="true" data-visible="false" data-native="false" viewBox="0 0 32 32">
-        <path d="M16 2 L27 24 L20 20 L16 25 L12 20 L5 24 Z" fill="#1a1a1a" stroke="white" strokeWidth="2" strokeLinejoin="round" />
+      <svg ref={pointerRef} className="custom-cursor-pointer" aria-hidden="true" data-visible="false" data-native="false" viewBox="0 0 48 48">
+        <path transform="rotate(-45 16 2)" d="M16 2 L27 24 L20 20 L16 25 L12 20 L5 24 Z" fill="#1a1a1a" stroke="white" strokeWidth="2" strokeLinejoin="round" />
       </svg>
     </>
   );
