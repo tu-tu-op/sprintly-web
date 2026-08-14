@@ -74,9 +74,11 @@ export function HomePage() {
     <div className="noise min-h-dvh">
       <PublicNav />
       <main>
-        <section className="relative overflow-hidden px-4 pb-16 pt-20 sm:px-6 sm:pt-28">
+        <section className="relative overflow-hidden border-b border-white/[.07] bg-[#090b0e]">
           <div className="absolute left-1/2 top-0 -z-10 h-[520px] w-[760px] -translate-x-1/2 rounded-full bg-[#7c6cf2]/[.08] blur-[110px]" />
-          <motion.div {...reveal} className="mx-auto max-w-[860px] text-center">
+          <HeroScrollDemo
+            titleComponent={
+              <motion.div {...reveal} className="mx-auto max-w-[920px] px-3 text-center">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[.035] px-3 py-1.5 text-xs text-[#b0b5bf]"><span className="size-1.5 rounded-full bg-[#36c98f]" /> Built for the hours nobody sees</div>
             <h1 className="text-balance text-[clamp(2.8rem,7vw,6.25rem)] font-semibold leading-[.94] tracking-[-.065em]">Make your coding<br /><span className="bg-gradient-to-r from-[#f4f2ed] via-[#9b8cff] to-[#32c7d9] bg-clip-text text-transparent">progress visible.</span></h1>
             <p className="text-pretty mx-auto mt-7 max-w-2xl text-base leading-7 text-[#9aa1ad] sm:text-lg">Sprintly turns focused coding sessions into a private record of consistency, momentum, and the developer you’re becoming.</p>
@@ -85,10 +87,10 @@ export function HomePage() {
               <Link href="/how-it-works" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[.035] px-5 text-sm font-medium text-[#d4d6dc] transition hover:bg-white/[.07] sm:w-auto">See how tracking works <ArrowRight aria-hidden="true" className="size-4" /></Link>
             </div>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3"><StatusPill><HardDrive className="size-3.5" /> Local-first</StatusPill><StatusPill tone="violet"><EyeOff className="size-3.5" /> No source code collected</StatusPill><StatusPill tone="gray"><Cloud className="size-3.5" /> Sync is optional</StatusPill></div>
-          </motion.div>
+              </motion.div>
+            }
+          />
         </section>
-
-        <HeroScrollDemo />
 
         <section className="border-y border-white/[.07] bg-[#0a0c0f] px-4 py-20 sm:px-6">
           <div className="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[.85fr_1.15fr] lg:items-center">

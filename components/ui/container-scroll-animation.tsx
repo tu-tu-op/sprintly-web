@@ -51,7 +51,7 @@ export function ContainerScroll({
   return (
     <div
       ref={containerRef}
-      className="relative flex h-[56rem] items-center justify-center px-3 md:h-[72rem] md:px-10"
+      className="relative flex min-h-[56rem] items-center justify-center px-3 md:min-h-[72rem] md:px-10"
     >
       <div className="relative w-full py-10 md:py-40 [perspective:1000px]">
         <Header translate={translate} titleComponent={titleComponent} />
