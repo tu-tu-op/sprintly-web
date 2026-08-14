@@ -9,6 +9,8 @@ import {
   useTransform,
 } from "framer-motion";
 
+const CARD_SETTLE_PROGRESS = 0.68;
+
 type ContainerScrollProps = {
   titleComponent: string | React.ReactNode;
   children: React.ReactNode;
@@ -24,8 +26,17 @@ export function ContainerScroll({
   const headerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: containerRef });
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
   const [isMobile, setIsMobile] = React.useState(false);
+  const cardProgress = useTransform(
+    scrollYProgress,
+    [0, CARD_SETTLE_PROGRESS],
+    [0, 1],
+    { clamp: true },
+  );
 
   React.useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 768px)");
@@ -75,12 +86,12 @@ export function ContainerScroll({
   }, [onInteractionReadyChange]);
 
   const rotate = useTransform(
-    scrollYProgress,
+    cardProgress,
     [0, 1],
     prefersReducedMotion ? [0, 0] : [20, 0],
   );
   const scale = useTransform(
-    scrollYProgress,
+    cardProgress,
     [0, 1],
     prefersReducedMotion ? [1, 1] : isMobile ? [0.78, 0.96] : [0.98, 1.04],
   );
@@ -144,7 +155,7 @@ export function Card({ cardRef, rotate, scale, children }: CardProps) {
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="mx-auto -mt-8 h-[30rem] w-full max-w-5xl rounded-[26px] border border-white/15 bg-[#111318] p-2 shadow-2xl md:-mt-12 md:h-[40rem] md:rounded-[30px] md:p-5"
+      className="relative top-4 mx-auto -mt-8 h-[30rem] w-full max-w-5xl rounded-[26px] border border-white/15 bg-[#111318] p-2 shadow-2xl md:top-8 md:-mt-12 md:h-[40rem] md:rounded-[30px] md:p-5"
     >
       <div className="h-full w-full overflow-hidden rounded-[19px] bg-[#0d0f12] md:rounded-[22px]">
         {children}
