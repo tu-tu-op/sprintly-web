@@ -6,8 +6,8 @@ const INTERACTIVE_SELECTOR = "a, button, [role='button'], input, textarea, selec
 const TEXT_SELECTOR = "input, textarea, [contenteditable='true']";
 
 export function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const pointerRef = useRef<SVGSVGElement>(null);
+  const haloRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const canUseCursor = window.matchMedia("(pointer: fine) and (hover: hover)");
@@ -15,36 +15,36 @@ export function CustomCursor() {
 
     if (!canUseCursor.matches || reduceMotion.matches) return;
 
-    const dot = dotRef.current;
-    const ring = ringRef.current;
-    if (!dot || !ring) return;
+    const pointer = pointerRef.current;
+    const halo = haloRef.current;
+    if (!pointer || !halo) return;
 
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
-    let ringX = targetX;
-    let ringY = targetY;
+    let haloX = targetX + 8;
+    let haloY = targetY + 11;
     let frame = 0;
 
     document.documentElement.classList.add("has-custom-cursor");
 
     const render = () => {
-      ringX += (targetX - ringX) * 0.17;
-      ringY += (targetY - ringY) * 0.17;
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      haloX += (targetX + 8 - haloX) * 0.24;
+      haloY += (targetY + 11 - haloY) * 0.24;
+      halo.style.transform = `translate3d(${haloX}px, ${haloY}px, 0) translate(-50%, -50%)`;
       frame = requestAnimationFrame(render);
     };
 
     const onMove = (event: PointerEvent) => {
       targetX = event.clientX;
       targetY = event.clientY;
-      dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
-      dot.dataset.visible = "true";
-      ring.dataset.visible = "true";
+      pointer.style.transform = `translate3d(${targetX - 2}px, ${targetY - 2}px, 0)`;
+      pointer.dataset.visible = "true";
+      halo.dataset.visible = "true";
     };
 
     const onOver = (event: PointerEvent) => {
       const target = event.target instanceof Element ? event.target : null;
-      ring.dataset.variant = target?.closest(TEXT_SELECTOR)
+      halo.dataset.variant = target?.closest(TEXT_SELECTOR)
         ? "text"
         : target?.closest(INTERACTIVE_SELECTOR)
           ? "interactive"
@@ -52,12 +52,12 @@ export function CustomCursor() {
     };
 
     const onLeave = () => {
-      dot.dataset.visible = "false";
-      ring.dataset.visible = "false";
+      pointer.dataset.visible = "false";
+      halo.dataset.visible = "false";
     };
 
-    const onDown = () => { ring.dataset.pressed = "true"; };
-    const onUp = () => { ring.dataset.pressed = "false"; };
+    const onDown = () => { halo.dataset.pressed = "true"; };
+    const onUp = () => { halo.dataset.pressed = "false"; };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerover", onOver, { passive: true });
@@ -79,8 +79,10 @@ export function CustomCursor() {
 
   return (
     <>
-      <div ref={ringRef} className="custom-cursor-ring" aria-hidden="true" data-visible="false" data-variant="default" />
-      <div ref={dotRef} className="custom-cursor-dot" aria-hidden="true" data-visible="false" />
+      <div ref={haloRef} className="custom-cursor-halo" aria-hidden="true" data-visible="false" data-variant="default" />
+      <svg ref={pointerRef} className="custom-cursor-pointer" aria-hidden="true" data-visible="false" viewBox="0 0 24 29">
+        <path d="M2.4 1.7 2.3 23l5.8-5.2 4.5 9.1 4.2-2.1-4.4-8.8 8.5-.9L2.4 1.7Z" fill="#111318" stroke="#F7F5F0" strokeWidth="1.8" strokeLinejoin="round" />
+      </svg>
     </>
   );
 }
