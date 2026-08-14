@@ -7,11 +7,13 @@ import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 
 type HeroScrollDemoProps = {
   titleComponent: ReactNode;
+  afterComponent?: ReactNode;
 };
 
-export function HeroScrollDemo({ titleComponent }: HeroScrollDemoProps) {
+export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDemoProps) {
   return (
-    <ContainerScroll titleComponent={titleComponent}>
+    <>
+      <ContainerScroll titleComponent={titleComponent}>
       <div className="relative h-full w-full bg-[#0b0d10]">
         <Image
           src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1800&q=88"
@@ -49,6 +51,8 @@ export function HeroScrollDemo({ titleComponent }: HeroScrollDemoProps) {
           </div>
         </div>
       </div>
-    </ContainerScroll>
+      </ContainerScroll>
+      {afterComponent}
+    </>
   );
 }

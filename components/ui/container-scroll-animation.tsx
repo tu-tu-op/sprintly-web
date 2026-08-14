@@ -40,7 +40,7 @@ export function ContainerScroll({
   const scale = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReducedMotion ? [1, 1] : isMobile ? [0.72, 0.92] : [1.05, 1],
+    prefersReducedMotion ? [1, 1] : isMobile ? [0.78, 0.96] : [0.98, 1.04],
   );
   const translate = useTransform(
     scrollYProgress,
