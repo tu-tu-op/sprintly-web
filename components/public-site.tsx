@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { PublicNav } from "./public-nav";
 import { Brand } from "./brand";
+import { HeroScrollDemo } from "./hero-scroll-demo";
 
 const reveal = { initial: { opacity: 0, y: 18 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-70px" }, transition: { duration: .45 } };
 const week = [38, 68, 46, 82, 74, 92, 61];
@@ -87,7 +88,7 @@ export function HomePage() {
           </motion.div>
         </section>
 
-        <section className="px-3 pb-24 sm:px-6"><motion.div {...reveal}><DashboardPreview /></motion.div></section>
+        <HeroScrollDemo />
 
         <section className="border-y border-white/[.07] bg-[#0a0c0f] px-4 py-20 sm:px-6">
           <div className="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
