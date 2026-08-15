@@ -105,7 +105,7 @@ const IconCodex = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const heroFloatingIcons: FloatingIconsHeroProps["icons"] = [
-  { id: 1, icon: IconGitHub, className: "left-[10%] top-[10%] opacity-60" },
+  { id: 1, icon: IconGitHub, className: "left-[12%] top-[15%] opacity-60" },
   { id: 2, icon: IconDiscord, className: "right-[8%] top-[20%] opacity-55" },
   { id: 3, icon: IconX, className: "left-[10%] top-[80%] opacity-50" },
   { id: 4, icon: IconInstagram, className: "right-[10%] bottom-[10%] opacity-55" },
