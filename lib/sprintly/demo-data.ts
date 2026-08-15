@@ -1,8 +1,8 @@
-import type { DevStravaSession } from "./contract";
+import type { SprintlySession } from "./contract";
 
 export const DEMO_USER = {
   id: "demo-user",
-  email: "demo@devstrava.local",
+  email: "demo@sprintly.local",
   displayName: "Alex Rivera",
   handle: "alexrivera",
   city: "Bengaluru",
@@ -10,9 +10,9 @@ export const DEMO_USER = {
   country: "IN",
 } as const;
 
-const session = (data: DevStravaSession): DevStravaSession => data;
+const session = (data: SprintlySession): SprintlySession => data;
 
-export const DEMO_SESSIONS: DevStravaSession[] = [
+export const DEMO_SESSIONS: SprintlySession[] = [
   session({
     contract: "devstrava.session.v1",
     schemaVersion: 1,

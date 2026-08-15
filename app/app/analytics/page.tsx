@@ -1,3 +1,3 @@
-import { AnalyticsPage } from "@/components/devstrava-pages";
+import { AnalyticsPage } from "@/components/sprintly-pages";
 
 export default function Page() { return <AnalyticsPage />; }

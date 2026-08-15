@@ -12,9 +12,9 @@ export function SprintlyMark({ className = "" }: { className?: string }) {
 
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
-    <Link href="/" className="inline-flex min-h-11 items-center gap-2.5 rounded-lg text-white" aria-label="DevStrava home">
+    <Link href="/" className="inline-flex min-h-11 items-center gap-2.5 rounded-lg text-white" aria-label="Sprintly home">
       <SprintlyMark className="size-8 shrink-0" />
-      {!compact && <span className="text-[17px] font-semibold tracking-[-0.03em]">devstrava</span>}
+      {!compact && <span className="text-[17px] font-semibold tracking-[-0.03em]">sprintly</span>}
     </Link>
   );
 }

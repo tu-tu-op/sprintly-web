@@ -1,3 +1,3 @@
-import { SettingsPage } from "@/components/devstrava-pages";
+import { SettingsPage } from "@/components/sprintly-pages";
 
 export default function Page() { return <SettingsPage />; }

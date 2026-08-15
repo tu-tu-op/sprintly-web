@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const DEVSTRAVA_CONTRACT = "devstrava.session.v1" as const;
-export const DEVSTRAVA_SCHEMA_VERSION = 1 as const;
+export const SPRINTLY_CONTRACT = "devstrava.session.v1" as const;
+export const SPRINTLY_SCHEMA_VERSION = 1 as const;
 
 const percentage = z.number().finite().min(0).max(100);
 const count = z.number().int().min(0).max(10_000_000);
@@ -65,9 +65,9 @@ const archetypeSchema = z.object({
   traits: z.array(z.string().trim().min(1).max(60)).max(8),
 });
 
-export const devStravaSessionSchema = z.object({
-  contract: z.literal(DEVSTRAVA_CONTRACT).optional(),
-  schemaVersion: z.literal(DEVSTRAVA_SCHEMA_VERSION),
+export const sprintlySessionSchema = z.object({
+  contract: z.literal(SPRINTLY_CONTRACT).optional(),
+  schemaVersion: z.literal(SPRINTLY_SCHEMA_VERSION),
   sessionId: z.string().trim().regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$/, "Invalid session ID"),
   startedAt: z.string().trim().min(1).max(64),
   endedAt: z.string().trim().min(1).max(64),
@@ -124,7 +124,7 @@ export const devStravaSessionSchema = z.object({
   }
 });
 
-export type DevStravaSession = z.infer<typeof devStravaSessionSchema>;
+export type SprintlySession = z.infer<typeof sprintlySessionSchema>;
 
 export type ImportIssue = {
   index: number;
@@ -134,10 +134,10 @@ export type ImportIssue = {
 
 export type ImportValidation = {
   ok: boolean;
-  sessions: DevStravaSession[];
+  sessions: SprintlySession[];
   duplicates: Array<{ index: number; sessionId: string; reason: "file" | "already-imported" }>;
   issues: ImportIssue[];
-  contract: typeof DEVSTRAVA_CONTRACT;
+  contract: typeof SPRINTLY_CONTRACT;
 };
 
 function formatZodIssue(issue: z.ZodIssue) {
@@ -150,31 +150,31 @@ function extractRecords(payload: unknown): unknown[] | { error: string } {
   if (!payload || typeof payload !== "object") return { error: "Import must be a JSON object or an array of sessions" };
 
   const root = payload as Record<string, unknown>;
-  if ("schemaVersion" in root && root.schemaVersion !== DEVSTRAVA_SCHEMA_VERSION) {
-    return { error: `Unsupported schema version: ${String(root.schemaVersion)}. Expected ${DEVSTRAVA_SCHEMA_CONTRACT_LABEL}` };
+  if ("schemaVersion" in root && root.schemaVersion !== SPRINTLY_SCHEMA_VERSION) {
+    return { error: `Unsupported schema version: ${String(root.schemaVersion)}. Expected ${SPRINTLY_SCHEMA_CONTRACT_LABEL}` };
   }
-  if ("contract" in root && root.contract !== DEVSTRAVA_CONTRACT) {
-    return { error: `Unsupported contract: ${String(root.contract)}. Expected ${DEVSTRAVA_CONTRACT}` };
+  if ("contract" in root && root.contract !== SPRINTLY_CONTRACT) {
+    return { error: `Unsupported contract: ${String(root.contract)}. Expected ${SPRINTLY_CONTRACT}` };
   }
   if (Array.isArray(root.sessions)) return root.sessions;
   return [payload];
 }
 
-const DEVSTRAVA_SCHEMA_CONTRACT_LABEL = DEVSTRAVA_CONTRACT;
+const SPRINTLY_SCHEMA_CONTRACT_LABEL = SPRINTLY_CONTRACT;
 
-export function validateDevStravaImport(payload: unknown, existingIds: ReadonlySet<string> = new Set()): ImportValidation {
+export function validateSprintlyImport(payload: unknown, existingIds: ReadonlySet<string> = new Set()): ImportValidation {
   const extracted = extractRecords(payload);
   if ("error" in extracted) {
-    return { ok: false, sessions: [], duplicates: [], issues: [{ index: -1, message: extracted.error }], contract: DEVSTRAVA_CONTRACT };
+    return { ok: false, sessions: [], duplicates: [], issues: [{ index: -1, message: extracted.error }], contract: SPRINTLY_CONTRACT };
   }
 
-  const sessions: DevStravaSession[] = [];
+  const sessions: SprintlySession[] = [];
   const duplicates: ImportValidation["duplicates"] = [];
   const issues: ImportIssue[] = [];
   const seen = new Set<string>();
 
   extracted.forEach((record, index) => {
-    const parsed = devStravaSessionSchema.safeParse(record);
+    const parsed = sprintlySessionSchema.safeParse(record);
     if (!parsed.success) {
       const rawId = record && typeof record === "object" && "sessionId" in record ? String((record as Record<string, unknown>).sessionId) : undefined;
       issues.push({ index, message: parsed.error.issues.map(formatZodIssue).join("; "), sessionId: rawId });
@@ -193,24 +193,24 @@ export function validateDevStravaImport(payload: unknown, existingIds: ReadonlyS
     sessions.push(parsed.data);
   });
 
-  return { ok: sessions.length > 0 && issues.length === 0, sessions, duplicates, issues, contract: DEVSTRAVA_CONTRACT };
+  return { ok: sessions.length > 0 && issues.length === 0, sessions, duplicates, issues, contract: SPRINTLY_CONTRACT };
 }
 
-export function parseDevStravaImportText(text: string, existingIds: ReadonlySet<string> = new Set()) {
+export function parseSprintlyImportText(text: string, existingIds: ReadonlySet<string> = new Set()) {
   if (text.length > 5_000_000) {
-    return { ok: false, sessions: [], duplicates: [], issues: [{ index: -1, message: "Import is too large. Choose an export under 5 MB." }], contract: DEVSTRAVA_CONTRACT } satisfies ImportValidation;
+    return { ok: false, sessions: [], duplicates: [], issues: [{ index: -1, message: "Import is too large. Choose an export under 5 MB." }], contract: SPRINTLY_CONTRACT } satisfies ImportValidation;
   }
   try {
-    return validateDevStravaImport(JSON.parse(text) as unknown, existingIds);
+    return validateSprintlyImport(JSON.parse(text) as unknown, existingIds);
   } catch {
-    return { ok: false, sessions: [], duplicates: [], issues: [{ index: -1, message: "The selected file is not valid JSON." }], contract: DEVSTRAVA_CONTRACT } satisfies ImportValidation;
+    return { ok: false, sessions: [], duplicates: [], issues: [{ index: -1, message: "The selected file is not valid JSON." }], contract: SPRINTLY_CONTRACT } satisfies ImportValidation;
   }
 }
 
-export function serializeDevStravaExport(sessions: DevStravaSession[]) {
+export function serializeSprintlyExport(sessions: SprintlySession[]) {
   return JSON.stringify({
-    contract: DEVSTRAVA_CONTRACT,
-    schemaVersion: DEVSTRAVA_SCHEMA_VERSION,
+    contract: SPRINTLY_CONTRACT,
+    schemaVersion: SPRINTLY_SCHEMA_VERSION,
     exportedAt: new Date().toISOString(),
     sessions,
   }, null, 2);

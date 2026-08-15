@@ -1,9 +1,9 @@
 import { DEMO_SESSIONS, DEMO_USER } from "./demo-data";
-import { validateDevStravaImport, type DevStravaSession } from "./contract";
+import { validateSprintlyImport, type SprintlySession } from "./contract";
 import type { ShareField } from "./analytics";
 
 export type StoredSession = {
-  record: DevStravaSession;
+  record: SprintlySession;
   source: "demo" | "imported";
   importedAt: string;
   verified: boolean;
@@ -57,7 +57,7 @@ export type UserData = {
   shares: ShareSnapshot[];
 };
 
-const key = (userId: string, resource: string) => `devstrava:${userId}:${resource}:v1`;
+const key = (userId: string, resource: string) => `sprintly:${userId}:${resource}:v1`;
 
 const defaultPreferences: UserPreferences = {
   profileVisibility: "private",
@@ -100,7 +100,7 @@ function loadSessions(userId: string) {
   const validated = raw.flatMap((item) => {
     if (!item || typeof item !== "object" || !("record" in item)) return [];
     const candidate = item as { record?: unknown; source?: unknown; importedAt?: unknown; verified?: unknown };
-    const result = validateDevStravaImport(candidate.record);
+    const result = validateSprintlyImport(candidate.record);
     if (!result.sessions.length || result.issues.length) return [];
     return [{
       record: result.sessions[0],

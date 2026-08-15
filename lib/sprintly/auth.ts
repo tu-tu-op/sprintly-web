@@ -1,4 +1,9 @@
 export const DEMO_CREDENTIALS = {
+  email: "demo@sprintly.local",
+  password: "SprintlyDemo123!",
+} as const;
+
+const LEGACY_DEMO_CREDENTIALS = {
   email: "demo@devstrava.local",
   password: "DevStravaDemo123!",
 } as const;
@@ -15,7 +20,7 @@ export type AuthProvider = {
   signIn: (email: string, password: string) => Promise<{ ok: true; session: AuthSession } | { ok: false; error: string }>;
 };
 
-const AUTH_STORAGE_KEY = "devstrava:auth:v1";
+const AUTH_STORAGE_KEY = "sprintly:auth:v1";
 
 function readStorage(key: string) {
   if (typeof window === "undefined") return null;
@@ -32,7 +37,10 @@ function writeStorage(key: string, value: string | null) {
 
 export const demoAuthProvider: AuthProvider = {
   async signIn(email, password) {
-    if (email.trim().toLowerCase() !== DEMO_CREDENTIALS.email || password !== DEMO_CREDENTIALS.password) {
+    const normalizedEmail = email.trim().toLowerCase();
+    const currentCredentialsMatch = normalizedEmail === DEMO_CREDENTIALS.email && password === DEMO_CREDENTIALS.password;
+    const legacyCredentialsMatch = normalizedEmail === LEGACY_DEMO_CREDENTIALS.email && password === LEGACY_DEMO_CREDENTIALS.password;
+    if (!currentCredentialsMatch && !legacyCredentialsMatch) {
       return { ok: false, error: "Use the marked Demo Account credentials for this development build." };
     }
     const session: AuthSession = {

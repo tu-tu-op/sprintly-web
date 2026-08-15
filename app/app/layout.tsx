@@ -1,7 +1,7 @@
 import { ProductShell } from "@/components/product-shell";
 import { AuthGate } from "@/components/auth-gate";
-import { DevStravaProvider } from "@/components/devstrava-provider";
+import { SprintlyProvider } from "@/components/sprintly-provider";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  return <AuthGate><DevStravaProvider><ProductShell>{children}</ProductShell></DevStravaProvider></AuthGate>;
+  return <AuthGate><SprintlyProvider><ProductShell>{children}</ProductShell></SprintlyProvider></AuthGate>;
 }

@@ -2,15 +2,15 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { getAuthSession } from "@/lib/devstrava/auth";
-import { validateDevStravaImport, type DevStravaSession } from "@/lib/devstrava/contract";
-import { DEMO_USER } from "@/lib/devstrava/demo-data";
-import { loadUserData, saveUserData, type ShareSnapshot, type StoredSession, type UserData, type UserPreferences, type UserProfile } from "@/lib/devstrava/storage";
+import { getAuthSession } from "@/lib/sprintly/auth";
+import { validateSprintlyImport, type SprintlySession } from "@/lib/sprintly/contract";
+import { DEMO_USER } from "@/lib/sprintly/demo-data";
+import { loadUserData, saveUserData, type ShareSnapshot, type StoredSession, type UserData, type UserPreferences, type UserProfile } from "@/lib/sprintly/storage";
 
-type DevStravaContextValue = UserData & {
+type SprintlyContextValue = UserData & {
   userId: string;
   hydrated: boolean;
-  importSessions: (sessions: DevStravaSession[]) => number;
+  importSessions: (sessions: SprintlySession[]) => number;
   updatePreferences: (patch: Partial<UserPreferences>) => void;
   updateProfile: (patch: Partial<UserProfile>) => void;
   createShare: (snapshot: ShareSnapshot) => void;
@@ -20,9 +20,9 @@ type DevStravaContextValue = UserData & {
 };
 
 const fallback = loadUserData(DEMO_USER.id);
-const DevStravaContext = createContext<DevStravaContextValue | null>(null);
+const SprintlyContext = createContext<SprintlyContextValue | null>(null);
 
-export function DevStravaProvider({ children }: { children: React.ReactNode }) {
+export function SprintlyProvider({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<string>(DEMO_USER.id);
   const [data, setData] = useState<UserData>(fallback);
   const [hydrated, setHydrated] = useState(false);
@@ -39,7 +39,7 @@ export function DevStravaProvider({ children }: { children: React.ReactNode }) {
     if (hydrated) saveUserData(userId, data);
   }, [data, hydrated, userId]);
 
-  const value = useMemo<DevStravaContextValue>(() => ({
+  const value = useMemo<SprintlyContextValue>(() => ({
     ...data,
     userId,
     hydrated,
@@ -59,11 +59,11 @@ export function DevStravaProvider({ children }: { children: React.ReactNode }) {
     deleteAccountData: () => setData({ sessions: [], preferences: fallback.preferences, profile: fallback.profile, shares: [] }),
   }), [data, hydrated, userId]);
 
-  return <DevStravaContext.Provider value={value}>{children}</DevStravaContext.Provider>;
+  return <SprintlyContext.Provider value={value}>{children}</SprintlyContext.Provider>;
 }
 
-export function useDevStrava() {
-  const context = useContext(DevStravaContext);
-  if (!context) throw new Error("useDevStrava must be used inside DevStravaProvider");
+export function useSprintly() {
+  const context = useContext(SprintlyContext);
+  if (!context) throw new Error("useSprintly must be used inside SprintlyProvider");
   return context;
 }

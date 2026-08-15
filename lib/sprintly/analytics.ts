@@ -1,4 +1,4 @@
-import type { DevStravaSession } from "./contract";
+import type { SprintlySession } from "./contract";
 
 export type DateRange = "today" | "week" | "month" | "all" | "custom";
 export type CustomRange = { from: string; to: string };
@@ -6,11 +6,11 @@ export type CustomRange = { from: string; to: string };
 export type SessionAggregate = {
   sessionCount: number;
   activeDurationSeconds: number;
-  coding: DevStravaSession["coding"];
-  activity: DevStravaSession["activity"];
-  terminal: DevStravaSession["terminal"];
-  ai: DevStravaSession["ai"];
-  reliability: DevStravaSession["reliability"];
+  coding: SprintlySession["coding"];
+  activity: SprintlySession["activity"];
+  terminal: SprintlySession["terminal"];
+  ai: SprintlySession["ai"];
+  reliability: SprintlySession["reliability"];
   scores: {
     focus: number;
     testingDiscipline: number;
@@ -108,7 +108,7 @@ export function formatDuration(seconds: number) {
   return hours ? `${hours}h ${minutes.toString().padStart(2, "0")}m` : `${minutes}m`;
 }
 
-export function aggregateSessions(sessions: DevStravaSession[]): SessionAggregate {
+export function aggregateSessions(sessions: SprintlySession[]): SessionAggregate {
   if (!sessions.length) return zeroAggregate();
   const total = zeroAggregate();
   const archetypes = new Map<string, number>();
@@ -146,7 +146,7 @@ export function aggregateSessions(sessions: DevStravaSession[]): SessionAggregat
   return total;
 }
 
-export function filterSessionsByRange(sessions: DevStravaSession[], range: DateRange, now = new Date(), custom?: CustomRange) {
+export function filterSessionsByRange(sessions: SprintlySession[], range: DateRange, now = new Date(), custom?: CustomRange) {
   if (range === "all") return [...sessions];
   const current = new Date(now);
   const today = dateKey(current);
@@ -169,7 +169,7 @@ export function filterSessionsByRange(sessions: DevStravaSession[], range: DateR
   return sessions.filter((session) => dateKey(session.startedAt) >= from && dateKey(session.startedAt) <= today);
 }
 
-export function getStreakStats(sessions: DevStravaSession[], referenceDate = new Date()): StreakStats {
+export function getStreakStats(sessions: SprintlySession[], referenceDate = new Date()): StreakStats {
   const activeDays = [...new Set(sessions.filter((session) => session.activeDurationSeconds > 0).map((session) => dateKey(session.startedAt)))].sort();
   if (!activeDays.length) return { current: 0, longest: 0, activeDays: [] };
   let longest = 1;
@@ -210,7 +210,7 @@ export function getIsoWeek(value: string | Date) {
   return `${date.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
 }
 
-export function computeAchievements(sessions: DevStravaSession[], streaks = getStreakStats(sessions)): Achievement[] {
+export function computeAchievements(sessions: SprintlySession[], streaks = getStreakStats(sessions)): Achievement[] {
   const aggregate = aggregateSessions(sessions);
   const tests = aggregate.terminal.test;
   const terminal = aggregate.terminal.totalCommands;
@@ -235,8 +235,8 @@ export function computeAchievements(sessions: DevStravaSession[], streaks = getS
   return definitions.map(({ value, target, ...achievement }) => ({ ...achievement, unlocked: value >= target, progress: Math.min(100, Math.round((value / target) * 100)), target }));
 }
 
-export function computePersonalRecords(sessions: DevStravaSession[], streaks = getStreakStats(sessions)): PersonalRecords {
-  const byWeek = new Map<string, DevStravaSession[]>();
+export function computePersonalRecords(sessions: SprintlySession[], streaks = getStreakStats(sessions)): PersonalRecords {
+  const byWeek = new Map<string, SprintlySession[]>();
   for (const session of sessions) byWeek.set(getIsoWeek(session.startedAt), [...(byWeek.get(getIsoWeek(session.startedAt)) ?? []), session]);
   const weeklyScores = [...byWeek.values()].map((week) => aggregateSessions(week).scores.devScore);
   const sessionCounts = [...byWeek.values()].map((week) => week.length);
@@ -262,7 +262,7 @@ export function computeCompositeDevScore(aggregate: SessionAggregate) {
   return Math.round(score * 10);
 }
 
-export function buildLeaderboardPacket(sessions: DevStravaSession[], region: string, referenceDate = new Date()): LeaderboardPacket {
+export function buildLeaderboardPacket(sessions: SprintlySession[], region: string, referenceDate = new Date()): LeaderboardPacket {
   const aggregate = aggregateSessions(filterSessionsByRange(sessions, "week", referenceDate));
   return {
     schemaVersion: 1,
@@ -278,7 +278,7 @@ export function buildLeaderboardPacket(sessions: DevStravaSession[], region: str
   };
 }
 
-export function buildSharePayload(session: DevStravaSession | undefined, aggregate: SessionAggregate, streak: number): SharePayload {
+export function buildSharePayload(session: SprintlySession | undefined, aggregate: SessionAggregate, streak: number): SharePayload {
   const source = session ? aggregateSessions([session]) : aggregate;
   return {
     codingTime: formatDuration(source.activeDurationSeconds),
