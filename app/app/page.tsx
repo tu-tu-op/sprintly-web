@@ -1,2 +1,3 @@
-import { OverviewPage } from "@/components/product-pages";
-export default function Page(){return <OverviewPage/>}
+import { OverviewPage } from "@/components/devstrava-pages";
+
+export default function Page() { return <OverviewPage />; }
