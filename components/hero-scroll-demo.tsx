@@ -116,7 +116,7 @@ const heroFloatingIcons: FloatingIconsHeroProps["icons"] = [
   { id: 9, icon: IconZed, className: "right-[25%] top-[75%] opacity-55" },
   { id: 10, icon: IconCursor, className: "left-[70%] top-[90%] opacity-50" },
   { id: 11, icon: IconKiro, className: "right-[5%] top-[50%] opacity-55" },
-  { id: 12, icon: IconClaudeCode, className: "right-[45%] bottom-[5%] opacity-55" },
+  { id: 12, icon: IconClaudeCode, className: "left-[10%] top-[92%] opacity-55" },
   { id: 13, icon: IconCodex, className: "left-[30%] top-[60%] opacity-55" },
 ];
 
