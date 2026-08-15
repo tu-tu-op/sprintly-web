@@ -15,13 +15,19 @@ type HeroScrollDemoProps = {
   afterComponent?: ReactNode;
 };
 
+const imageIcon = (src: string) => (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg">
+    <image href={src} x="0" y="0" width="1" height="1" preserveAspectRatio="xMidYMid meet" />
+  </svg>
+);
+
 const IconGitHub = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor" className="text-foreground/80" xmlns="http://www.w3.org/2000/svg">
     <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
   </svg>
 );
 
-const IconDiscord = (props: React.SVGProps<SVGSVGElement>) => (
+const IconDiscordLegacy = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M20.317 4.482a1.88 1.88 0 0 0-1.635-.482C17.398 3.42 16.02 3 12 3s-5.398.42-6.682 1.001a1.88 1.88 0 0 0-1.635.483c-1.875 1.2-2.325 3.61-1.568 5.711 1.62 4.47 5.063 7.8 9.885 7.8s8.265-3.33 9.885-7.8c.757-2.1-.307-4.51-1.568-5.711ZM8.45 13.4c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65c.825 0 1.5.75 1.5 1.65s-.675 1.65-1.5 1.65Zm7.1 0c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65 1.5.75 1.5 1.65-.675 1.65-1.5 1.65Z" fill="#5865F2" />
   </svg>
@@ -62,33 +68,11 @@ const IconTerminal = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const IconAntiGravity = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="12" cy="12" r="8.5" stroke="#8B5CF6" strokeWidth="1.6" strokeDasharray="2.5 2" />
-    <path d="M12 17V7m0 0-3 3m3-3 3 3M7.5 15.5l4.5-8 4.5 8" stroke="#32C7D9" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+const IconAntiGravity = imageIcon("/icons/Antigravity.png");
 
-const IconZed = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="zed-gradient" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop stopColor="#F6A94A" /><stop offset=".5" stopColor="#F06464" /><stop offset="1" stopColor="#9B8CFF" /></linearGradient></defs>
-    <path d="M4 5h16L7 19h13M4 19h3" stroke="url(#zed-gradient)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+const IconCursor = imageIcon("/icons/cursor.png");
 
-const IconCursor = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="m4 3 5.2 17 2.9-6.1 6.1-2.9L4 3Z" fill="#10131A" stroke="#10131A" strokeWidth="1.3" strokeLinejoin="round" />
-    <path d="m12.1 13.9 3.7 5.1" stroke="#7C6CF2" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
-
-const IconKiro = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 4v16M5 12h4l7-8M9 12l8 8" stroke="#32C7D9" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="17" cy="4" r="2" fill="#7C6CF2" />
-  </svg>
-);
+const IconKiro = imageIcon("/icons/kiro-icon.png");
 
 const IconClaudeCode = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,12 +81,9 @@ const IconClaudeCode = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const IconCodex = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="m12 2 7.8 4.5v9L12 20l-7.8-4.5v-9L12 2Z" fill="#10A37F" />
-    <path d="m9 8-3 4 3 4M15 8l3 4-3 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+const IconCodex = imageIcon("/icons/codex.png");
+
+const IconDiscord = imageIcon("/icons/Discord.png");
 
 const heroFloatingIcons: FloatingIconsHeroProps["icons"] = [
   { id: 1, icon: IconGitHub, className: "left-[12%] top-[15%] opacity-60" },
@@ -113,7 +94,6 @@ const heroFloatingIcons: FloatingIconsHeroProps["icons"] = [
   { id: 6, icon: IconVSCode, className: "right-[10%] top-[5%] opacity-55" },
   { id: 7, icon: IconTerminal, className: "left-[25%] bottom-[8%] opacity-50" },
   { id: 8, icon: IconAntiGravity, className: "left-[15%] top-[40%] opacity-55" },
-  { id: 9, icon: IconZed, className: "right-[25%] top-[75%] opacity-55" },
   { id: 10, icon: IconCursor, className: "left-[70%] top-[90%] opacity-50" },
   { id: 11, icon: IconKiro, className: "right-[5%] top-[50%] opacity-55" },
   { id: 12, icon: IconClaudeCode, className: "left-[10%] top-[92%] opacity-55" },
