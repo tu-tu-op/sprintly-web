@@ -15,7 +15,7 @@ const navItems = [
   { name: "How it works", href: "/how-it-works" },
   { name: "Pricing", href: "/pricing" },
   { name: "Sign in", href: "/sign-in", mobileHidden: true },
-  { name: "Open app", href: "/app" },
+  { name: "Get Started", href: "/app" },
 ];
 
 const COLLAPSE_SCROLL_POSITION = 150;
