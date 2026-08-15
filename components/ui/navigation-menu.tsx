@@ -8,6 +8,7 @@ import {
   useScroll,
 } from "framer-motion";
 import { Menu, Navigation } from "lucide-react";
+import { FlowButton } from "@/components/ui/flow-button";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -85,25 +86,41 @@ export function AnimatedNavFramer() {
               </motion.div>
 
               <div className="flex min-w-0 items-center gap-1 pr-3 sm:gap-4 sm:pr-4">
-                {navItems.map((item, index) => (
-                  <motion.a
-                    key={item.name}
-                    href={item.href}
-                    initial={{ opacity: 0, x: -12, scale: 0.96 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    transition={{
-                      type: "spring",
-                      damping: 18,
-                      stiffness: 280,
-                      delay: 0.05 + index * 0.045,
-                    }}
-                    className={`whitespace-nowrap rounded-full px-1.5 py-1 text-xs font-medium text-[#9299a6] transition-colors hover:text-[#f4f2ed] sm:px-2 sm:text-sm ${
-                      item.mobileHidden ? "hidden sm:inline-flex" : "inline-flex"
-                    }`}
-                  >
-                    {item.name}
-                  </motion.a>
-                ))}
+                {navItems.map((item, index) => {
+                  const link = (
+                    <motion.a
+                      key={item.name}
+                      href={item.href}
+                      initial={{ opacity: 0, x: -12, scale: 0.96 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      transition={{
+                        type: "spring",
+                        damping: 18,
+                        stiffness: 280,
+                        delay: 0.05 + index * 0.045,
+                      }}
+                      className={`whitespace-nowrap rounded-full px-1.5 py-1 text-xs font-medium text-[#9299a6] transition-colors hover:text-[#f4f2ed] sm:px-2 sm:text-sm ${
+                        item.mobileHidden ? "hidden sm:inline-flex" : "inline-flex"
+                      }`}
+                    >
+                      {item.name}
+                    </motion.a>
+                  );
+
+                  if (item.href !== "/app") return link;
+
+                  return (
+                    <span key={`${item.name}-flow-button`} className="group relative inline-flex">
+                      {link}
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                      >
+                        <FlowButton text={item.name} />
+                      </span>
+                    </span>
+                  );
+                })}
               </div>
             </nav>
           </motion.div>
