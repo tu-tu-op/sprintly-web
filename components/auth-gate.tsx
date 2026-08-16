@@ -17,6 +17,6 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
     setChecked(true);
   }, [pathname, router]);
 
-  if (!checked) return <main className="grid min-h-dvh place-items-center bg-[#08090b] text-sm text-[#858c97]">Opening your Sprintly record…</main>;
+  if (!checked) return <main className="grid min-h-dvh place-items-center bg-[#090909] text-sm text-[#8b8b8b]">Opening your Sprintly record…</main>;
   return children;
 }

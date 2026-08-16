@@ -29,7 +29,7 @@ const IconGitHub = (props: React.SVGProps<SVGSVGElement>) => (
 
 const IconDiscordLegacy = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20.317 4.482a1.88 1.88 0 0 0-1.635-.482C17.398 3.42 16.02 3 12 3s-5.398.42-6.682 1.001a1.88 1.88 0 0 0-1.635.483c-1.875 1.2-2.325 3.61-1.568 5.711 1.62 4.47 5.063 7.8 9.885 7.8s8.265-3.33 9.885-7.8c.757-2.1-.307-4.51-1.568-5.711ZM8.45 13.4c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65c.825 0 1.5.75 1.5 1.65s-.675 1.65-1.5 1.65Zm7.1 0c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65 1.5.75 1.5 1.65-.675 1.65-1.5 1.65Z" fill="#5865F2" />
+    <path d="M20.317 4.482a1.88 1.88 0 0 0-1.635-.482C17.398 3.42 16.02 3 12 3s-5.398.42-6.682 1.001a1.88 1.88 0 0 0-1.635.483c-1.875 1.2-2.325 3.61-1.568 5.711 1.62 4.47 5.063 7.8 9.885 7.8s8.265-3.33 9.885-7.8c.757-2.1-.307-4.51-1.568-5.711ZM8.45 13.4c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65c.825 0 1.5.75 1.5 1.65s-.675 1.65-1.5 1.65Zm7.1 0c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65 1.5.75 1.5 1.65-.675 1.65-1.5 1.65Z" fill="#9c9c9c" />
   </svg>
 );
 
@@ -41,30 +41,30 @@ const IconX = (props: React.SVGProps<SVGSVGElement>) => (
 
 const IconInstagram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="instagram-gradient" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse"><stop stopColor="#FFDC80" /><stop offset=".45" stopColor="#F56040" /><stop offset="1" stopColor="#833AB4" /></linearGradient></defs>
+    <defs><linearGradient id="instagram-gradient" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse"><stop stopColor="#c4c4c4" /><stop offset=".45" stopColor="#a6a6a6" /><stop offset="1" stopColor="#9a9a9a" /></linearGradient></defs>
     <rect x="3" y="3" width="18" height="18" rx="5" stroke="url(#instagram-gradient)" strokeWidth="2" />
-    <circle cx="12" cy="12" r="4" stroke="#F56040" strokeWidth="2" />
-    <circle cx="17.5" cy="6.5" r="1.25" fill="#833AB4" />
+    <circle cx="12" cy="12" r="4" stroke="#a6a6a6" strokeWidth="2" />
+    <circle cx="17.5" cy="6.5" r="1.25" fill="#9a9a9a" />
   </svg>
 );
 
 const IconTelegram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="12" cy="12" r="10" fill="#2AABEE" />
+    <circle cx="12" cy="12" r="10" fill="#b4b4b4" />
     <path d="m5.8 11.7 11.7-4.5c.54-.2 1 .13.82.96l-1.99 9.4c-.15.67-.55.83-1.12.52l-3.1-2.28-1.5 1.45c-.17.17-.31.31-.63.31l.22-3.16 5.76-5.2c.25-.22-.06-.35-.39-.13l-7.12 4.48-3.07-.96c-.67-.21-.68-.67.42-.89Z" fill="white" />
   </svg>
 );
 
 const IconVSCode = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="m21.2 3.1-5.55-3.02L8.9 6.4 5.1 3.5 2.2 5.1v13.8l2.9 1.6 3.8-2.9 6.75 6.4 5.55-3.02V3.1ZM15 5.25v13.5l-5.9-5.35L15 5.25ZM4.3 7.4 8 10.55 4.3 14.5V7.4Z" fill="#007ACC" />
+    <path d="m21.2 3.1-5.55-3.02L8.9 6.4 5.1 3.5 2.2 5.1v13.8l2.9 1.6 3.8-2.9 6.75 6.4 5.55-3.02V3.1ZM15 5.25v13.5l-5.9-5.35L15 5.25ZM4.3 7.4 8 10.55 4.3 14.5V7.4Z" fill="#a3a3a3" />
   </svg>
 );
 
 const IconTerminal = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="3" y="4" width="18" height="16" rx="2.5" stroke="#10131A" strokeWidth="1.8" />
-    <path d="m7 9 3 3-3 3M13 15h4" stroke="#7C6CF2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <rect x="3" y="4" width="18" height="16" rx="2.5" stroke="#131313" strokeWidth="1.8" />
+    <path d="m7 9 3 3-3 3M13 15h4" stroke="#f2f2f2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -76,8 +76,8 @@ const IconKiro = imageIcon("/icons/kiro-icon.png");
 
 const IconClaudeCode = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 3v18M3 12h18M5.64 5.64l12.72 12.72M18.36 5.64 5.64 18.36" stroke="#D97757" strokeWidth="2" strokeLinecap="round" />
-    <circle cx="12" cy="12" r="2.2" fill="#D97757" />
+    <path d="M12 3v18M3 12h18M5.64 5.64l12.72 12.72M18.36 5.64 5.64 18.36" stroke="#919191" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="12" cy="12" r="2.2" fill="#919191" />
   </svg>
 );
 
@@ -111,11 +111,11 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
           titleComponent={titleComponent}
           onInteractionReadyChange={setHoverEnabled}
         >
-        <div className="relative h-full w-full bg-[#0b0d10]">
+        <div className="relative h-full w-full bg-[#0d0d0d]">
         <PixelSwap
           className="absolute inset-0 h-full w-full"
           firstContent={
-            <div className="relative h-full w-full bg-[#0b0d10]">
+            <div className="relative h-full w-full bg-[#0d0d0d]">
               <Image
                 src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1800&q=88"
                 alt="Developer workspace with code visible on a monitor"
@@ -124,33 +124,33 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
                 className="object-cover object-center opacity-45"
                 priority={false}
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#080a0d]/30 via-[#080a0d]/25 to-[#080a0d]/95" />
-              <div className="absolute right-4 top-4 rounded-full border border-white/10 bg-[#0d1015]/80 px-3 py-1.5 text-[10px] text-[#b8bec8] backdrop-blur-md sm:right-7 sm:top-7">
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/30 via-[#0a0a0a]/25 to-[#0a0a0a]/95" />
+              <div className="absolute right-4 top-4 rounded-full border border-white/10 bg-[#101010]/80 px-3 py-1.5 text-[10px] text-[#bdbdbd] backdrop-blur-md sm:right-7 sm:top-7">
                 {hoverEnabled ? "Hover to decode" : "Scroll to focus"}
               </div>
             </div>
           }
           secondContent={
-            <div className="relative h-full w-full overflow-hidden bg-[#11101b]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_22%,rgba(50,199,217,.2),transparent_34%),radial-gradient(circle_at_20%_80%,rgba(124,108,242,.24),transparent_42%)]" />
+            <div className="relative h-full w-full overflow-hidden bg-[#121212]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_22%,rgba(157,157,157,.2),transparent_34%),radial-gradient(circle_at_20%_80%,rgba(128,128,128,.24),transparent_42%)]" />
               <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(255,255,255,.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.08)_1px,transparent_1px)] [background-size:42px_42px]" />
               <div className="relative flex h-full flex-col justify-center p-6 sm:p-10 md:p-12">
-                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[.2em] text-[#7de4ba]">
-                  <span className="size-1.5 rounded-full bg-[#36c98f] shadow-[0_0_14px_rgba(54,201,143,.8)]" />
+                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[.2em] text-[#e0e0e0]">
+                  <span className="size-1.5 rounded-full bg-[#d0d0d0] shadow-[0_0_14px_rgba(150,150,150,.8)]" />
                   Focus signal decoded
                 </div>
                 <div className="mt-6 max-w-xl">
-                  <p className="mono text-xs uppercase tracking-[.18em] text-[#9b8cff]">01 / Session insight</p>
-                  <h3 className="mt-4 text-3xl font-semibold leading-[1.05] tracking-[-.05em] text-[#f4f2ed] sm:text-5xl">
+                  <p className="mono text-xs uppercase tracking-[.18em] text-[#d2d2d2]">01 / Session insight</p>
+                  <h3 className="mt-4 text-3xl font-semibold leading-[1.05] tracking-[-.05em] text-[#f2f2f2] sm:text-5xl">
                     Momentum is a pattern you can return to.
                   </h3>
-                  <p className="mt-5 max-w-lg text-sm leading-6 text-[#9ba2ae] sm:text-base">
+                  <p className="mt-5 max-w-lg text-sm leading-6 text-[#a1a1a1] sm:text-base">
                     Your focused work becomes a private record of rhythm, consistency, and the next session worth starting.
                   </p>
                 </div>
                 <div className="mt-8 flex flex-wrap gap-2">
-                  <span className="rounded-full border border-[#9b8cff]/25 bg-[#9b8cff]/10 px-3 py-1.5 text-xs text-[#c3bbff]">12 day streak</span>
-                  <span className="rounded-full border border-[#32c7d9]/25 bg-[#32c7d9]/10 px-3 py-1.5 text-xs text-[#8de2ec]">87 focus score</span>
+                  <span className="rounded-full border border-[#d2d2d2]/25 bg-[#d2d2d2]/10 px-3 py-1.5 text-xs text-[#c5c5c5]">12 day streak</span>
+                  <span className="rounded-full border border-[#bdbdbd]/25 bg-[#bdbdbd]/10 px-3 py-1.5 text-xs text-[#c7c7c7]">87 focus score</span>
                 </div>
               </div>
             </div>
@@ -169,10 +169,10 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
           hoverEnabled={hoverEnabled}
         />
         <div className="absolute inset-x-0 bottom-0 z-10 p-4 sm:p-7 md:p-10">
-          <div className="mb-5 flex items-center gap-2 text-xs text-[#b8bec8]">
-            <span className="size-2 rounded-full bg-[#36c98f] shadow-[0_0_16px_rgba(54,201,143,.8)]" />
+          <div className="mb-5 flex items-center gap-2 text-xs text-[#bdbdbd]">
+            <span className="size-2 rounded-full bg-[#d0d0d0] shadow-[0_0_16px_rgba(150,150,150,.8)]" />
             Session complete
-            <span className="mono ml-auto text-[#8b929e]">API REDESIGN</span>
+            <span className="mono ml-auto text-[#919191]">API REDESIGN</span>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
             {[
@@ -183,10 +183,10 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
             ].map(({ icon: Icon, label, value }) => (
               <div
                 key={label}
-                className="rounded-xl border border-white/10 bg-[#0d1015]/85 p-3 backdrop-blur-md sm:p-4"
+                className="rounded-xl border border-white/10 bg-[#101010]/85 p-3 backdrop-blur-md sm:p-4"
               >
-                <div className="flex items-center gap-2 text-[#9299a6]">
-                  <Icon aria-hidden="true" className="size-4 text-[#9b8cff]" />
+                <div className="flex items-center gap-2 text-[#989898]">
+                  <Icon aria-hidden="true" className="size-4 text-[#d2d2d2]" />
                   <span className="text-[10px] sm:text-xs">{label}</span>
                 </div>
                 <p className="mono mt-3 text-lg font-semibold text-white sm:text-xl">{value}</p>
