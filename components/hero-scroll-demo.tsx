@@ -29,7 +29,7 @@ const IconGitHub = (props: React.SVGProps<SVGSVGElement>) => (
 
 const IconDiscordLegacy = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20.317 4.482a1.88 1.88 0 0 0-1.635-.482C17.398 3.42 16.02 3 12 3s-5.398.42-6.682 1.001a1.88 1.88 0 0 0-1.635.483c-1.875 1.2-2.325 3.61-1.568 5.711 1.62 4.47 5.063 7.8 9.885 7.8s8.265-3.33 9.885-7.8c.757-2.1-.307-4.51-1.568-5.711ZM8.45 13.4c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65c.825 0 1.5.75 1.5 1.65s-.675 1.65-1.5 1.65Zm7.1 0c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65 1.5.75 1.5 1.65-.675 1.65-1.5 1.65Z" fill="#9c9c9c" />
+    <path d="M20.317 4.482a1.88 1.88 0 0 0-1.635-.482C17.398 3.42 16.02 3 12 3s-5.398.42-6.682 1.001a1.88 1.88 0 0 0-1.635.483c-1.875 1.2-2.325 3.61-1.568 5.711 1.62 4.47 5.063 7.8 9.885 7.8s8.265-3.33 9.885-7.8c.757-2.1-.307-4.51-1.568-5.711ZM8.45 13.4c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65c.825 0 1.5.75 1.5 1.65s-.675 1.65-1.5 1.65Zm7.1 0c-.825 0-1.5-.75-1.5-1.65s.675-1.65 1.5-1.65 1.5.75 1.5 1.65-.675 1.65-1.5 1.65Z" fill="#5865F2" />
   </svg>
 );
 
@@ -41,30 +41,30 @@ const IconX = (props: React.SVGProps<SVGSVGElement>) => (
 
 const IconInstagram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="instagram-gradient" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse"><stop stopColor="#c4c4c4" /><stop offset=".45" stopColor="#a6a6a6" /><stop offset="1" stopColor="#9a9a9a" /></linearGradient></defs>
+    <defs><linearGradient id="instagram-gradient" x1="3" y1="21" x2="21" y2="3" gradientUnits="userSpaceOnUse"><stop stopColor="#FFDC80" /><stop offset=".45" stopColor="#F56040" /><stop offset="1" stopColor="#833AB4" /></linearGradient></defs>
     <rect x="3" y="3" width="18" height="18" rx="5" stroke="url(#instagram-gradient)" strokeWidth="2" />
-    <circle cx="12" cy="12" r="4" stroke="#a6a6a6" strokeWidth="2" />
-    <circle cx="17.5" cy="6.5" r="1.25" fill="#9a9a9a" />
+    <circle cx="12" cy="12" r="4" stroke="#F56040" strokeWidth="2" />
+    <circle cx="17.5" cy="6.5" r="1.25" fill="#833AB4" />
   </svg>
 );
 
 const IconTelegram = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="12" cy="12" r="10" fill="#b4b4b4" />
+    <circle cx="12" cy="12" r="10" fill="#2AABEE" />
     <path d="m5.8 11.7 11.7-4.5c.54-.2 1 .13.82.96l-1.99 9.4c-.15.67-.55.83-1.12.52l-3.1-2.28-1.5 1.45c-.17.17-.31.31-.63.31l.22-3.16 5.76-5.2c.25-.22-.06-.35-.39-.13l-7.12 4.48-3.07-.96c-.67-.21-.68-.67.42-.89Z" fill="white" />
   </svg>
 );
 
 const IconVSCode = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="m21.2 3.1-5.55-3.02L8.9 6.4 5.1 3.5 2.2 5.1v13.8l2.9 1.6 3.8-2.9 6.75 6.4 5.55-3.02V3.1ZM15 5.25v13.5l-5.9-5.35L15 5.25ZM4.3 7.4 8 10.55 4.3 14.5V7.4Z" fill="#a3a3a3" />
+    <path d="m21.2 3.1-5.55-3.02L8.9 6.4 5.1 3.5 2.2 5.1v13.8l2.9 1.6 3.8-2.9 6.75 6.4 5.55-3.02V3.1ZM15 5.25v13.5l-5.9-5.35L15 5.25ZM4.3 7.4 8 10.55 4.3 14.5V7.4Z" fill="#007ACC" />
   </svg>
 );
 
 const IconTerminal = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="3" y="4" width="18" height="16" rx="2.5" stroke="#131313" strokeWidth="1.8" />
-    <path d="m7 9 3 3-3 3M13 15h4" stroke="#f2f2f2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    <rect x="3" y="4" width="18" height="16" rx="2.5" stroke="#10131A" strokeWidth="1.8" />
+    <path d="m7 9 3 3-3 3M13 15h4" stroke="#7C6CF2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -76,8 +76,8 @@ const IconKiro = imageIcon("/icons/kiro-icon.png");
 
 const IconClaudeCode = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 3v18M3 12h18M5.64 5.64l12.72 12.72M18.36 5.64 5.64 18.36" stroke="#919191" strokeWidth="2" strokeLinecap="round" />
-    <circle cx="12" cy="12" r="2.2" fill="#919191" />
+    <path d="M12 3v18M3 12h18M5.64 5.64l12.72 12.72M18.36 5.64 5.64 18.36" stroke="#D97757" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="12" cy="12" r="2.2" fill="#D97757" />
   </svg>
 );
 
