@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { getAuthSession } from "@/lib/sprintly/auth";
-import { validateSprintlyImport, type SprintlySession } from "@/lib/sprintly/contract";
+import type { SprintlySession } from "@/lib/sprintly/contract";
 import { DEMO_USER } from "@/lib/sprintly/demo-data";
 import { loadUserData, saveUserData, type ShareSnapshot, type StoredSession, type UserData, type UserPreferences, type UserProfile } from "@/lib/sprintly/storage";
 

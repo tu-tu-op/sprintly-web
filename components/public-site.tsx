@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, Award, BarChart3, Check, ChevronRight, CircleDot, Cloud, Code2,
+  ArrowRight, BarChart3, Check, ChevronRight, Cloud, Code2,
   EyeOff, FileCode2, Flame, Globe2, HardDrive, LockKeyhole, MousePointer2,
   Play, ShieldCheck, TerminalSquare, Trophy, UserRoundCheck,
 } from "lucide-react";
@@ -13,56 +13,10 @@ import { Brand } from "./brand";
 import { HeroScrollDemo } from "./hero-scroll-demo";
 
 const reveal = { initial: { opacity: 0, y: 18 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-70px" }, transition: { duration: .45 } };
-const week = [38, 68, 46, 82, 74, 92, 61];
 
 function StatusPill({ children, tone = "green" }: { children: React.ReactNode; tone?: "green" | "violet" | "amber" | "gray" }) {
   const colors = { green: "border-[#d0d0d0]/25 bg-[#d0d0d0]/8 text-[#e0e0e0]", violet: "border-[#f2f2f2]/30 bg-[#f2f2f2]/10 text-[#d0d0d0]", amber: "border-[#9a9a9a]/25 bg-[#9a9a9a]/8 text-[#c2c2c2]", gray: "border-white/10 bg-white/[.035] text-[#ababab]" };
   return <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${colors[tone]}`}>{children}</span>;
-}
-
-function DashboardPreview() {
-  return (
-    <div className="relative mx-auto w-full max-w-[1040px] overflow-hidden rounded-[18px] border border-white/10 bg-[#0d0d0d] shadow-[0_48px_120px_rgba(0,0,0,.55)]">
-      <div className="flex h-11 items-center gap-2 border-b border-white/[.07] px-4">
-        <span className="size-2.5 rounded-full bg-[#b7b7b7]/70" /><span className="size-2.5 rounded-full bg-[#9a9a9a]/70" /><span className="size-2.5 rounded-full bg-[#d0d0d0]/70" />
-        <span className="mono ml-3 text-[10px] text-[#6b6b6b]">sprintly / overview</span>
-      </div>
-      <div className="grid min-h-[470px] grid-cols-1 md:grid-cols-[180px_1fr]">
-        <aside className="hidden border-r border-white/[.07] bg-[#0b0b0b] p-4 md:block">
-          <Brand />
-          <div className="mt-7 space-y-1.5">
-            {["Overview", "Workspace", "Sessions", "Analytics", "Goals"].map((item, i) => <div key={item} className={`rounded-lg px-3 py-2 text-xs ${i === 0 ? "bg-white/[.07] text-white" : "text-[#787878]"}`}>{item}</div>)}
-          </div>
-          <div className="mt-28 rounded-xl border border-[#d0d0d0]/15 bg-[#d0d0d0]/[.05] p-3">
-            <div className="flex items-center gap-2 text-[10px] text-[#e0e0e0]"><span className="size-1.5 rounded-full bg-[#d0d0d0]" /> Up to date</div>
-            <p className="mt-2 text-[10px] leading-relaxed text-[#7c7c7c]">Selected data synced</p>
-          </div>
-        </aside>
-        <div className="p-4 sm:p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div><p className="mono text-[10px] uppercase tracking-[.18em] text-[#f2f2f2]">Tuesday · Momentum rising</p><h3 className="mt-2 text-xl font-semibold tracking-[-.03em]">Keep the streak alive, Maya.</h3></div>
-            <div className="flex items-center gap-2 rounded-xl border border-[#9a9a9a]/20 bg-[#9a9a9a]/[.06] px-3 py-2"><Flame className="size-4 text-[#9a9a9a]" /><span className="mono text-sm font-semibold">12 days</span></div>
-          </div>
-          <div className="mt-5 grid grid-cols-2 gap-2 lg:grid-cols-4">
-            {[["Focus time", "18h 24m", "+14%"], ["Sessions", "14", "+3"], ["Tasks done", "23", "+8"], ["Focus score", "87", "Best"]].map(([l,v,d]) => <div key={l} className="rounded-xl border border-white/[.07] bg-white/[.025] p-3"><p className="text-[10px] text-[#838383]">{l}</p><p className="mono mt-2 text-lg font-semibold">{v}</p><p className="mt-1 text-[9px] text-[#c9c9c9]">{d} this week</p></div>)}
-          </div>
-          <div className="mt-3 grid gap-3 lg:grid-cols-[1.6fr_1fr]">
-            <div className="rounded-xl border border-white/[.07] bg-[#111111] p-4">
-              <div className="flex items-center justify-between"><span className="text-xs font-medium">Weekly intensity</span><span className="mono text-[9px] text-[#757575]">18H 24M</span></div>
-              <div className="mt-5 flex h-32 items-end gap-2" role="img" aria-label="Weekly coding activity, strongest on Saturday">
-                {week.map((h, i) => <div key={i} className="flex flex-1 flex-col items-center gap-2"><div className="relative flex h-24 w-full items-end overflow-hidden rounded-md bg-white/[.035]"><motion.div initial={{ height: 0 }} whileInView={{ height: `${h}%` }} viewport={{ once: true }} transition={{ duration: .55, delay: i * .05 }} className={`w-full rounded-md ${i === 5 ? "bg-gradient-to-t from-[#f2f2f2] to-[#bdbdbd]" : "bg-[#f2f2f2]/35"}`} /></div><span className="mono text-[8px] text-[#6e6e6e]">{["M","T","W","T","F","S","S"][i]}</span></div>)}
-              </div>
-            </div>
-            <div className="rounded-xl border border-white/[.07] bg-[#111111] p-4">
-              <div className="flex items-center justify-between"><span className="text-xs font-medium">Active sprint</span><span className="mono text-[9px] text-[#e0e0e0]">68%</span></div>
-              <div className="mt-5 flex items-center gap-4"><div className="grid size-20 place-items-center rounded-full" style={{ background: "conic-gradient(#f2f2f2 0 68%, #242424 68% 100%)" }}><div className="grid size-16 place-items-center rounded-full bg-[#111111]"><span className="mono text-sm">7/10</span></div></div><div><p className="text-xs font-medium">Ship activity view</p><p className="mt-1 text-[10px] text-[#7a7a7a]">3 tasks left · 2 days</p></div></div>
-              <div className="mt-5 border-t border-white/[.06] pt-3"><p className="text-[10px] text-[#797979]">Next milestone</p><p className="mt-1 text-xs">Precision Coder · Level 4</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 function Footer() {

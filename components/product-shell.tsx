@@ -5,11 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { AnimatePresence, motion } from "framer-motion";
 import {
-  Activity, BarChart3, Bell, Bolt, CheckCircle2, ChevronLeft, ChevronRight, CircleDollarSign,
-  Command, CreditCard, Flame, Gauge, Goal, LayoutDashboard, Menu, PanelLeftClose, PanelLeftOpen,
-  FileUp, Search, Settings, ShieldCheck, Target, Timer, Trophy, UserRound, UsersRound, X,
+  BarChart3, Bell, CheckCircle2, ChevronRight,
+  CreditCard, Flame, Goal, LayoutDashboard, Menu, PanelLeftClose, PanelLeftOpen,
+  FileUp, Search, Settings, Target, Timer, Trophy, UserRound, UsersRound, X,
 } from "lucide-react";
 import { Brand, SprintlyMark } from "./brand";
 import { useSprintlyStore } from "@/lib/store";

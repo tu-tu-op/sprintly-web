@@ -6,11 +6,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import {
-  Activity, Award, BarChart3, Check, CheckCircle2, ChevronDown, ChevronRight, CircleHelp, Clock3,
+  Activity, Check, CheckCircle2, ChevronDown, ChevronRight, Clock3,
   Code2, Download, Eye, EyeOff, FileCode2, FileJson, FileUp, Flame, Globe2, HardDrive, HeartPulse,
-  History, Layers3, LockKeyhole, LogOut, Medal, Menu, Moon, MoreHorizontal, PackageCheck, Plus,
-  Radar, RefreshCw, Rocket, Settings2, ShieldCheck, Sparkles, Sun, Terminal, Timer, Trophy, Upload,
-  UserRound, UsersRound, WandSparkles, X, Zap,
+  LockKeyhole, LogOut, Medal, Moon,
+  Radar, RefreshCw, Rocket, ShieldCheck, Sparkles, Terminal, Timer, Trophy, Upload,
+  UserRound, X, Zap,
 } from "lucide-react";
 import {
   aggregateSessions, buildLeaderboardPacket, buildSharePayload, computeAchievements, computeCompositeDevScore,
@@ -134,7 +134,6 @@ export function SessionDetailPage() {
   const id = Array.isArray(rawId) ? rawId[0] : rawId;
   const session = sessions.map((item) => item.record).find((record) => record.sessionId === id) ?? sessions[0]?.record;
   if (!session) return <Panel className="p-8"><p className="text-sm">No session found. Import a Sprintly export to begin.</p></Panel>;
-  const aggregate = aggregateSessions([session]);
   return <div><PageHeader eyebrow={`Session · ${session.sessionId}`} title={session.archetype.primary} description={`${dateLabel(session.startedAt)} · ${formatDuration(session.activeDurationSeconds)} · aggregate data only`} action={<Link href={`/app/share?kind=session&sessionId=${session.sessionId}`} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#f2f2f2] text-[#0b0b0b] px-4 text-sm font-semibold"><Upload className="size-4"/> Create share card</Link>}/><Panel className="relative overflow-hidden p-6 sm:p-8"><div className="absolute right-0 top-0 h-full w-1/2 bg-[radial-gradient(circle_at_70%_20%,rgba(157,157,157,.14),transparent_55%)]"/><div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center"><div><div className="flex flex-wrap gap-2"><Pill tone="cyan"><Clock3 className="size-3"/> {formatDuration(session.activeDurationSeconds)}</Pill><Pill tone="green"><ShieldCheck className="size-3"/> {session.signature && session.publicKeyId ? "Verified-ready" : "Unverified demo packet"}</Pill></div><p className="mono mt-8 text-6xl font-semibold tracking-[-.07em]">{formatDuration(session.activeDurationSeconds)}</p><p className="mt-3 text-sm text-[#8b8b8b]">{session.scores.focus}% focused · Dev Score {session.scores.devScore}</p><div className="mt-5 flex flex-wrap gap-2">{session.archetype.traits.map((trait) => <Pill key={trait} tone="gray">{trait}</Pill>)}</div></div><div className="grid grid-cols-2 gap-2">{[[FileCode2, number(session.activity.filesTouched), "files"], [Code2, number(session.activity.edits), "edits"], [Terminal, number(session.terminal.totalCommands), "terminal"], [HeartPulse, `${session.reliability.recoveryRate}%`, "recovery"]].map(([Icon, value, label]) => { const C = Icon as typeof FileCode2; return <div key={String(label)} className="min-w-[110px] rounded-xl border border-white/[.07] bg-white/[.025] p-4"><C className="size-4 text-[#d6d6d6]"/><p className="mono mt-3 text-xl font-semibold">{String(value)}</p><p className="mt-1 text-xs text-[#808080]">{String(label)}</p></div>; })}</div></div></Panel><div className="mt-3 grid gap-3 xl:grid-cols-2"><Panel className="p-5"><h2 className="text-sm font-semibold">Coding mix</h2><div className="mt-6 space-y-5"><MixRow label="Manual" value={session.coding.manualPercent} color="#f2f2f2"/><MixRow label="AI-assisted" value={session.coding.aiAssistedPercent} color="#bdbdbd"/><MixRow label="Automation" value={session.coding.automationPercent} color="#d0d0d0"/></div></Panel><Panel className="p-5"><h2 className="text-sm font-semibold">Quality signals</h2><div className="mt-6 grid grid-cols-2 gap-3">{[["Focus", session.scores.focus], ["Testing discipline", session.scores.testingDiscipline], ["Recovery", session.scores.recovery], ["AI balance", session.scores.aiBalance]].map(([label, value]) => <div key={String(label)} className="rounded-xl border border-white/[.07] bg-white/[.025] p-4"><p className="text-xs text-[#838383]">{String(label)}</p><p className="mono mt-3 text-2xl font-semibold">{String(value)}</p><div className="mt-3"><Progress value={Number(value)} color="#d2d2d2"/></div></div>)}</div></Panel><Panel className="p-5"><h2 className="text-sm font-semibold">Terminal activity</h2><div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">{[["Builds", session.terminal.build], ["Tests", session.terminal.test], ["Git", session.terminal.git], ["Other", session.terminal.other]].map(([label, value]) => <div key={String(label)} className="rounded-xl bg-white/[.025] p-4"><Terminal className="size-4 text-[#bdbdbd]"/><p className="mono mt-3 text-xl font-semibold">{String(value)}</p><p className="mt-1 text-xs text-[#7d7d7d]">{String(label)}</p></div>)}</div></Panel><Panel className="p-5"><h2 className="text-sm font-semibold">AI activity</h2><div className="mt-5 space-y-3">{[["Claude Code", session.ai.claudeCodePrompts], ["Codex", session.ai.codexPrompts], ["Copilot", session.ai.copilotPrompts]].map(([label, value]) => <div key={String(label)} className="flex items-center justify-between rounded-lg bg-white/[.025] px-3 py-3 text-xs"><span>{String(label)}</span><span className="mono text-[#d0d0d0]">{String(value)} prompts</span></div>)}<p className="pt-2 text-[11px] leading-5 text-[#7d7d7d]">Prompts, source code, raw terminal output, and secrets are not published by this view.</p></div></Panel></div></div>;
 }
 
@@ -278,7 +277,7 @@ function SettingToggle({ checked, onChange, label, description }: { checked: boo
 
 export function SettingsPage() {
   const router = useRouter();
-  const { sessions, preferences, profile, updatePreferences, updateProfile, deleteCloudHistory, deleteAccountData } = useSprintly();
+  const { sessions, preferences, profile, updatePreferences, deleteCloudHistory, deleteAccountData } = useSprintly();
   const [section, setSection] = useState<"privacy" | "sync" | "data" | "account">("privacy");
   const [importOpen, setImportOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<"history" | "account" | null>(null);

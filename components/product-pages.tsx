@@ -5,12 +5,12 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import {
-  Activity, Archive, ArrowDownRight, ArrowRight, ArrowUpRight, Award, BarChart3, Bell, Blocks,
+  Activity, Archive, ArrowRight, ArrowUpRight, Award, Bell, Blocks,
   Calendar, Check, CheckCircle2, ChevronDown, ChevronRight, CircleDot, Clock3, Cloud, Code2,
-  CreditCard, Download, Eye, EyeOff, FileCode2, FileUp, Filter, Flame, Focus, Gauge, GitBranch, Globe2,
-  Grid2X2, HardDrive, History, Import, Layers3, List, LockKeyhole, Medal, Minus, Monitor,
-  Moon, MoreHorizontal, MousePointer2, Play, Plus, Search, Settings2, ShieldCheck, Sparkles,
-  Square, Star, Sun, Target, TerminalSquare, Timer, Trophy, Upload, UserRound, UsersRound, Zap,
+  CreditCard, Download, Eye, FileCode2, FileUp, Filter, Flame, Focus, Gauge, GitBranch, Globe2,
+  Grid2X2, HardDrive, History, List, LockKeyhole, Medal, Monitor,
+  Moon, MoreHorizontal, Play, Plus, Search, Settings2, ShieldCheck,
+  Square, Sun, Target, TerminalSquare, Timer, Trophy, Upload, UserRound, Zap,
 } from "lucide-react";
 import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart,
