@@ -3,19 +3,19 @@
 :root {
   --font-sans: "IBM Plex Sans Variable";
   --font-mono: "JetBrains Mono Variable";
-  --background: #07080a;
-  --surface-1: #0d0f12;
-  --surface-2: #12151a;
-  --surface-3: #191d24;
-  --foreground: #f4f2ed;
-  --muted-foreground: #9299a6;
-  --border: #292e37;
-  --primary: #7c6cf2;
-  --primary-strong: #9b8cff;
-  --cyan: #32c7d9;
-  --success: #36c98f;
-  --energy: #f6a94a;
-  --danger: #f06464;
+  --background: #080808;
+  --surface-1: #0d0d0d;
+  --surface-2: #121212;
+  --surface-3: #1a1a1a;
+  --foreground: #f4f4f4;
+  --muted-foreground: #929292;
+  --border: #2b2b2b;
+  --primary: #f2f2f2;
+  --primary-strong: #ffffff;
+  --cyan: #bdbdbd;
+  --success: #d6d6d6;
+  --energy: #8d8d8d;
+  --danger: #c8c8c8;
 }
 
 * { box-sizing: border-box; }
@@ -29,7 +29,7 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 70% -10%, rgba(124, 108, 242, 0.1), transparent 28rem),
+    radial-gradient(circle at 70% -10%, rgba(255, 255, 255, 0.045), transparent 28rem),
     var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
@@ -78,7 +78,7 @@ button:not(:disabled), a[href] { cursor: pointer; }
   outline-offset: 3px;
 }
 
-::selection { background: rgba(124, 108, 242, 0.38); color: white; }
+::selection { background: rgba(255, 255, 255, 0.22); color: white; }
 
 .mono { font-family: var(--font-mono), monospace; font-variant-numeric: tabular-nums; }
 .text-balance { text-wrap: balance; }
@@ -95,7 +95,7 @@ button:not(:disabled), a[href] { cursor: pointer; }
 }
 
 .panel {
-  background: linear-gradient(180deg, rgba(25, 29, 36, .72), rgba(13, 15, 18, .94));
+  background: linear-gradient(180deg, rgba(28, 28, 28, .72), rgba(13, 13, 13, .94));
   border: 1px solid var(--border);
   border-radius: 16px;
   box-shadow: 0 18px 48px rgba(0, 0, 0, .18);
