@@ -74,13 +74,13 @@ export function AnimatedNavFramer() {
           >
             <nav
               aria-label="Sprintly navigation"
-              className="flex h-12 w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 items-center overflow-hidden rounded-full border border-white/10 bg-[#07080a]/85 shadow-lg shadow-black/20 backdrop-blur-sm"
+              className="flex h-12 w-max max-w-[calc(100vw-1.5rem)] -translate-x-1/2 items-center overflow-hidden rounded-full border border-white/10 bg-[#080808]/85 shadow-lg shadow-black/20 backdrop-blur-sm"
             >
               <motion.div
                 initial={{ opacity: 0, x: -16, rotate: -90 }}
                 animate={{ opacity: 1, x: 0, rotate: 0 }}
                 transition={{ type: "spring", damping: 16, stiffness: 260 }}
-                className="flex shrink-0 items-center pl-4 pr-2 text-[#f4f2ed]"
+                className="flex shrink-0 items-center pl-4 pr-2 text-[#f2f2f2]"
               >
                 <Navigation aria-hidden="true" className="size-6" />
               </motion.div>
@@ -99,7 +99,7 @@ export function AnimatedNavFramer() {
                         stiffness: 280,
                         delay: 0.05 + index * 0.045,
                       }}
-                      className={`whitespace-nowrap rounded-full px-1.5 py-1 text-xs font-medium text-[#9299a6] transition-colors hover:text-[#f4f2ed] sm:px-2 sm:text-sm ${
+                      className={`whitespace-nowrap rounded-full px-1.5 py-1 text-xs font-medium text-[#989898] transition-colors hover:text-[#f2f2f2] sm:px-2 sm:text-sm ${
                         item.mobileHidden ? "hidden sm:inline-flex" : "inline-flex"
                       }`}
                     >
@@ -138,7 +138,7 @@ export function AnimatedNavFramer() {
             aria-label="Expand navigation"
             title="Expand navigation"
             style={{ width: 48, height: 48, minWidth: 48, maxWidth: 48 }}
-            className="pointer-events-auto absolute left-4 grid shrink-0 place-items-center overflow-hidden rounded-full border border-white/10 bg-[#07080a]/90 text-[#f4f2ed] shadow-lg shadow-black/20 backdrop-blur-sm"
+            className="pointer-events-auto absolute left-4 grid shrink-0 place-items-center overflow-hidden rounded-full border border-white/10 bg-[#080808]/90 text-[#f2f2f2] shadow-lg shadow-black/20 backdrop-blur-sm"
           >
             <Menu aria-hidden="true" className="size-6" />
           </motion.button>

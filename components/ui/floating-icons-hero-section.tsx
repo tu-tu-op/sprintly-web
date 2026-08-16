@@ -84,7 +84,7 @@ function FloatingIcon({ mouse, iconData, index }: { mouse: MousePosition; iconDa
       className={cn("absolute", iconData.className)}
     >
       <motion.div
-        className="flex h-16 w-16 items-center justify-center rounded-3xl border border-white/30 bg-[#f4f2ed]/[.16] p-3 text-[#f4f2ed] shadow-[0_18px_50px_rgba(244,242,237,.12)] backdrop-blur-md md:h-20 md:w-20"
+        className="flex h-16 w-16 items-center justify-center rounded-3xl border border-white/30 bg-[#f2f2f2]/[.16] p-3 text-[#f2f2f2] shadow-[0_18px_50px_rgba(242,242,242,.12)] backdrop-blur-md md:h-20 md:w-20"
         animate={{ y: [0, -8, 0, 8, 0], x: [0, 6, 0, -6, 0], rotate: [0, 5, 0, -5, 0] }}
         transition={{
           duration: 6 + (iconData.id % 5),
@@ -122,7 +122,7 @@ const FloatingIconsHero = React.forwardRef<HTMLElement, React.HTMLAttributes<HTM
     return (
       <section
         ref={ref}
-        className={cn("relative flex min-h-[700px] h-screen w-full items-center justify-center overflow-hidden bg-[#07080a]", className)}
+        className={cn("relative flex min-h-[700px] h-screen w-full items-center justify-center overflow-hidden bg-[#080808]", className)}
         {...props}
       >
         <FloatingIconsBackground icons={icons} />
