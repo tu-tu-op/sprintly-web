@@ -155,9 +155,9 @@ export function Card({ cardRef, rotate, scale, children }: CardProps) {
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="relative top-4 mx-auto -mt-8 h-[30rem] w-full max-w-5xl rounded-[26px] border border-white/15 bg-[#111318] p-2 shadow-2xl md:top-8 md:-mt-12 md:h-[40rem] md:rounded-[30px] md:p-5"
+      className="relative top-4 mx-auto -mt-8 h-[30rem] w-full max-w-5xl rounded-[26px] border border-[#d0d0d0]/20 bg-[#111111] p-2 shadow-2xl md:top-8 md:-mt-12 md:h-[40rem] md:rounded-[30px] md:p-5"
     >
-      <div className="h-full w-full overflow-hidden rounded-[19px] bg-[#0d0f12] md:rounded-[22px]">
+      <div className="h-full w-full overflow-hidden rounded-[19px] bg-[#0d0d0d] md:rounded-[22px]">
         {children}
       </div>
     </motion.div>

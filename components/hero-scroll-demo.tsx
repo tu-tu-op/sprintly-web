@@ -168,11 +168,11 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
           trigger="hover"
           hoverEnabled={hoverEnabled}
         />
-        <div className="absolute inset-x-0 bottom-0 z-10 p-4 sm:p-7 md:p-10">
-          <div className="mb-5 flex items-center gap-2 text-xs text-[#bdbdbd]">
-            <span className="size-2 rounded-full bg-[#d0d0d0] shadow-[0_0_16px_rgba(150,150,150,.8)]" />
+        <div className="absolute inset-x-0 bottom-0 z-10 rounded-t-[24px] border-t border-[#d0d0d0]/15 bg-[#0d0d0d]/90 p-4 backdrop-blur-xl sm:p-7 md:p-10">
+          <div className="mb-5 flex items-center gap-2 text-xs text-[#d0d0d0]">
+            <span className="size-2 rounded-full bg-[#f2f2f2] shadow-[0_0_16px_rgba(210,210,210,.8)]" />
             Session complete
-            <span className="mono ml-auto text-[#919191]">API REDESIGN</span>
+            <span className="mono ml-auto text-[#989898]">API REDESIGN</span>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
             {[
@@ -183,13 +183,13 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
             ].map(({ icon: Icon, label, value }) => (
               <div
                 key={label}
-                className="rounded-xl border border-white/10 bg-[#101010]/85 p-3 backdrop-blur-md sm:p-4"
+                className="rounded-xl border border-[#d0d0d0]/15 bg-[#f2f2f2]/[.06] p-3 backdrop-blur-md sm:p-4"
               >
                 <div className="flex items-center gap-2 text-[#989898]">
                   <Icon aria-hidden="true" className="size-4 text-[#d2d2d2]" />
                   <span className="text-[10px] sm:text-xs">{label}</span>
                 </div>
-                <p className="mono mt-3 text-lg font-semibold text-white sm:text-xl">{value}</p>
+                <p className="mono mt-3 text-lg font-semibold text-[#f2f2f2] sm:text-xl">{value}</p>
               </div>
             ))}
           </div>
