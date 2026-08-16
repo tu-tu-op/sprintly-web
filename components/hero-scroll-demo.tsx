@@ -81,7 +81,7 @@ const IconClaudeCode = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const IconCodex = imageIcon("/icons/codex.png");
+const IconCodex = imageIcon("/icons/codex-color.svg");
 
 const IconDiscord = imageIcon("/icons/Discord.png");
 
@@ -97,7 +97,7 @@ const heroFloatingIcons: FloatingIconsHeroProps["icons"] = [
   { id: 10, icon: IconCursor, className: "left-[70%] top-[90%] opacity-50" },
   { id: 11, icon: IconKiro, className: "right-[5%] top-[50%] opacity-55" },
   { id: 12, icon: IconClaudeCode, className: "left-[10%] top-[92%] opacity-55" },
-  { id: 13, icon: IconCodex, className: "left-[30%] top-[60%] opacity-55" },
+  { id: 13, icon: IconCodex, className: "right-[24%] top-[78%] opacity-80" },
 ];
 
 export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDemoProps) {

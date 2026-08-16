@@ -1,3 +1,3 @@
-import { OverviewPage } from "@/components/sprintly-pages";
+import { EfferdDashboard2 } from "@/components/ui/efferd-dashboard-2";
 
-export default function Page() { return <OverviewPage />; }
+export default function Page() { return <EfferdDashboard2 />; }
