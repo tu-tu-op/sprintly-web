@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Activity, EyeOff, Flame, TimerReset } from "lucide-react";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import {
@@ -95,15 +95,12 @@ const heroFloatingIcons: FloatingIconsHeroProps["icons"] = [
 ];
 
 export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDemoProps) {
-  const [hoverEnabled, setHoverEnabled] = useState(false);
-
   return (
     <div className="relative">
       <FloatingIconsBackground className="z-0" icons={heroFloatingIcons} />
       <div className="relative z-10">
         <ContainerScroll
           titleComponent={titleComponent}
-          onInteractionReadyChange={setHoverEnabled}
         >
         <div className="relative h-full w-full bg-[#0d0d0d]">
         <PixelSwap
@@ -120,7 +117,7 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
               />
               <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/30 via-[#0a0a0a]/25 to-[#0a0a0a]/95" />
               <div className="absolute right-4 top-4 rounded-full border border-white/10 bg-[#101010]/80 px-3 py-1.5 text-[10px] text-[#bdbdbd] backdrop-blur-md sm:right-7 sm:top-7">
-                {hoverEnabled ? "Hover to decode" : "Scroll to focus"}
+                Hover to decode
               </div>
             </div>
           }
@@ -160,7 +157,7 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
           randomness={0}
           fade
           trigger="hover"
-          hoverEnabled={hoverEnabled}
+          hoverEnabled={true}
         />
         <div className="absolute inset-x-0 bottom-0 z-10 rounded-t-[24px] border-t border-[#d0d0d0]/15 bg-[#0d0d0d]/90 p-4 backdrop-blur-xl sm:p-7 md:p-10">
           <div className="mb-5 flex items-center gap-2 text-xs text-[#d0d0d0]">

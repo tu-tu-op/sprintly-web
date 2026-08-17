@@ -74,12 +74,6 @@ export function GlowingShadow({
           inherits: true;
           initial-value: 2;
         }
-        @property --white-shadow {
-          syntax: "<number>";
-          inherits: true;
-          initial-value: 0;
-        }
-
         .glow-container {
           --card-color: hsl(260deg 100% 3%);
           --text-color: hsl(260deg 10% 55%);
@@ -110,7 +104,7 @@ export function GlowingShadow({
           position: relative;
           z-index: 2;
           border-radius: var(--card-radius);
-          cursor: pointer;
+          cursor: default;
         }
 
         .glow-container:before,
@@ -160,6 +154,7 @@ export function GlowingShadow({
           animation: hue-animation var(--animation-speed) linear infinite,
             rotate-bg var(--animation-speed) linear infinite;
           transition: --bg-size var(--interaction-speed) ease;
+          will-change: background;
         }
 
         .glow {
@@ -172,6 +167,7 @@ export function GlowingShadow({
           transform: rotateZ(calc(var(--rotate) * var(--glow-rotate-unit)));
           transform-origin: center;
           border-radius: calc(var(--glow-radius) * 10vw);
+          will-change: transform;
         }
 
         .glow:after {
@@ -191,44 +187,13 @@ export function GlowingShadow({
             scaleX(calc(var(--glow-scale) * var(--scale-factor) * 1.2))
             translateY(calc(var(--glow-translate-y) * 1%));
           opacity: var(--glow-opacity);
-        }
-
-        .glow-container:hover .glow-content {
-          mix-blend-mode: darken;
-          --text-color: white;
-          box-shadow: 0 0 calc(var(--white-shadow) * 1vw)
-            calc(var(--white-shadow) * 0.15vw) rgb(255 255 255 / 20%);
-          animation: shadow-pulse calc(var(--animation-speed) * 2) linear infinite;
-        }
-
-        .glow-container:hover .glow-content:before {
-          --bg-size: 15;
-          animation-play-state: paused;
-          transition: --bg-size var(--interaction-speed) ease;
-        }
-
-        .glow-container:hover .glow {
-          --glow-blur: 1.5;
-          --glow-opacity: 0.6;
-          --glow-scale: 2.5;
-          --glow-radius: 0;
-          --rotate: 900;
-          --glow-rotate-unit: 0;
-          --scale-factor: 1.25;
-          animation-play-state: paused;
-        }
-
-        .glow-container:hover .glow:after {
-          --glow-translate-y: 0;
-          animation-play-state: paused;
-          transition: --glow-translate-y 0s ease, --glow-blur 0.05s ease,
-            --glow-opacity 0.05s ease, --glow-scale 0.05s ease,
-            --glow-radius 0.05s ease;
+          will-change: filter, opacity, transform;
         }
 
         .glow-container--edge {
           --card-width: 100%;
           --card-radius: 30px;
+          --animation-speed: 8s;
           --edge-inset: 9px;
           --edge-content-radius: 19px;
           position: absolute;
@@ -272,31 +237,10 @@ export function GlowingShadow({
           background: hsl(0deg 0% 88%);
         }
 
-        .glow-container--edge:hover .glow-content {
-          mix-blend-mode: normal;
-          box-shadow: none;
-          animation: none;
-        }
-
         @media (min-width: 768px) {
           .glow-container--edge {
             --edge-inset: 21px;
             --edge-content-radius: 22px;
-          }
-        }
-
-        @keyframes shadow-pulse {
-          0%, 24%, 46%, 73%, 96% {
-            --white-shadow: 0.5;
-          }
-          12%, 28%, 41%, 63%, 75%, 82%, 98% {
-            --white-shadow: 2.5;
-          }
-          6%, 32%, 57% {
-            --white-shadow: 1.3;
-          }
-          18%, 52%, 88% {
-            --white-shadow: 3.5;
           }
         }
 
@@ -356,7 +300,7 @@ export function GlowingShadow({
         }
       `}</style>
 
-      <div className={containerClassName} role={edge ? undefined : "button"}>
+      <div className={containerClassName}>
         <span className="glow" aria-hidden="true" />
         <div className="glow-content">{children}</div>
       </div>
