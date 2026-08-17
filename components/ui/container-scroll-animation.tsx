@@ -8,6 +8,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
+import { GlowingShadow } from "@/components/ui/glowing-shadow";
 
 const CARD_SETTLE_PROGRESS = 0.68;
 
@@ -157,9 +158,11 @@ export function Card({ cardRef, rotate, scale, children }: CardProps) {
       }}
       className="relative top-4 mx-auto -mt-8 h-[30rem] w-full max-w-5xl rounded-[26px] border border-[#d0d0d0]/20 bg-[#111111] p-2 shadow-2xl md:top-8 md:-mt-12 md:h-[40rem] md:rounded-[30px] md:p-5"
     >
-      <div className="h-full w-full overflow-hidden rounded-[19px] bg-[#0d0d0d] md:rounded-[22px]">
-        {children}
-      </div>
+      <GlowingShadow edge>
+        <div className="h-full w-full overflow-hidden rounded-[19px] bg-[#0d0d0d] md:rounded-[22px]">
+          {children}
+        </div>
+      </GlowingShadow>
     </motion.div>
   );
 }
