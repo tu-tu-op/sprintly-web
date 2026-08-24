@@ -23,6 +23,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import {
   aggregateSessions,
@@ -39,18 +40,6 @@ import {
 import type { SprintlySession } from "@/lib/sprintly/contract";
 import { cn } from "@/lib/utils";
 import { useSprintly } from "./sprintly-provider";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 const panel = "rounded-xl border border-[#2b2b2b] bg-[#121212] shadow-[0_18px_48px_rgba(0,0,0,.3)]";
 
@@ -78,16 +67,17 @@ function ProgressRow({ label, value, color }: { label: string; value: number; co
   return <div><div className="mb-2 flex items-center justify-between text-[11px]"><span className="text-[#929292]">{label}</span><span className="mono font-semibold text-[#c8c8c8]">{Math.round(value)}%</span></div><div className="h-2 overflow-hidden rounded-full bg-[#2b2b2b]"><div className="h-full rounded-full transition-all" style={{ width: `${Math.min(100, Math.max(0, value))}%`, background: color }} /></div></div>;
 }
 
-function ActivityChart({ data }: { data: Array<{ day: string; hours: number; edits: number }> }) {
-  return <div className="h-[260px] w-full"><ResponsiveContainer width="100%" height="100%"><AreaChart data={data} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}><defs><linearGradient id="sprintly-activity-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#ededed" stopOpacity={0.2} /><stop offset="100%" stopColor="#ededed" stopOpacity={0.015} /></linearGradient></defs><CartesianGrid stroke="#2b2b2b" vertical={false} /><XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: "#777777", fontSize: 10 }} dy={8} /><YAxis axisLine={false} tickLine={false} tick={{ fill: "#777777", fontSize: 10 }} width={32} tickFormatter={(value) => `${value}h`} /><Tooltip cursor={{ stroke: "#555555", strokeDasharray: "4 4" }} contentStyle={{ border: "1px solid #414141", borderRadius: 12, background: "#121212", color: "#f4f4f4", fontSize: 11, boxShadow: "0 18px 48px rgba(0,0,0,.34)" }} formatter={(value, name) => { const numericValue = Number(value ?? 0); const metric = String(name); return [metric === "hours" ? `${numericValue.toFixed(1)}h` : formatNumber(numericValue), metric === "hours" ? "Coding time" : "Edits"]; }} /><Area type="monotone" dataKey="hours" stroke="#ededed" strokeWidth={2.5} fill="url(#sprintly-activity-fill)" activeDot={{ r: 4, fill: "#ededed", stroke: "#121212", strokeWidth: 2 }} /><Area type="monotone" dataKey="edits" stroke="transparent" fill="transparent" /></AreaChart></ResponsiveContainer></div>;
-}
+const ChartPlaceholder = ({ className }: { className: string }) => <div aria-hidden="true" className={"animate-pulse rounded-lg bg-white/[.03] " + className} />;
 
-function CodingMix({ values }: { values: Array<{ name: string; value: number; color: string }> }) {
-  const hasData = values.some((item) => item.value > 0);
-  const chartValues = hasData ? values : [{ name: "No sessions", value: 100, color: "#303030" }];
+const ActivityChart = dynamic(
+  () => import("./dashboard-charts").then(({ ActivityChart }) => ActivityChart),
+  { ssr: false, loading: () => <ChartPlaceholder className="h-[260px] w-full" /> },
+);
 
-  return <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center"><div className="h-[190px] w-[190px] shrink-0"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={chartValues} dataKey="value" nameKey="name" innerRadius={58} outerRadius={82} paddingAngle={hasData ? 3 : 0} stroke="none" startAngle={90} endAngle={-270}>{chartValues.map((item) => <Cell key={item.name} fill={item.color} />)}</Pie><Tooltip contentStyle={{ border: "1px solid #414141", borderRadius: 12, background: "#121212", color: "#f4f4f4", fontSize: 11 }} /></PieChart></ResponsiveContainer></div><div className="w-full space-y-4">{values.map((item) => <div key={item.name} className="flex items-center justify-between gap-4"><span className="flex items-center gap-2 text-xs text-[#929292]"><span className="size-2 rounded-full" style={{ background: item.color }} />{item.name}</span><span className="mono text-xs font-semibold text-[#c8c8c8]">{Math.round(item.value)}%</span></div>)}<div className="rounded-lg bg-[#1a1a1a] p-3"><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-[#747474]">AI balance</p><p className="mt-1 text-xs text-[#929292]">{hasData ? "Your record keeps assistance visible without losing the human signal." : "Import a session to see your coding mix."}</p></div></div></div>;
-}
+const CodingMix = dynamic(
+  () => import("./dashboard-charts").then(({ CodingMix }) => CodingMix),
+  { ssr: false, loading: () => <ChartPlaceholder className="h-[260px] w-full" /> },
+);
 
 function SessionTable({ sessions }: { sessions: SprintlySession[] }) {
   return <div className="overflow-x-auto"><table className="w-full min-w-[620px] text-left"><thead><tr className="border-b border-white/[.1] text-[10px] uppercase tracking-[.13em] text-[#747474]"><th className="px-5 py-3 font-semibold">Session</th><th className="px-3 py-3 font-semibold">Date</th><th className="px-3 py-3 font-semibold">Focus</th><th className="px-3 py-3 font-semibold">Duration</th><th className="px-5 py-3 text-right font-semibold">Score</th></tr></thead><tbody>{sessions.length ? sessions.map((session) => <tr key={session.sessionId} className="group border-b border-white/[.1] last:border-0 hover:bg-white/[.04]"><td className="px-5 py-4"><Link href={`/app/sessions/${session.sessionId}`} className="flex items-center gap-3"><span className="grid size-9 shrink-0 place-items-center rounded-lg bg-white/[.08] text-[#e1e1e1]"><Code2 className="size-4" /></span><span className="min-w-0"><span className="block max-w-[220px] truncate text-xs font-semibold text-[#f4f4f4]">{session.archetype.primary}</span><span className="mono mt-1 block truncate text-[10px] text-[#747474]">{session.sessionId}</span></span></Link></td><td className="px-3 py-4 text-xs text-[#929292]">{dateText(session.startedAt)}</td><td className="px-3 py-4"><span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#e0e0e0]"><span className="size-1.5 rounded-full bg-[#e0e0e0]" />{session.scores.focus}%</span></td><td className="mono px-3 py-4 text-xs text-[#929292]">{formatDuration(session.activeDurationSeconds)}</td><td className="mono px-5 py-4 text-right text-xs font-semibold text-[#f4f4f4]">{sessionCompositeScore(session)}</td></tr>) : <tr><td colSpan={5} className="px-5 py-12 text-center text-xs text-[#929292]">No sessions in this range yet. Import a Sprintly export to fill this table.</td></tr>}</tbody></table></div>;

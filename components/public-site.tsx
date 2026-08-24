@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -10,7 +11,14 @@ import {
 } from "lucide-react";
 import { PublicNav } from "./public-nav";
 import { Brand } from "./brand";
-import { HeroScrollDemo } from "./hero-scroll-demo";
+
+const HeroScrollDemo = dynamic(
+  () => import("./hero-scroll-demo").then(({ HeroScrollDemo }) => HeroScrollDemo),
+  {
+    ssr: false,
+    loading: () => <div aria-hidden="true" className="min-h-[56rem] md:min-h-[72rem]" />,
+  },
+);
 
 const reveal = { initial: { opacity: 0, y: 18 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-70px" }, transition: { duration: .45 } };
 
@@ -64,7 +72,7 @@ export function HomePage() {
           <div className="mx-auto max-w-[1180px]">
             <motion.div {...reveal} className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="mono text-xs uppercase tracking-[.2em] text-[#f2f2f2]">One developer system</p><h2 className="text-balance mt-4 max-w-2xl text-3xl font-semibold tracking-[-.045em] sm:text-5xl">Proof of progress, without performative productivity.</h2></div><p className="max-w-sm text-sm leading-6 text-[#929292]">The useful parts of a fitness tracker, rebuilt for deep work and developer identity.</p></motion.div>
             <div className="mt-10 grid gap-3 md:grid-cols-3">
-              {[{icon:BarChart3,k:"01",t:"Read your rhythm",d:"See when focus peaks, which projects absorb your time, and how consistency changes."},{icon:Trophy,k:"02",t:"Build an identity",d:"Earn understated archetypes and achievements from real patterns, not vanity clicks."},{icon:Globe2,k:"03",t:"Compete by choice",d:"Share only eligible, synchronized metrics. Local activity is never silently public."}].map(({icon:Icon,k,t,d},i)=><motion.div {...reveal} transition={{delay:i*.06}} key={t} className="panel group min-h-[260px] p-6 transition-colors hover:border-white/20"><div className="flex items-center justify-between"><Icon className="size-5 text-[#c2c2c2]"/><span className="mono text-xs text-[#5b5b5b]">{k}</span></div><h3 className="mt-20 text-xl font-semibold tracking-[-.025em]">{t}</h3><p className="mt-3 text-sm leading-6 text-[#8e8e8e]">{d}</p></motion.div>)}
+              {[{icon:BarChart3,k:"01",t:"Read your rhythm",d:"See when focus peaks, which projects absorb your time, and how consistency changes."},{icon:Trophy,k:"02",t:"Build an identity",d:"Earn understated archetypes and achievements from real patterns, not vanity clicks."},{icon:Globe2,k:"03",t:"Compete by choice",d:"Share only eligible, synchronized metrics. Local activity is never silently public."}].map(({icon:Icon,k,t,d},i)=><motion.div key={`feature-${k}`} {...reveal} transition={{delay:i*.06}} className="panel group min-h-[260px] p-6 transition-colors hover:border-white/20"><div className="flex items-center justify-between"><Icon className="size-5 text-[#c2c2c2]"/><span className="mono text-xs text-[#5b5b5b]">{k}</span></div><h3 className="mt-20 text-xl font-semibold tracking-[-.025em]">{t}</h3><p className="mt-3 text-sm leading-6 text-[#8e8e8e]">{d}</p></motion.div>)}
             </div>
           </div>
         </section>
