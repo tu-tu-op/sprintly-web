@@ -29,6 +29,37 @@ test("rejects malformed percentages and timestamp ordering", () => {
   assert.ok(result.issues[0]?.message.includes("manualPercent") || result.issues[0]?.message.includes("endedAt"));
 });
 
+test("rejects timezone-less timestamps (B6)", () => {
+  const naive = { ...DEMO_SESSIONS[0], startedAt: "2026-08-15T11:00:00" };
+  const result = parseSprintlyImportText(JSON.stringify(naive));
+  assert.equal(result.ok, false);
+  assert.equal(result.sessions.length, 0);
+  assert.match(result.issues[0]?.message ?? "", /RFC 3339/);
+});
+
+test("accepts offsets as well as Z timestamps (B6)", () => {
+  const offset = { ...DEMO_SESSIONS[0], sessionId: "sess_offset_ok", startedAt: "2026-08-15T14:30:00+05:30", endedAt: "2026-08-15T16:12:00+05:30" };
+  const result = parseSprintlyImportText(JSON.stringify(offset));
+  assert.equal(result.issues.length, 0);
+  assert.equal(result.sessions.length, 1);
+});
+
+test("reports unsupported fields instead of silently stripping them (B7)", () => {
+  const extended = { ...DEMO_SESSIONS[0], experimentalMoodIndex: 42 };
+  const result = parseSprintlyImportText(JSON.stringify(extended));
+  assert.equal(result.ok, false);
+  assert.equal(result.sessions.length, 0);
+  assert.match(result.issues[0]?.message ?? "", /experimentalMoodIndex/);
+});
+
+test("enforces a per-import record ceiling (B15)", () => {
+  const many = Array.from({ length: 2_100 }, (_, index) => ({ ...DEMO_SESSIONS[0], sessionId: `sess_bulk_${index}` }));
+  const result = parseSprintlyImportText(JSON.stringify(many));
+  assert.equal(result.ok, false);
+  assert.equal(result.sessions.length, 0);
+  assert.match(result.issues[0]?.message ?? "", /limit/i);
+});
+
 test("calculates streaks, aggregates, achievements, and a versioned score from real records", () => {
   const reference = new Date("2026-08-15T12:00:00Z");
   const streaks = getStreakStats(DEMO_SESSIONS, reference);

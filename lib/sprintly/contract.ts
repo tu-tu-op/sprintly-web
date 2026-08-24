@@ -65,6 +65,18 @@ const archetypeSchema = z.object({
   traits: z.array(z.string().trim().min(1).max(60)).max(8),
 });
 
+const RFC3339_PATTERN = /^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}(\.\d+)?([Zz]|[+-]\d{2}:\d{2})$/;
+const isRfc3339 = (value: string) => RFC3339_PATTERN.test(value.trim());
+
+export const KNOWN_SESSION_FIELDS: ReadonlySet<string> = new Set([
+  "contract", "schemaVersion", "sessionId", "startedAt", "endedAt", "activeDurationSeconds",
+  "coding", "activity", "terminal", "ai", "reliability", "scores", "archetype",
+  "signature", "publicKeyId", "submittedAt",
+]);
+
+export const MAX_IMPORT_RECORDS = 2_000;
+export const MAX_IMPORT_FILE_BYTES = 5_000_000;
+
 export const sprintlySessionSchema = z.object({
   contract: z.literal(SPRINTLY_CONTRACT).optional(),
   schemaVersion: z.literal(SPRINTLY_SCHEMA_VERSION),
@@ -83,6 +95,17 @@ export const sprintlySessionSchema = z.object({
   publicKeyId: z.string().trim().min(1).max(128).optional(),
   submittedAt: z.string().trim().min(1).max(64).optional(),
 }).superRefine((session, ctx) => {
+  // Timestamps must be RFC 3339 with an explicit timezone so calendar
+  // metrics are never silently interpreted in an arbitrary local zone.
+  if (!isRfc3339(session.startedAt)) {
+    ctx.addIssue({ code: "custom", path: ["startedAt"], message: "startedAt must be an RFC 3339 timestamp with a timezone (Z or ±HH:MM)" });
+  }
+  if (!isRfc3339(session.endedAt)) {
+    ctx.addIssue({ code: "custom", path: ["endedAt"], message: "endedAt must be an RFC 3339 timestamp with a timezone (Z or ±HH:MM)" });
+  }
+  if (session.submittedAt !== undefined && !isRfc3339(session.submittedAt)) {
+    ctx.addIssue({ code: "custom", path: ["submittedAt"], message: "submittedAt must be an RFC 3339 timestamp with a timezone (Z or ±HH:MM)" });
+  }
   const started = Date.parse(session.startedAt);
   const ended = Date.parse(session.endedAt);
   if (!Number.isFinite(started)) {
@@ -173,11 +196,27 @@ export function validateSprintlyImport(payload: unknown, existingIds: ReadonlySe
   const issues: ImportIssue[] = [];
   const seen = new Set<string>();
 
+  if (extracted.length > MAX_IMPORT_RECORDS) {
+    return { ok: false, sessions: [], duplicates: [], issues: [{ index: -1, message: `Import contains ${extracted.length} records. The limit is ${MAX_IMPORT_RECORDS} sessions per import.` }], contract: SPRINTLY_CONTRACT };
+  }
+
   extracted.forEach((record, index) => {
+    // Zod strips unknown keys during parsing; surface them instead of
+    // silently dropping extension data the schema does not understand.
+    const unsupportedFields = record && typeof record === "object"
+      ? Object.keys(record as Record<string, unknown>).filter((key) => !KNOWN_SESSION_FIELDS.has(key))
+      : [];
     const parsed = sprintlySessionSchema.safeParse(record);
-    if (!parsed.success) {
+    if (!parsed.success || unsupportedFields.length) {
       const rawId = record && typeof record === "object" && "sessionId" in record ? String((record as Record<string, unknown>).sessionId) : undefined;
-      issues.push({ index, message: parsed.error.issues.map(formatZodIssue).join("; "), sessionId: rawId });
+      const messages: string[] = [];
+      if (parsed.success) {
+        messages.push(`unsupported field${unsupportedFields.length === 1 ? "" : "s"} not imported: ${unsupportedFields.join(", ")}`);
+      } else {
+        messages.push(parsed.error.issues.map(formatZodIssue).join("; "));
+        if (unsupportedFields.length) messages.push(`unsupported fields ignored: ${unsupportedFields.join(", ")}`);
+      }
+      issues.push({ index, message: messages.join("; "), sessionId: rawId });
       return;
     }
     const sessionId = parsed.data.sessionId;
@@ -196,8 +235,12 @@ export function validateSprintlyImport(payload: unknown, existingIds: ReadonlySe
   return { ok: sessions.length > 0 && issues.length === 0, sessions, duplicates, issues, contract: SPRINTLY_CONTRACT };
 }
 
+export function isSupportedImportFileSize(sizeInBytes: number) {
+  return Number.isFinite(sizeInBytes) && sizeInBytes > 0 && sizeInBytes <= MAX_IMPORT_FILE_BYTES;
+}
+
 export function parseSprintlyImportText(text: string, existingIds: ReadonlySet<string> = new Set()) {
-  if (text.length > 5_000_000) {
+  if (text.length > MAX_IMPORT_FILE_BYTES) {
     return { ok: false, sessions: [], duplicates: [], issues: [{ index: -1, message: "Import is too large. Choose an export under 5 MB." }], contract: SPRINTLY_CONTRACT } satisfies ImportValidation;
   }
   try {

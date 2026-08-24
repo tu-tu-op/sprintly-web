@@ -45,7 +45,9 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
     hydrated,
     importSessions: (sessions) => {
       const existing = new Set(data.sessions.map((item) => item.record.sessionId));
-      const additions: StoredSession[] = sessions.filter((session) => !existing.has(session.sessionId)).map((record) => ({ record, source: "imported", importedAt: new Date().toISOString(), verified: Boolean(record.signature && record.publicKeyId) }));
+      // Signatures cannot be verified in the browser; only a production
+      // server with trusted extension keys may mark records verified.
+      const additions: StoredSession[] = sessions.filter((session) => !existing.has(session.sessionId)).map((record) => ({ record, source: "imported", importedAt: new Date().toISOString(), verified: false }));
       const added = additions.length;
       if (added) setData((current) => ({ ...current, sessions: [...current.sessions, ...additions] }));
       if (added) toast.success(`${added} session${added === 1 ? "" : "s"} imported`, { description: "Your cloud history is represented by this local demo store." });
