@@ -1,9 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/ibm-plex-sans";
-import "@fontsource-variable/jetbrains-mono";
+import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "@/components/ui/pixel-swap.css";
 import { Providers } from "@/components/providers";
+
+// Self-hosted via next/font: preloaded, swap display, metric-compatible
+// fallbacks (no layout shift), and no extra render-blocking CSS imports.
+const ibmPlexSans = IBM_Plex_Sans({ subsets: ["latin"], variable: "--font-src-sans", display: "swap" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-src-mono", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sprintly.app"),
@@ -35,7 +39,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${ibmPlexSans.variable} ${jetbrainsMono.variable}`}>
       <body><Providers>{children}</Providers></body>
     </html>
   );

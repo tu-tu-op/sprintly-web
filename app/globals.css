@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --font-sans: "IBM Plex Sans Variable";
-  --font-mono: "JetBrains Mono Variable";
+  --font-sans: var(--font-src-sans), "IBM Plex Sans Variable";
+  --font-mono: var(--font-src-mono), "JetBrains Mono Variable";
   --background: #080808;
   --surface-1: #0d0d0d;
   --surface-2: #121212;
