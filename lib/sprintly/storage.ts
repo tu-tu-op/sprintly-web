@@ -124,9 +124,22 @@ export function readOnboardingSnapshot(): OnboardingSnapshot | null {
   return read<OnboardingSnapshot | null>(ONBOARDING_KEY, null);
 }
 
+// Validation cache: localStorage content rarely changes between visits,
+// so reuse the last validated result when the raw payload is identical.
+let sessionsCache: { signature: string; userId: string; value: StoredSession[] } | null = null;
+
 function loadSessions(userId: string) {
-  const raw = read<unknown>(key(userId, "sessions"), null);
-  if (raw === null) return fallbackStoredSessions;
+  const storageKey = key(userId, "sessions");
+  let rawText: string | null = null;
+  if (typeof window !== "undefined") {
+    try { rawText = window.localStorage.getItem(storageKey); } catch { rawText = null; }
+  }
+  if (rawText === null) return fallbackStoredSessions;
+  if (sessionsCache && sessionsCache.userId === userId && sessionsCache.signature === rawText) {
+    return sessionsCache.value;
+  }
+  let raw: unknown = null;
+  try { raw = rawText ? JSON.parse(rawText) as unknown : null; } catch { return fallbackStoredSessions; }
   if (!Array.isArray(raw)) return fallbackStoredSessions;
   const validated = raw.flatMap((item) => {
     if (!item || typeof item !== "object" || !("record" in item)) return [];
@@ -140,6 +153,7 @@ function loadSessions(userId: string) {
       verified: candidate.verified === true,
     }];
   });
+  sessionsCache = { signature: rawText, userId, value: validated };
   return validated;
 }
 
