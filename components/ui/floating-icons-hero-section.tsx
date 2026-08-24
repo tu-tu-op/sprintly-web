@@ -23,23 +23,40 @@ export interface FloatingIconsHeroProps {
 type MousePosition = {
   x: React.MutableRefObject<number>;
   y: React.MutableRefObject<number>;
+  subscribe: (handler: () => void) => () => void;
 };
 
 function useMousePosition(): MousePosition {
   const x = React.useRef(0);
   const y = React.useRef(0);
+  const handlers = React.useRef(new Set<() => void>());
+  const frame = React.useRef<number | null>(null);
+
+  const subscribe = React.useCallback((handler: () => void) => {
+    handlers.current.add(handler);
+    return () => handlers.current.delete(handler);
+  }, []);
 
   React.useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       x.current = event.clientX;
       y.current = event.clientY;
+
+      if (frame.current !== null) return;
+      frame.current = requestAnimationFrame(() => {
+        frame.current = null;
+        handlers.current.forEach((handler) => handler());
+      });
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (frame.current !== null) cancelAnimationFrame(frame.current);
+    };
   }, []);
 
-  return { x, y };
+  return React.useMemo(() => ({ x, y, subscribe }), [subscribe]);
 }
 
 function FloatingIcon({ mouse, iconData, index }: { mouse: MousePosition; iconData: FloatingIconProps; index: number }) {
@@ -70,9 +87,8 @@ function FloatingIcon({ mouse, iconData, index }: { mouse: MousePosition; iconDa
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouse.x, mouse.y, x, y]);
+    return mouse.subscribe(handleMouseMove);
+  }, [mouse.subscribe, x, y]);
 
   return (
     <motion.div
