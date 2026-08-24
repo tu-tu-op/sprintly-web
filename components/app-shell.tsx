@@ -104,6 +104,7 @@ function NotificationMenu() {
 
 function Sidebar({ mobile = false, onClose, collapsed = false, onCollapsedChange }: { mobile?: boolean; onClose?: () => void; collapsed?: boolean; onCollapsedChange?: (value: boolean) => void }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { displayName, initials } = useShellState();
   const compact = mobile ? false : collapsed;
 
@@ -119,7 +120,7 @@ function Sidebar({ mobile = false, onClose, collapsed = false, onCollapsedChange
         <nav className="mt-3 space-y-1" aria-label="Sprintly navigation">
           {navItems.map(({ label, href, icon: Icon }) => {
             const active = href === "/app" ? pathname === href : pathname.startsWith(href);
-            return <Link key={href} href={href} onClick={onClose} aria-current={active ? "page" : undefined} title={compact ? label : undefined} className={cn("group flex min-h-11 items-center rounded-lg text-xs font-medium transition", compact ? "justify-center px-0" : "gap-3 px-3", active ? "bg-[#f2f2f2] text-[#0b0b0b] shadow-[0_8px_20px_rgba(255,255,255,.1)]" : "text-[#929292] hover:bg-white/[.06] hover:text-[#f4f4f4]")}><Icon className={cn("size-[17px] shrink-0", active ? "text-[#0b0b0b]" : "text-[#777777] group-hover:text-[#f4f4f4]")} aria-hidden="true" />{!compact && <span>{label}</span>}{active && !compact && <span className="ml-auto size-1.5 rounded-full bg-[#0b0b0b]/75" />}</Link>;
+            return <Link key={href} href={href} onMouseEnter={() => router.prefetch(href)} onFocus={() => router.prefetch(href)} onClick={onClose} aria-current={active ? "page" : undefined} title={compact ? label : undefined} className={cn("group flex min-h-11 items-center rounded-lg text-xs font-medium transition", compact ? "justify-center px-0" : "gap-3 px-3", active ? "bg-[#f2f2f2] text-[#0b0b0b] shadow-[0_8px_20px_rgba(255,255,255,.1)]" : "text-[#929292] hover:bg-white/[.06] hover:text-[#f4f4f4]")}><Icon className={cn("size-[17px] shrink-0", active ? "text-[#0b0b0b]" : "text-[#777777] group-hover:text-[#f4f4f4]")} aria-hidden="true" />{!compact && <span>{label}</span>}{active && !compact && <span className="ml-auto size-1.5 rounded-full bg-[#0b0b0b]/75" />}</Link>;
           })}
         </nav>
       </div>
