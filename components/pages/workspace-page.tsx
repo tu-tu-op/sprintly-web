@@ -5,39 +5,502 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import {
-  Activity, Archive, ArrowRight, ArrowUpRight, Award, Bell, Blocks,
-  Calendar, Check, CheckCircle2, ChevronDown, ChevronRight, CircleDot, Clock3, Cloud, Code2,
-  CreditCard, Download, Eye, FileCode2, FileUp, Filter, Flame, Focus, Gauge, GitBranch, Globe2,
-  Grid2X2, HardDrive, History, List, LockKeyhole, Medal, Monitor,
-  Moon, MoreHorizontal, Play, Plus, Search, Settings2, ShieldCheck,
-  Square, Sun, Target, TerminalSquare, Timer, Trophy, Upload, UserRound, Zap,
+  Activity,
+  Archive,
+  ArrowRight,
+  ArrowUpRight,
+  Award,
+  Bell,
+  Blocks,
+  Calendar,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  CircleDot,
+  Clock3,
+  Cloud,
+  Code2,
+  CreditCard,
+  Download,
+  Eye,
+  FileCode2,
+  FileUp,
+  Filter,
+  Flame,
+  Focus,
+  Gauge,
+  GitBranch,
+  Globe2,
+  Grid2X2,
+  HardDrive,
+  History,
+  List,
+  LockKeyhole,
+  Medal,
+  Monitor,
+  Moon,
+  MoreHorizontal,
+  Play,
+  Plus,
+  Search,
+  Settings2,
+  ShieldCheck,
+  Square,
+  Sun,
+  Target,
+  TerminalSquare,
+  Timer,
+  Trophy,
+  Upload,
+  UserRound,
+  Zap,
 } from "lucide-react";
 import {
-  Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart,
-  ResponsiveContainer, Tooltip, XAxis, YAxis,
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import { useSprintlyStore } from "@/lib/store";
 
-const enter = { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: .35 } };
+const enter = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.35 },
+};
 
-function PageHeader({ eyebrow, title, description, action }: { eyebrow?: string; title: string; description: string; action?: React.ReactNode }) {
-  return <motion.header {...enter} className="mb-6 flex flex-col justify-between gap-4 sm:mb-8 xl:flex-row xl:items-end"><div><p className="mono text-[11px] uppercase tracking-[.17em] text-[#7d7d7d]">{eyebrow}</p><h1 className="mt-2 text-2xl font-semibold tracking-[-.045em] sm:text-3xl">{title}</h1><p className="mt-2 max-w-2xl text-sm leading-6 text-[#8b8b8b]">{description}</p></div>{action}</motion.header>;
+function PageHeader({
+  eyebrow,
+  title,
+  description,
+  action,
+}: {
+  eyebrow?: string;
+  title: string;
+  description: string;
+  action?: React.ReactNode;
+}) {
+  return (
+    <motion.header
+      {...enter}
+      className="mb-6 flex flex-col justify-between gap-4 sm:mb-8 xl:flex-row xl:items-end"
+    >
+      <div>
+        <p className="mono text-[11px] uppercase tracking-[.17em] text-[#7d7d7d]">
+          {eyebrow}
+        </p>
+        <h1 className="mt-2 text-2xl font-semibold tracking-[-.045em] sm:text-3xl">
+          {title}
+        </h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#8b8b8b]">
+          {description}
+        </p>
+      </div>
+      {action}
+    </motion.header>
+  );
 }
 
-function Panel({ children, className="" }: { children: React.ReactNode; className?: string }) { return <motion.section {...enter} className={`panel ${className}`}>{children}</motion.section>; }
+function Panel({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <motion.section {...enter} className={`panel ${className}`}>
+      {children}
+    </motion.section>
+  );
+}
 
-function Tag({ children, color="violet" }: { children: React.ReactNode; color?: "violet"|"green"|"amber"|"cyan"|"gray" }) { const c={violet:"border-[#f2f2f2]/25 bg-[#f2f2f2]/10 text-[#d0d0d0]",green:"border-[#d0d0d0]/25 bg-[#d0d0d0]/8 text-[#e0e0e0]",amber:"border-[#9a9a9a]/25 bg-[#9a9a9a]/8 text-[#c2c2c2]",cyan:"border-[#bdbdbd]/25 bg-[#bdbdbd]/8 text-[#c7c7c7]",gray:"border-white/10 bg-white/[.035] text-[#9c9c9c]"}; return <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium ${c[color]}`}>{children}</span> }
+function Tag({
+  children,
+  color = "violet",
+}: {
+  children: React.ReactNode;
+  color?: "violet" | "green" | "amber" | "cyan" | "gray";
+}) {
+  const c = {
+    violet: "border-[#f2f2f2]/25 bg-[#f2f2f2]/10 text-[#d0d0d0]",
+    green: "border-[#d0d0d0]/25 bg-[#d0d0d0]/8 text-[#e0e0e0]",
+    amber: "border-[#9a9a9a]/25 bg-[#9a9a9a]/8 text-[#c2c2c2]",
+    cyan: "border-[#bdbdbd]/25 bg-[#bdbdbd]/8 text-[#c7c7c7]",
+    gray: "border-white/10 bg-white/[.035] text-[#9c9c9c]",
+  };
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium ${c[color]}`}
+    >
+      {children}
+    </span>
+  );
+}
 
-function Progress({ value, color="#f2f2f2", label }: { value:number; color?:string; label?:string }) { return <div>{label&&<div className="mb-2 flex justify-between text-xs"><span className="text-[#939393]">{label}</span><span className="mono text-[#d7d7d7]">{value}%</span></div>}<div className="h-1.5 overflow-hidden rounded-full bg-white/[.06]" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={value}><motion.div initial={{width:0}} animate={{width:`${value}%`}} className="h-full rounded-full" style={{background:color}}/></div></div> }
+function Progress({
+  value,
+  color = "#f2f2f2",
+  label,
+}: {
+  value: number;
+  color?: string;
+  label?: string;
+}) {
+  return (
+    <div>
+      {label && (
+        <div className="mb-2 flex justify-between text-xs">
+          <span className="text-[#939393]">{label}</span>
+          <span className="mono text-[#d7d7d7]">{value}%</span>
+        </div>
+      )}
+      <div
+        className="h-1.5 overflow-hidden rounded-full bg-white/[.06]"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={value}
+      >
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${value}%` }}
+          className="h-full rounded-full"
+          style={{ background: color }}
+        />
+      </div>
+    </div>
+  );
+}
 
-type Task={id:number;title:string;project:string;priority:"High"|"Medium"|"Low";status:"Backlog"|"In progress"|"Review"|"Done";due:string;sub:string};
+type Task = {
+  id: number;
+  title: string;
+  project: string;
+  priority: "High" | "Medium" | "Low";
+  status: "Backlog" | "In progress" | "Review" | "Done";
+  due: string;
+  sub: string;
+};
 
-const tasks:Task[]=[{id:1,title:"Refine session activity timeline",project:"Sprintly web",priority:"High",status:"In progress",due:"Today",sub:"3/5"},{id:2,title:"Add extension reconnect state",project:"VS Code extension",priority:"High",status:"Review",due:"Today",sub:"4/4"},{id:3,title:"Define leaderboard consent copy",project:"Sprintly web",priority:"Medium",status:"Backlog",due:"Aug 16",sub:"1/3"},{id:4,title:"Instrument local archive export",project:"Core",priority:"Medium",status:"In progress",due:"Aug 17",sub:"2/6"},{id:5,title:"Polish achievement reveal",project:"Sprintly web",priority:"Low",status:"Done",due:"Aug 13",sub:"4/4"},{id:6,title:"Session recovery edge cases",project:"VS Code extension",priority:"High",status:"Backlog",due:"Aug 18",sub:"0/5"}];
+const tasks: Task[] = [
+  {
+    id: 1,
+    title: "Refine session activity timeline",
+    project: "Sprintly web",
+    priority: "High",
+    status: "In progress",
+    due: "Today",
+    sub: "3/5",
+  },
+  {
+    id: 2,
+    title: "Add extension reconnect state",
+    project: "VS Code extension",
+    priority: "High",
+    status: "Review",
+    due: "Today",
+    sub: "4/4",
+  },
+  {
+    id: 3,
+    title: "Define leaderboard consent copy",
+    project: "Sprintly web",
+    priority: "Medium",
+    status: "Backlog",
+    due: "Aug 16",
+    sub: "1/3",
+  },
+  {
+    id: 4,
+    title: "Instrument local archive export",
+    project: "Core",
+    priority: "Medium",
+    status: "In progress",
+    due: "Aug 17",
+    sub: "2/6",
+  },
+  {
+    id: 5,
+    title: "Polish achievement reveal",
+    project: "Sprintly web",
+    priority: "Low",
+    status: "Done",
+    due: "Aug 13",
+    sub: "4/4",
+  },
+  {
+    id: 6,
+    title: "Session recovery edge cases",
+    project: "VS Code extension",
+    priority: "High",
+    status: "Backlog",
+    due: "Aug 18",
+    sub: "0/5",
+  },
+];
 
-const sessions=[{id:"today",project:"sprintly-web",task:"Dashboard navigation",date:"Today",time:"14:12—16:25",duration:"2h 13m",focus:87,files:14,edits:386,term:22},{id:"aug-13",project:"vscode-extension",task:"Reconnect state",date:"Yesterday",time:"09:08—11:42",duration:"2h 34m",focus:92,files:9,edits:512,term:31},{id:"aug-12",project:"sprintly-api",task:"Sync boundary",date:"Aug 12",time:"19:24—21:05",duration:"1h 41m",focus:78,files:11,edits:294,term:18},{id:"aug-11",project:"sprintly-web",task:"Achievement states",date:"Aug 11",time:"15:10—18:22",duration:"3h 12m",focus:84,files:23,edits:644,term:46}];
+const sessions = [
+  {
+    id: "today",
+    project: "sprintly-web",
+    task: "Dashboard navigation",
+    date: "Today",
+    time: "14:12—16:25",
+    duration: "2h 13m",
+    focus: 87,
+    files: 14,
+    edits: 386,
+    term: 22,
+  },
+  {
+    id: "aug-13",
+    project: "vscode-extension",
+    task: "Reconnect state",
+    date: "Yesterday",
+    time: "09:08—11:42",
+    duration: "2h 34m",
+    focus: 92,
+    files: 9,
+    edits: 512,
+    term: 31,
+  },
+  {
+    id: "aug-12",
+    project: "sprintly-api",
+    task: "Sync boundary",
+    date: "Aug 12",
+    time: "19:24—21:05",
+    duration: "1h 41m",
+    focus: 78,
+    files: 11,
+    edits: 294,
+    term: 18,
+  },
+  {
+    id: "aug-11",
+    project: "sprintly-web",
+    task: "Achievement states",
+    date: "Aug 11",
+    time: "15:10—18:22",
+    duration: "3h 12m",
+    focus: 84,
+    files: 23,
+    edits: 644,
+    term: 46,
+  },
+];
 
-export function WorkspacePage(){const [view,setView]=useState<"List"|"Board"|"Focus">("List");const [q,setQ]=useState("");const filtered=tasks.filter(t=>t.title.toLowerCase().includes(q.toLowerCase()));return <div><PageHeader eyebrow="Workspace · Sprint 08" title="Build what matters next." description="Tasks, sprint structure, and current focus—connected to the sessions where the work happens." action={<button onClick={()=>toast.success("New task created",{description:"Draft task added to Backlog."})} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#f2f2f2] text-[#0b0b0b] px-4 text-sm font-semibold"><Plus className="size-4"/> New task</button>}/>
-  <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/[.07] bg-[#131313] p-2 sm:flex-row sm:items-center"><div className="flex rounded-lg bg-black/20 p-1">{([List,Grid2X2,Focus] as const).map((Icon,i)=>{const n=(['List','Board','Focus'] as const)[i];return <button key={n} onClick={()=>setView(n)} aria-pressed={view===n} className={`flex min-h-10 flex-1 items-center justify-center gap-2 rounded-md px-3 text-xs transition sm:flex-none ${view===n?"bg-white/[.08] text-white":"text-[#7d7d7d] hover:text-white"}`}><Icon className="size-3.5"/>{n}</button>})}</div><div className="flex min-h-10 min-w-0 flex-1 items-center gap-2 rounded-lg border border-white/[.07] bg-black/10 px-3"><Search className="size-4 text-[#6f6f6f]"/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search this sprint…" className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[#696969]"/></div><button className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-white/[.07] px-3 text-xs text-[#9c9c9c]"><Filter className="size-3.5"/> Filter</button><button className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-white/[.07] px-3 text-xs text-[#9c9c9c]"><Settings2 className="size-3.5"/> Sort</button></div>
-  {view==="List"&&<Panel className="overflow-hidden"><div className="hidden grid-cols-[minmax(280px,1fr)_150px_110px_100px_80px_40px] gap-3 border-b border-white/[.07] px-5 py-3 text-[10px] uppercase tracking-[.12em] text-[#696969] md:grid"><span>Task</span><span>Project</span><span>Status</span><span>Due</span><span>Subtasks</span><span/></div>{filtered.map(t=><div key={t.id} className="grid gap-3 border-b border-white/[.06] p-4 last:border-0 md:grid-cols-[minmax(280px,1fr)_150px_110px_100px_80px_40px] md:items-center md:px-5"><div className="flex min-w-0 items-center gap-3"><button aria-label={`Mark ${t.title} complete`} className={`size-4 shrink-0 rounded-full border ${t.status==='Done'?"border-[#d0d0d0] bg-[#d0d0d0] text-[#0b0b0b]":"border-[#5b5b5b]"}`}>{t.status==='Done'&&<Check className="size-3 text-[#0e0e0e]"/>}</button><div className="min-w-0"><p className={`truncate text-sm ${t.status==='Done'?"text-[#7d7d7d] line-through":"text-[#d4d4d4]"}`}>{t.title}</p><span className={`mt-1 inline-flex text-[10px] ${t.priority==='High'?"text-[#aaaaaa]":t.priority==='Medium'?"text-[#c2c2c2]":"text-[#838383]"}`}>{t.priority} priority</span></div></div><span className="text-xs text-[#8b8b8b]">{t.project}</span><Tag color={t.status==='Done'?"green":t.status==='Review'?"cyan":t.status==='In progress'?"violet":"gray"}>{t.status}</Tag><span className="mono text-xs text-[#8b8b8b]">{t.due}</span><span className="mono text-xs text-[#8b8b8b]">{t.sub}</span><button aria-label={`More options for ${t.title}`} className="grid size-9 place-items-center rounded-lg text-[#6e6e6e] hover:bg-white/[.05]"><MoreHorizontal className="size-4"/></button></div>)}</Panel>}
-  {view==="Board"&&<div className="grid gap-3 xl:grid-cols-4">{(["Backlog","In progress","Review","Done"] as const).map(status=><div key={status} className="rounded-xl border border-white/[.07] bg-[#111111] p-3"><div className="mb-3 flex items-center justify-between px-1"><span className="text-xs font-semibold">{status}</span><span className="mono text-[10px] text-[#6a6a6a]">{filtered.filter(t=>t.status===status).length}</span></div><div className="space-y-2">{filtered.filter(t=>t.status===status).map(t=><div key={t.id} className="rounded-xl border border-white/[.07] bg-[#181818] p-4 transition hover:border-white/[.14]"><p className="text-sm font-medium leading-5">{t.title}</p><p className="mt-3 text-[11px] text-[#7e7e7e]">{t.project}</p><div className="mt-4 flex items-center justify-between"><Tag color={t.priority==='High'?"amber":"gray"}>{t.priority}</Tag><span className="mono text-[10px] text-[#7a7a7a]">{t.sub}</span></div></div>)}</div></div>)}</div>}
-  {view==="Focus"&&<Panel className="relative mx-auto max-w-3xl overflow-hidden p-6 text-center sm:p-10"><div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(128,128,128,.14),transparent_48%)]"/><div className="relative"><Tag color="green"><CircleDot className="size-3 pulse-soft"/> Ready for a focused block</Tag><p className="mono mt-10 text-xs text-[#757575]">CURRENT TASK · HIGH PRIORITY</p><h2 className="text-balance mx-auto mt-4 max-w-xl text-3xl font-semibold tracking-[-.05em]">Refine session activity timeline</h2><p className="mt-4 text-sm text-[#8b8b8b]">Sprintly web · 3 of 5 subtasks complete</p><div className="mx-auto mt-8 max-w-md"><Progress value={60}/></div><div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row"><button onClick={()=>toast.success("Focus session started locally")} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#f2f2f2] text-[#0b0b0b] px-5 text-sm font-semibold"><Play className="size-4 fill-current"/> Start focus session</button><button className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/10 px-5 text-sm text-[#c9c9c9]">View task details</button></div></div></Panel>}</div>}
+export function WorkspacePage() {
+  const [view, setView] = useState<"List" | "Board" | "Focus">("List");
+  const [q, setQ] = useState("");
+  const filtered = tasks.filter((t) =>
+    t.title.toLowerCase().includes(q.toLowerCase()),
+  );
+  return (
+    <div>
+      <PageHeader
+        eyebrow="Workspace · Sprint 08"
+        title="Build what matters next."
+        description="Tasks, sprint structure, and current focus—connected to the sessions where the work happens."
+        action={
+          <button
+            onClick={() =>
+              toast.success("New task created", {
+                description: "Draft task added to Backlog.",
+              })
+            }
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#f2f2f2] text-[#0b0b0b] px-4 text-sm font-semibold"
+          >
+            <Plus className="size-4" /> New task
+          </button>
+        }
+      />
+      <div className="mb-3 flex flex-col gap-3 rounded-xl border border-white/[.07] bg-[#131313] p-2 sm:flex-row sm:items-center">
+        <div className="flex rounded-lg bg-black/20 p-1">
+          {([List, Grid2X2, Focus] as const).map((Icon, i) => {
+            const n = (["List", "Board", "Focus"] as const)[i];
+            return (
+              <button
+                key={n}
+                onClick={() => setView(n)}
+                aria-pressed={view === n}
+                className={`flex min-h-10 flex-1 items-center justify-center gap-2 rounded-md px-3 text-xs transition sm:flex-none ${view === n ? "bg-white/[.08] text-white" : "text-[#7d7d7d] hover:text-white"}`}
+              >
+                <Icon className="size-3.5" />
+                {n}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex min-h-10 min-w-0 flex-1 items-center gap-2 rounded-lg border border-white/[.07] bg-black/10 px-3">
+          <Search className="size-4 text-[#6f6f6f]" />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search this sprint…"
+            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[#696969]"
+          />
+        </div>
+        <button className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-white/[.07] px-3 text-xs text-[#9c9c9c]">
+          <Filter className="size-3.5" /> Filter
+        </button>
+        <button className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-white/[.07] px-3 text-xs text-[#9c9c9c]">
+          <Settings2 className="size-3.5" /> Sort
+        </button>
+      </div>
+      {view === "List" && (
+        <Panel className="overflow-hidden">
+          <div className="hidden grid-cols-[minmax(280px,1fr)_150px_110px_100px_80px_40px] gap-3 border-b border-white/[.07] px-5 py-3 text-[10px] uppercase tracking-[.12em] text-[#696969] md:grid">
+            <span>Task</span>
+            <span>Project</span>
+            <span>Status</span>
+            <span>Due</span>
+            <span>Subtasks</span>
+            <span />
+          </div>
+          {filtered.map((t) => (
+            <div
+              key={t.id}
+              className="grid gap-3 border-b border-white/[.06] p-4 last:border-0 md:grid-cols-[minmax(280px,1fr)_150px_110px_100px_80px_40px] md:items-center md:px-5"
+            >
+              <div className="flex min-w-0 items-center gap-3">
+                <button
+                  aria-label={`Mark ${t.title} complete`}
+                  className={`size-4 shrink-0 rounded-full border ${t.status === "Done" ? "border-[#d0d0d0] bg-[#d0d0d0] text-[#0b0b0b]" : "border-[#5b5b5b]"}`}
+                >
+                  {t.status === "Done" && (
+                    <Check className="size-3 text-[#0e0e0e]" />
+                  )}
+                </button>
+                <div className="min-w-0">
+                  <p
+                    className={`truncate text-sm ${t.status === "Done" ? "text-[#7d7d7d] line-through" : "text-[#d4d4d4]"}`}
+                  >
+                    {t.title}
+                  </p>
+                  <span
+                    className={`mt-1 inline-flex text-[10px] ${t.priority === "High" ? "text-[#aaaaaa]" : t.priority === "Medium" ? "text-[#c2c2c2]" : "text-[#838383]"}`}
+                  >
+                    {t.priority} priority
+                  </span>
+                </div>
+              </div>
+              <span className="text-xs text-[#8b8b8b]">{t.project}</span>
+              <Tag
+                color={
+                  t.status === "Done"
+                    ? "green"
+                    : t.status === "Review"
+                      ? "cyan"
+                      : t.status === "In progress"
+                        ? "violet"
+                        : "gray"
+                }
+              >
+                {t.status}
+              </Tag>
+              <span className="mono text-xs text-[#8b8b8b]">{t.due}</span>
+              <span className="mono text-xs text-[#8b8b8b]">{t.sub}</span>
+              <button
+                aria-label={`More options for ${t.title}`}
+                className="grid size-9 place-items-center rounded-lg text-[#6e6e6e] hover:bg-white/[.05]"
+              >
+                <MoreHorizontal className="size-4" />
+              </button>
+            </div>
+          ))}
+        </Panel>
+      )}
+      {view === "Board" && (
+        <div className="grid gap-3 xl:grid-cols-4">
+          {(["Backlog", "In progress", "Review", "Done"] as const).map(
+            (status) => (
+              <div
+                key={status}
+                className="rounded-xl border border-white/[.07] bg-[#111111] p-3"
+              >
+                <div className="mb-3 flex items-center justify-between px-1">
+                  <span className="text-xs font-semibold">{status}</span>
+                  <span className="mono text-[10px] text-[#6a6a6a]">
+                    {filtered.filter((t) => t.status === status).length}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {filtered
+                    .filter((t) => t.status === status)
+                    .map((t) => (
+                      <div
+                        key={t.id}
+                        className="rounded-xl border border-white/[.07] bg-[#181818] p-4 transition hover:border-white/[.14]"
+                      >
+                        <p className="text-sm font-medium leading-5">
+                          {t.title}
+                        </p>
+                        <p className="mt-3 text-[11px] text-[#7e7e7e]">
+                          {t.project}
+                        </p>
+                        <div className="mt-4 flex items-center justify-between">
+                          <Tag color={t.priority === "High" ? "amber" : "gray"}>
+                            {t.priority}
+                          </Tag>
+                          <span className="mono text-[10px] text-[#7a7a7a]">
+                            {t.sub}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            ),
+          )}
+        </div>
+      )}
+      {view === "Focus" && (
+        <Panel className="relative mx-auto max-w-3xl overflow-hidden p-6 text-center sm:p-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(128,128,128,.14),transparent_48%)]" />
+          <div className="relative">
+            <Tag color="green">
+              <CircleDot className="size-3 pulse-soft" /> Ready for a focused
+              block
+            </Tag>
+            <p className="mono mt-10 text-xs text-[#757575]">
+              CURRENT TASK · HIGH PRIORITY
+            </p>
+            <h2 className="text-balance mx-auto mt-4 max-w-xl text-3xl font-semibold tracking-[-.05em]">
+              Refine session activity timeline
+            </h2>
+            <p className="mt-4 text-sm text-[#8b8b8b]">
+              Sprintly web · 3 of 5 subtasks complete
+            </p>
+            <div className="mx-auto mt-8 max-w-md">
+              <Progress value={60} />
+            </div>
+            <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+              <button
+                onClick={() => toast.success("Focus session started locally")}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#f2f2f2] text-[#0b0b0b] px-5 text-sm font-semibold"
+              >
+                <Play className="size-4 fill-current" /> Start focus session
+              </button>
+              <button className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/10 px-5 text-sm text-[#c9c9c9]">
+                View task details
+              </button>
+            </div>
+          </div>
+        </Panel>
+      )}
+    </div>
+  );
+}
