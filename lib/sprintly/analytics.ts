@@ -71,7 +71,7 @@ export type LeaderboardEntry = LeaderboardPacket & {
   friends: string[];
 };
 
-export type ShareField = "codingTime" | "archetype" | "codingMix" | "recovery" | "failures" | "tokenUsage" | "terminalActivity";
+export type ShareField = "codingTime" | "archetype" | "codingMix" | "recovery" | "failures" | "tokenUsage" | "terminalActivity" | "devScore" | "streak";
 
 export type SharePayload = {
   codingTime: string;
@@ -397,4 +397,6 @@ export const SHARE_FIELD_LABELS: Record<ShareField, string> = {
   failures: "Failures",
   tokenUsage: "Token usage",
   terminalActivity: "Terminal activity",
+  devScore: "Dev Score (v1)",
+  streak: "Current streak",
 };
