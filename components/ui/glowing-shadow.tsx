@@ -115,6 +115,7 @@ export function GlowingShadow({
           width: 100%;
           height: 100%;
           border-radius: var(--card-radius);
+          pointer-events: none;
         }
 
         .glow-content {
@@ -125,6 +126,7 @@ export function GlowingShadow({
           align-items: center;
           justify-content: center;
           padding: calc(var(--card-width) / 8);
+          z-index: 1;
         }
 
         .glow-content span {
@@ -155,6 +157,7 @@ export function GlowingShadow({
             rotate-bg var(--animation-speed) linear infinite;
           transition: --bg-size var(--interaction-speed) ease;
           will-change: background;
+          pointer-events: none;
         }
 
         .glow {
@@ -168,12 +171,13 @@ export function GlowingShadow({
           transform-origin: center;
           border-radius: calc(var(--glow-radius) * 10vw);
           will-change: transform;
+          pointer-events: none;
         }
 
         .glow:after {
           content: "";
           display: block;
-          z-index: -2;
+          z-index: 0;
           filter: blur(calc(var(--glow-blur) * 10px));
           width: 130%;
           height: 130%;
@@ -224,17 +228,16 @@ export function GlowingShadow({
 
         .glow-container--edge .glow-content:before {
           border-radius: var(--edge-content-radius);
-          background: hsl(0deg 0% 16%) radial-gradient(
-            30% 30% at calc(var(--bg-x) * 1%) calc(var(--bg-y) * 1%),
-            hsl(0deg 0% 96%) calc(0% * var(--bg-size)),
-            hsl(0deg 0% 82%) calc(20% * var(--bg-size)),
-            hsl(0deg 0% 62%) calc(40% * var(--bg-size)),
-            transparent 100%
-          );
+          background: transparent;
+          background-image: none;
+          box-shadow: none;
+          animation: none;
+          transition: none;
         }
 
         .glow-container--edge .glow:after {
           background: hsl(0deg 0% 88%);
+          animation: none;
         }
 
         @media (min-width: 768px) {

@@ -1,3 +1,3 @@
-import { CommunityPage } from "@/components/sprintly-pages";
+import { CommunityPage } from "@/components/pages/community-page";
 
 export default function Page() { return <CommunityPage />; }

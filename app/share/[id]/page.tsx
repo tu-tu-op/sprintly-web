@@ -1,3 +1,3 @@
-import { PublicSnapshotPage } from "@/components/sprintly-pages";
+import { PublicSnapshotPage } from "@/components/pages/public-snapshot-page";
 
 export default function Page() { return <PublicSnapshotPage />; }

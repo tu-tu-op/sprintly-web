@@ -1,2 +1,2 @@
-import { GoalsPage } from "@/components/product-pages";
+import { GoalsPage } from "@/components/pages/goals-page";
 export default function Page(){return <GoalsPage/>}

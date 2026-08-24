@@ -1,3 +1,3 @@
-import { AchievementsPage } from "@/components/sprintly-pages";
+import { AchievementsPage } from "@/components/pages/achievements-page";
 
 export default function Page() { return <AchievementsPage />; }

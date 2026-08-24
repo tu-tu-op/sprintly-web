@@ -1,3 +1,3 @@
-import { ProfilePage } from "@/components/sprintly-pages";
+import { ProfilePage } from "@/components/pages/profile-page";
 
 export default function Page() { return <ProfilePage />; }
