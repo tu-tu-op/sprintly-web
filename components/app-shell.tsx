@@ -29,6 +29,7 @@ import { useState } from "react";
 import { clearAuthSession } from "@/lib/sprintly/auth";
 import { cn } from "@/lib/utils";
 import { Brand, SprintlyMark } from "./brand";
+import { useShellState } from "./shell-state";
 
 const navItems = [
   { label: "Overview", href: "/app", icon: LayoutDashboard },
@@ -41,6 +42,7 @@ const navItems = [
 
 function UserMenu() {
   const router = useRouter();
+  const { displayName, initials, handle, location } = useShellState();
 
   const signOut = () => {
     clearAuthSession();
@@ -52,21 +54,21 @@ function UserMenu() {
       <DropdownMenu.Trigger asChild>
         <button className="flex min-h-10 items-center gap-2 rounded-lg border border-white/[.1] bg-[#1a1a1a] px-2.5 text-left text-[#f4f4f4] transition hover:border-white/[.18] hover:bg-white/[.07]" aria-label="Open account menu">
           <Avatar.Root className="grid size-7 shrink-0 place-items-center overflow-hidden rounded-lg bg-gradient-to-br from-[#f3f3f3] to-[#707070] text-[10px] font-bold text-[#0b0b0b]">
-            <Avatar.Fallback>AR</Avatar.Fallback>
+            <Avatar.Fallback>{initials}</Avatar.Fallback>
           </Avatar.Root>
-          <span className="hidden max-w-28 truncate text-xs font-semibold text-[#f4f4f4] sm:block">Alex Rivera</span>
+          <span className="hidden max-w-28 truncate text-xs font-semibold text-[#f4f4f4] sm:block">{displayName}</span>
           <ChevronDown className="size-3.5 text-[#929292]" aria-hidden="true" />
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content align="end" sideOffset={8} className="z-[100] w-56 rounded-xl border border-white/[.1] bg-[#121212] p-1.5 text-[#f4f4f4] shadow-2xl">
           <div className="px-3 py-2.5">
-            <p className="text-xs font-semibold">Alex Rivera</p>
-            <p className="mt-0.5 text-[11px] text-[#929292]">@alexrivera · Bengaluru</p>
+            <p className="text-xs font-semibold">{displayName}</p>
+            <p className="mt-0.5 text-[11px] text-[#929292]">@{handle} · {location}</p>
           </div>
           <Separator.Root orientation="horizontal" className="my-1 h-px bg-white/[.1]" />
           <DropdownMenu.Item asChild className="flex min-h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-xs outline-none hover:bg-white/[.06]">
-            <Link href="/app/profile"><Avatar.Root className="grid size-4 place-items-center"><Avatar.Fallback>AR</Avatar.Fallback></Avatar.Root>Profile</Link>
+            <Link href="/app/profile"><Avatar.Root className="grid size-4 place-items-center"><Avatar.Fallback>{initials}</Avatar.Fallback></Avatar.Root>Profile</Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item asChild className="flex min-h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-xs outline-none hover:bg-white/[.06]">
             <Link href="/app/settings"><Settings2 className="size-4 text-[#929292]" />Settings</Link>
@@ -79,19 +81,21 @@ function UserMenu() {
   );
 }
 
+const NOTIFICATION_ICONS = { streak: Sparkles, achievement: Trophy, storage: ShieldCheck } as const;
+
 function NotificationMenu() {
+  const { notifications } = useShellState();
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <button className="relative grid size-10 place-items-center rounded-lg border border-white/[.1] bg-[#1a1a1a] text-[#929292] transition hover:border-white/[.18] hover:bg-white/[.07] hover:text-[#f4f4f4]" aria-label="Open notifications">
+        <button className="grid size-10 place-items-center rounded-lg border border-white/[.1] bg-[#1a1a1a] text-[#929292] transition hover:border-white/[.18] hover:bg-white/[.07] hover:text-[#f4f4f4]" aria-label="Open activity updates">
           <Bell className="size-[17px]" aria-hidden="true" />
-          <span className="absolute right-2.5 top-2.5 size-1.5 rounded-full bg-[#e5e5e5]" />
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content align="end" sideOffset={8} className="z-[100] w-[min(360px,calc(100vw-24px))] rounded-xl border border-white/[.1] bg-[#121212] p-2 text-[#f4f4f4] shadow-2xl">
-          <div className="flex items-center justify-between px-3 py-2"><p className="text-xs font-semibold">Activity updates</p><span className="rounded-full bg-white/[.1] px-2 py-1 text-[10px] font-semibold text-[#d6d6d6]">3 new</span></div>
-          {["12-day streak continued", "Precision Run unlocked", "Sync is up to date"].map((item, index) => <DropdownMenu.Item key={item} className="flex cursor-pointer gap-3 rounded-lg p-3 outline-none hover:bg-white/[.06]"><span className={cn("grid size-8 shrink-0 place-items-center rounded-lg", index === 0 ? "bg-white/[.12] text-[#f2f2f2]" : index === 1 ? "bg-[#bdbdbd]/10 text-[#d0d0d0]" : "bg-[#6f6f6f]/20 text-[#c2c2c2]")}><Sparkles className="size-3.5" /></span><span><span className="block text-[11px] font-semibold">{item}</span><span className="mt-0.5 block text-[10px] text-[#929292]">Sprintly record updated just now.</span></span></DropdownMenu.Item>)}
+          <div className="flex items-center justify-between px-3 py-2"><p className="text-xs font-semibold">Activity updates</p><span className="rounded-full bg-white/[.1] px-2 py-1 text-[10px] font-semibold text-[#d6d6d6]">Local</span></div>
+          {notifications.map((item) => { const Icon = NOTIFICATION_ICONS[item.kind]; return <DropdownMenu.Item key={item.id} className="flex cursor-pointer gap-3 rounded-lg p-3 outline-none hover:bg-white/[.06]"><span className="grid size-8 shrink-0 place-items-center rounded-lg bg-white/[.1] text-[#e6e6e6]"><Icon className="size-3.5" /></span><span><span className="block text-[11px] font-semibold">{item.title}</span><span className="mt-0.5 block text-[10px] text-[#929292]">{item.description}</span></span></DropdownMenu.Item>; })}
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
@@ -100,6 +104,7 @@ function NotificationMenu() {
 
 function Sidebar({ mobile = false, onClose, collapsed = false, onCollapsedChange }: { mobile?: boolean; onClose?: () => void; collapsed?: boolean; onCollapsedChange?: (value: boolean) => void }) {
   const pathname = usePathname();
+  const { displayName, initials } = useShellState();
   const compact = mobile ? false : collapsed;
 
   return (
@@ -120,7 +125,7 @@ function Sidebar({ mobile = false, onClose, collapsed = false, onCollapsedChange
       </div>
       <div className="mt-auto space-y-3 p-3">
         {!compact && <div className="rounded-xl border border-white/[.12] bg-white/[.05] p-3"><div className="flex items-center gap-2 text-[11px] font-semibold text-[#e2e2e2]"><ShieldCheck className="size-3.5" /> Local boundary active</div><p className="mt-1.5 text-[10px] leading-4 text-[#919191]">Your sessions stay private until you choose to sync.</p></div>}
-        <Link href="/app/profile" title={compact ? "Alex Rivera" : undefined} className={cn("flex min-h-12 items-center rounded-lg border border-white/[.1] bg-white/[.04]", compact ? "justify-center" : "gap-3 px-2.5")}><Avatar.Root className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-lg bg-gradient-to-br from-[#f3f3f3] to-[#707070] text-[10px] font-bold text-[#0b0b0b]"><Avatar.Fallback>AR</Avatar.Fallback></Avatar.Root>{!compact && <><span className="min-w-0 flex-1"><span className="block truncate text-[11px] font-semibold">Alex Rivera</span><span className="mt-0.5 block truncate text-[10px] text-[#828282]">Premium · Lvl 12</span></span><ChevronRight className="size-3.5 text-[#747474]" /></>}</Link>
+        <Link href="/app/profile" title={compact ? displayName : undefined} className={cn("flex min-h-12 items-center rounded-lg border border-white/[.1] bg-white/[.04]", compact ? "justify-center" : "gap-3 px-2.5")}><Avatar.Root className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-lg bg-gradient-to-br from-[#f3f3f3] to-[#707070] text-[10px] font-bold text-[#0b0b0b]"><Avatar.Fallback>{initials}</Avatar.Fallback></Avatar.Root>{!compact && <><span className="min-w-0 flex-1"><span className="block truncate text-[11px] font-semibold">{displayName}</span><span className="mt-0.5 block truncate text-[10px] text-[#828282]">Local demo account</span></span><ChevronRight className="size-3.5 text-[#747474]" /></>}</Link>
       </div>
     </aside>
   );
