@@ -290,15 +290,15 @@ export function SharePage() {
   const sessionId = search.get("sessionId");
   const session = records.find((record) => record.sessionId === sessionId);
   // A session share requires a valid session; without one there is no
-  // honest source to snapshot.
-  if (kind === "session" && !session) {
-    return <Panel className="p-8"><div className="text-center"><Upload className="mx-auto size-8 text-[#f2f2f2]"/><p className="mt-4 text-sm font-medium">Session not found</p><p className="mt-2 text-xs text-[#7d7d7d]">{sessionId ? `No session with ID "${sessionId}" exists in your imported history.` : "Choose a session from your history to create its share card."}</p><Link href="/app/sessions" className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#f2f2f2] text-[#0b0b0b] px-3 text-xs font-semibold">Back to history <ChevronRight className="size-3.5"/></Link></div></Panel>;
-  }
+  // honest source to snapshot. (Returned after all hooks below.)
   const aggregate = aggregateSessions(kind === "session" && session ? [session] : filterSessionsByRange(records, "week", new Date(), undefined, preferences.timeZone));
   const streaks = getStreakStats(records, new Date(), preferences.timeZone);
   const payload = buildSharePayload(session, aggregate, streaks.current);
   const [fields, setFields] = useState<ShareField[]>(defaultShareFields);
   const [created, setCreated] = useState("");
+  if (kind === "session" && !session) {
+    return <Panel className="p-8"><div className="text-center"><Upload className="mx-auto size-8 text-[#f2f2f2]"/><p className="mt-4 text-sm font-medium">Session not found</p><p className="mt-2 text-xs text-[#7d7d7d]">{sessionId ? `No session with ID "${sessionId}" exists in your imported history.` : "Choose a session from your history to create its share card."}</p><Link href="/app/sessions" className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#f2f2f2] text-[#0b0b0b] px-3 text-xs font-semibold">Back to history <ChevronRight className="size-3.5"/></Link></div></Panel>;
+  }
   const title = kind === "session" ? "SESSION SNAPSHOT" : kind === "achievement" ? "ACHIEVEMENT UNLOCKED" : kind === "profile" ? "DEVELOPER PROFILE" : "WEEKLY RECAP";
   const toggle = (field: ShareField) => setFields((current) => current.includes(field) ? current.filter((item) => item !== field) : [...current, field]);
   // Preview, stored snapshot, and SVG export are all built from this
