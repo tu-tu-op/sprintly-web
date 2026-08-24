@@ -6,6 +6,7 @@ import { getAuthSession } from "@/lib/sprintly/auth";
 import type { SprintlySession } from "@/lib/sprintly/contract";
 import { DEMO_USER } from "@/lib/sprintly/demo-data";
 import { defaultPreferences, defaultProfile, loadUserData, saveUserData, type ShareSnapshot, type StoredSession, type UserData, type UserPreferences, type UserProfile } from "@/lib/sprintly/storage";
+import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 
 type SprintlyContextValue = UserData & {
   userId: string;
@@ -28,7 +29,8 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<UserData>(createEmptyUserData);
   const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
+  // Hydrate synchronously before paint so no placeholder frame is visible.
+  useIsoLayoutEffect(() => {
     const auth = getAuthSession();
     const nextUserId = auth?.userId ?? DEMO_USER.id;
     setUserId(nextUserId);
@@ -64,7 +66,7 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
 
   // Never render product metrics until the user's actual stored record
   // has loaded; this prevents fabricated demo data from flashing.
-  if (!hydrated) return <main className="grid min-h-dvh place-items-center bg-[#090909] text-sm text-[#8b8b8b]">Preparing your Sprintly record…</main>;
+  if (!hydrated) return null;
 
   return <SprintlyContext.Provider value={value}>{children}</SprintlyContext.Provider>;
 }
