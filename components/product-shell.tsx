@@ -13,6 +13,7 @@ import {
 import { Brand, SprintlyMark } from "./brand";
 import { useSprintlyStore } from "@/lib/store";
 import { useShellState } from "./shell-state";
+import { usePrefetchRoutes } from "./use-prefetch-routes";
 
 const nav = [
   { label: "Overview", href: "/app", icon: LayoutDashboard },
@@ -73,6 +74,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const { collapsed,mobileOpen,setMobileOpen }=useSprintlyStore();
   const router = useRouter();
   const [palette,setPalette]=useState(false);
+  usePrefetchRoutes([...nav.map((item) => item.href), "/app/share"]);
   useEffect(()=>{const onKey=(e:KeyboardEvent)=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();setPalette(v=>!v)}};window.addEventListener("keydown",onKey);return()=>window.removeEventListener("keydown",onKey)},[]);
   const onImport=()=>router.push("/app/settings");
   if (pathname === "/app") return <>{children}</>;

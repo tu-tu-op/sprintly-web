@@ -30,6 +30,7 @@ import { clearAuthSession } from "@/lib/sprintly/auth";
 import { cn } from "@/lib/utils";
 import { Brand, SprintlyMark } from "./brand";
 import { useShellState } from "./shell-state";
+import { usePrefetchRoutes } from "./use-prefetch-routes";
 
 const navItems = [
   { label: "Overview", href: "/app", icon: LayoutDashboard },
@@ -136,6 +137,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  usePrefetchRoutes([...navItems.map((item) => item.href), "/app/profile", "/app/settings", "/app/goals", "/app/billing"]);
 
   return <div className="min-h-dvh bg-[#080808] text-[#f4f4f4]">
     <div className="fixed inset-y-0 left-0 z-40 hidden lg:block"><div className={cn("h-full transition-[width] duration-200", collapsed ? "w-[76px]" : "w-[248px]")}><Sidebar collapsed={collapsed} onCollapsedChange={setCollapsed} /></div></div>
