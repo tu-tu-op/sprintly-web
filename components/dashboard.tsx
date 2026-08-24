@@ -28,9 +28,12 @@ import {
   aggregateSessions,
   computeCompositeDevScore,
   computePersonalRecords,
+  dateKey,
   filterSessionsByRange,
   formatDuration,
   getStreakStats,
+  sessionCompositeScore,
+  zonedClock,
   type DateRange,
 } from "@/lib/sprintly/analytics";
 import type { SprintlySession } from "@/lib/sprintly/contract";
@@ -92,25 +95,25 @@ function SessionTable({ sessions }: { sessions: SprintlySession[] }) {
 
 export function Dashboard() {
   const { sessions, profile, preferences } = useSprintly();
+  const timeZone = preferences.timeZone;
   const [range, setRange] = useState<DateRange>("week");
   const records = useMemo(() => sessions.map((session) => session.record), [sessions]);
-  const scopedRecords = useMemo(() => filterSessionsByRange(records, range), [records, range]);
+  const scopedRecords = useMemo(() => filterSessionsByRange(records, range, new Date(), undefined, timeZone), [records, range, timeZone]);
   const aggregate = useMemo(() => aggregateSessions(scopedRecords), [scopedRecords]);
   const allTimeAggregate = useMemo(() => aggregateSessions(records), [records]);
-  const streaks = useMemo(() => getStreakStats(records), [records]);
-  const personal = useMemo(() => computePersonalRecords(records, streaks), [records, streaks]);
+  const streaks = useMemo(() => getStreakStats(records, new Date(), timeZone), [records, timeZone]);
+  const personal = useMemo(() => computePersonalRecords(records, streaks, timeZone), [records, streaks, timeZone]);
   const recentSessions = useMemo(() => records.slice().sort((a, b) => b.startedAt.localeCompare(a.startedAt)), [records]);
   const activityData = useMemo(() => {
-    const today = new Date();
+    const clock = zonedClock(new Date(), timeZone);
+    const baseUtc = Date.UTC(clock.year, clock.month - 1, clock.day);
     return Array.from({ length: 7 }, (_, index) => {
-      const day = new Date(today);
-      day.setHours(0, 0, 0, 0);
-      day.setDate(today.getDate() - (6 - index));
-      const key = day.toISOString().slice(0, 10);
-      const daySessions = scopedRecords.filter((session) => session.startedAt.slice(0, 10) === key);
-      return { day: new Intl.DateTimeFormat("en", { weekday: "short" }).format(day), hours: daySessions.reduce((sum, session) => sum + session.activeDurationSeconds, 0) / 3600, edits: daySessions.reduce((sum, session) => sum + session.activity.edits, 0) };
+      const dayInstant = baseUtc - (6 - index) * 86_400_000;
+      const key = new Date(dayInstant).toISOString().slice(0, 10);
+      const daySessions = scopedRecords.filter((session) => dateKey(session.startedAt, timeZone) === key);
+      return { day: new Intl.DateTimeFormat("en", { weekday: "short", timeZone: "UTC" }).format(new Date(dayInstant + 43_200_000)), hours: daySessions.reduce((sum, session) => sum + session.activeDurationSeconds, 0) / 3600, edits: daySessions.reduce((sum, session) => sum + session.activity.edits, 0) };
     });
-  }, [scopedRecords]);
+  }, [scopedRecords, timeZone]);
   const codingMix = [
     { name: "Manual", value: aggregate.coding.manualPercent, color: "#eeeeee" },
     { name: "AI-assisted", value: aggregate.coding.aiAssistedPercent, color: "#adadad" },

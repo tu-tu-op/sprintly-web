@@ -18,6 +18,7 @@ export type UserPreferences = {
   syncPreference: SyncPreference;
   showTokenUsage: boolean;
   showTerminalActivity: boolean;
+  timeZone: string;
 };
 
 export type UserProfile = {
@@ -59,6 +60,12 @@ export type UserData = {
 
 const key = (userId: string, resource: string) => `sprintly:${userId}:${resource}:v1`;
 
+// Calendar metrics (today/week/month, streaks, night-owl achievements)
+// are computed in this zone unless the user picks another one.
+export const DEFAULT_TIME_ZONE = (() => {
+  try { return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; } catch { return "UTC"; }
+})();
+
 const defaultPreferences: UserPreferences = {
   profileVisibility: "private",
   leaderboardOptIn: false,
@@ -66,6 +73,7 @@ const defaultPreferences: UserPreferences = {
   syncPreference: "selected",
   showTokenUsage: false,
   showTerminalActivity: false,
+  timeZone: DEFAULT_TIME_ZONE,
 };
 
 const defaultProfile: UserProfile = {
