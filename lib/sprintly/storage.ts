@@ -101,6 +101,29 @@ function write(storageKey: string, value: unknown) {
   try { window.localStorage.setItem(storageKey, JSON.stringify(value)); } catch { /* The in-memory provider remains usable. */ }
 }
 
+// Persists a preference patch without requiring the React provider,
+// e.g. from the pre-auth onboarding flow.
+export function patchStoredPreferences(userId: string, patch: Partial<UserPreferences>) {
+  const storageKey = key(userId, "preferences");
+  write(storageKey, { ...defaultPreferences, ...read<Partial<UserPreferences>>(storageKey, {}), ...patch });
+}
+
+export type OnboardingSnapshot = {
+  goals: string[];
+  boundary: string;
+  savedAt: string;
+};
+
+const ONBOARDING_KEY = "sprintly:onboarding:v1";
+
+export function saveOnboardingSnapshot(snapshot: OnboardingSnapshot) {
+  write(ONBOARDING_KEY, snapshot);
+}
+
+export function readOnboardingSnapshot(): OnboardingSnapshot | null {
+  return read<OnboardingSnapshot | null>(ONBOARDING_KEY, null);
+}
+
 function loadSessions(userId: string) {
   const raw = read<unknown>(key(userId, "sessions"), null);
   if (raw === null) return fallbackStoredSessions;
