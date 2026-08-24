@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { getAuthSession } from "@/lib/sprintly/auth";
 import type { SprintlySession } from "@/lib/sprintly/contract";
 import { DEMO_USER } from "@/lib/sprintly/demo-data";
-import { loadUserData, saveUserData, type ShareSnapshot, type StoredSession, type UserData, type UserPreferences, type UserProfile } from "@/lib/sprintly/storage";
+import { defaultPreferences, defaultProfile, loadUserData, saveUserData, type ShareSnapshot, type StoredSession, type UserData, type UserPreferences, type UserProfile } from "@/lib/sprintly/storage";
 
 type SprintlyContextValue = UserData & {
   userId: string;
@@ -19,12 +19,13 @@ type SprintlyContextValue = UserData & {
   deleteAccountData: () => void;
 };
 
-const fallback = loadUserData(DEMO_USER.id);
+const createEmptyUserData = (): UserData => ({ sessions: [], preferences: { ...defaultPreferences }, profile: { ...defaultProfile }, shares: [] });
+
 const SprintlyContext = createContext<SprintlyContextValue | null>(null);
 
 export function SprintlyProvider({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<string>(DEMO_USER.id);
-  const [data, setData] = useState<UserData>(fallback);
+  const [data, setData] = useState<UserData>(createEmptyUserData);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -58,8 +59,12 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
     createShare: (snapshot) => setData((current) => ({ ...current, shares: [snapshot, ...current.shares.filter((item) => item.id !== snapshot.id)] })),
     removeShare: (id) => setData((current) => ({ ...current, shares: current.shares.filter((item) => item.id !== id) })),
     deleteCloudHistory: () => setData((current) => ({ ...current, sessions: [] })),
-    deleteAccountData: () => setData({ sessions: [], preferences: fallback.preferences, profile: fallback.profile, shares: [] }),
+    deleteAccountData: () => setData(createEmptyUserData()),
   }), [data, hydrated, userId]);
+
+  // Never render product metrics until the user's actual stored record
+  // has loaded; this prevents fabricated demo data from flashing.
+  if (!hydrated) return <main className="grid min-h-dvh place-items-center bg-[#090909] text-sm text-[#8b8b8b]">Preparing your Sprintly record…</main>;
 
   return <SprintlyContext.Provider value={value}>{children}</SprintlyContext.Provider>;
 }

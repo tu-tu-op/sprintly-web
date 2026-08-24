@@ -21,6 +21,20 @@ export type AuthProvider = {
 };
 
 const AUTH_STORAGE_KEY = "sprintly:auth:v1";
+const DEFAULT_NEXT_PATH = "/app";
+
+// Restricts the post-sign-in redirect target to a same-origin internal
+// path. Rejects schemes (including javascript:), protocol-relative and
+// backslash forms, control characters, and oversized values.
+export function sanitizeNextPath(raw: string | null | undefined, fallbackPath: string = DEFAULT_NEXT_PATH) {
+  const candidate = typeof raw === "string" ? raw.trim() : "";
+  if (!candidate || candidate.length > 512) return fallbackPath;
+  if (!candidate.startsWith("/") || candidate.startsWith("//") || candidate.startsWith("/\\")) return fallbackPath;
+  if (candidate.includes("\\")) return fallbackPath;
+  if (/[\u0000-\u001f\u007f]/.test(candidate)) return fallbackPath;
+  if (/^\/[^/?]*:/.test(candidate)) return fallbackPath;
+  return candidate.replace(/\/{2,}/g, "/");
+}
 
 function readStorage(key: string) {
   if (typeof window === "undefined") return null;
@@ -28,11 +42,14 @@ function readStorage(key: string) {
 }
 
 function writeStorage(key: string, value: string | null) {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") return false;
   try {
     if (value === null) window.localStorage.removeItem(key);
     else window.localStorage.setItem(key, value);
-  } catch { /* Storage can be disabled; the UI still remains usable for this session. */ }
+    return true;
+  } catch { /* Storage can be disabled; callers must surface that instead of failing silently. */
+    return false;
+  }
 }
 
 export const demoAuthProvider: AuthProvider = {
@@ -50,7 +67,10 @@ export const demoAuthProvider: AuthProvider = {
       mode: "demo",
       issuedAt: new Date().toISOString(),
     };
-    writeStorage(AUTH_STORAGE_KEY, JSON.stringify(session));
+    const persisted = writeStorage(AUTH_STORAGE_KEY, JSON.stringify(session));
+    if (!persisted) {
+      return { ok: false, error: "This browser is blocking local storage, so the session cannot be kept. Allow storage for this site and try again." };
+    }
     return { ok: true, session };
   },
 };
@@ -60,7 +80,7 @@ export function getAuthSession(): AuthSession | null {
   if (!raw) return null;
   try {
     const parsed = JSON.parse(raw) as Partial<AuthSession>;
-    if (parsed.userId !== "demo-user" || parsed.mode !== "demo" || typeof parsed.email !== "string") return null;
+    if (parsed.userId !== "demo-user" || parsed.mode !== "demo" || typeof parsed.email !== "string" || typeof parsed.displayName !== "string") return null;
     return parsed as AuthSession;
   } catch { return null; }
 }

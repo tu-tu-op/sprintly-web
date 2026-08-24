@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Eye, EyeOff, ArrowLeft, ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { Brand } from "./brand";
-import { DEMO_CREDENTIALS, demoAuthProvider } from "@/lib/sprintly/auth";
+import { DEMO_CREDENTIALS, demoAuthProvider, sanitizeNextPath } from "@/lib/sprintly/auth";
 
 export function SprintlySignIn() {
   const router = useRouter();
@@ -28,7 +28,7 @@ export function SprintlySignIn() {
       return;
     }
     toast.success("Demo Account signed in", { description: "Your Sprintly demo record is ready." });
-    router.replace(params.get("next") || "/app");
+    router.replace(sanitizeNextPath(params.get("next")));
   };
 
   return <main className="grid min-h-dvh bg-[#090909] lg:grid-cols-[.88fr_1.12fr]">

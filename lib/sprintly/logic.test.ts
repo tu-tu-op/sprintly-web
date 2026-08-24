@@ -6,6 +6,8 @@ import { DEMO_SESSIONS } from "./demo-data.ts";
 import { aggregateSessions, computeAchievements, computeCompositeDevScore, filterSessionsByRange, getIsoWeek, getMonthBounds, getPreviousPeriodBounds, getStreakStats, getWeekBounds, sessionCompositeScore } from "./analytics.ts";
 // @ts-expect-error Node's strip-types test runner resolves TypeScript extensions directly.
 import { parseSprintlyImportText } from "./contract.ts";
+// @ts-expect-error Node's strip-types test runner resolves TypeScript extensions directly.
+import { sanitizeNextPath } from "./auth.ts";
 
 test("accepts the v1 contract and skips an existing duplicate", () => {
   const payload = JSON.stringify({ contract: "devstrava.session.v1", schemaVersion: 1, sessions: [DEMO_SESSIONS[0]] });
@@ -144,4 +146,18 @@ test("single-session composite scores stay reproducible", () => {
   const second = sessionCompositeScore(DEMO_SESSIONS[0]);
   assert.equal(first, second);
   assert.ok(first > 0);
+});
+
+test("post-sign-in redirect targets are restricted to internal paths (B10)", () => {
+  assert.equal(sanitizeNextPath("/app/sessions"), "/app/sessions");
+  assert.equal(sanitizeNextPath("/app/sessions?range=week"), "/app/sessions?range=week");
+  assert.equal(sanitizeNextPath(null), "/app");
+  assert.equal(sanitizeNextPath(undefined), "/app");
+  assert.equal(sanitizeNextPath(""), "/app");
+  assert.equal(sanitizeNextPath("https://evil.example/account"), "/app");
+  assert.equal(sanitizeNextPath("//evil.example"), "/app");
+  assert.equal(sanitizeNextPath("/\\evil.example"), "/app");
+  assert.equal(sanitizeNextPath("javascript:alert(1)"), "/app");
+  assert.equal(sanitizeNextPath("/javascript:alert(1)"), "/app");
+  assert.equal(sanitizeNextPath("/app\r\nSet-Cookie: 1"), "/app");
 });
