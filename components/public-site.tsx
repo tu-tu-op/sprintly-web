@@ -5,9 +5,9 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, BarChart3, Check, ChevronRight, Cloud, Code2,
+  ArrowRight, BarChart3, Check, ChevronRight, Cloud, Code2, Gauge,
   EyeOff, FileCode2, Flame, Globe2, HardDrive, LockKeyhole, MousePointer2,
-  Play, ShieldCheck, TerminalSquare, Trophy, UserRoundCheck,
+  Play, ShieldCheck, TerminalSquare, Trophy, UserRoundCheck, Users,
 } from "lucide-react";
 import { PublicNav } from "./public-nav";
 import { Brand } from "./brand";
@@ -109,3 +109,25 @@ export function PrivacyPage() {
 
 const plans=[{name:"Free",price:"$0",note:"For building the habit",features:["Unlimited local sessions","7-day web history","Core streaks & achievements","Manual import and export"],cta:"Start locally"},{name:"Premium",price:"$8",note:"For understanding your craft",features:["Full synchronized history","Advanced analytics","Goals and sprint planning","Shareable session summaries","Optional Sprintly Insights"],cta:"Try Premium",featured:true},{name:"Teams",price:"Soon",note:"For focused engineering groups",features:["Private team challenges","Shared sprint progress","Team privacy controls","No individual surveillance"],cta:"Join waitlist"}];
 export function PricingPage(){return <div className="noise min-h-dvh"><PublicNav/><main className="px-4 py-16 sm:px-6 sm:py-24"><div className="mx-auto max-w-[1120px]"><div className="max-w-3xl"><p className="mono text-xs uppercase tracking-[.2em] text-[#f2f2f2]">Simple plans</p><h1 className="text-balance mt-4 text-4xl font-semibold tracking-[-.055em] sm:text-6xl">Start local. Upgrade when history becomes insight.</h1><p className="mt-6 text-lg text-[#989898]">Core tracking never depends on a subscription or an AI model.</p></div><div className="mt-14 grid gap-3 lg:grid-cols-3">{plans.map((p)=><div key={p.name} className={`panel relative flex min-h-[490px] flex-col p-6 ${p.featured?"border-[#f2f2f2]/50 shadow-[0_24px_80px_rgba(128,128,128,.12)]":""}`}>{p.featured&&<span className="absolute right-5 top-5 rounded-full bg-[#f2f2f2] px-2.5 py-1 text-xs font-semibold text-[#0b0b0b]">Best momentum</span>}<p className="mono text-xs uppercase tracking-[.16em] text-[#8b8b8b]">{p.name}</p><p className="mono mt-8 text-4xl font-semibold tracking-[-.05em]">{p.price}{p.price.startsWith("$")&&<span className="text-sm font-normal text-[#797979]"> / month</span>}</p><p className="mt-3 text-sm text-[#919191]">{p.note}</p><div className="my-7 h-px bg-white/[.08]"/><ul className="space-y-4">{p.features.map(f=><li key={f} className="flex gap-3 text-sm text-[#b7b7b7]"><Check className="size-4 shrink-0 text-[#d0d0d0]"/>{f}</li>)}</ul><Link href="/app" className={`mt-auto inline-flex min-h-12 items-center justify-center rounded-xl text-sm font-semibold ${p.featured?"bg-[#f2f2f2] text-[#0b0b0b]":"border border-white/10 bg-white/[.04] text-[#d7d7d7]"}`}>{p.cta}</Link></div>)}</div><div className="mt-8 flex items-start gap-3 rounded-xl border border-[#d0d0d0]/15 bg-[#d0d0d0]/[.04] p-4 text-sm text-[#a4a4a4]"><ShieldCheck className="mt-0.5 size-4 shrink-0 text-[#d0d0d0]"/><p>Subscription status never changes what the extension records locally. Synchronization categories remain under your control on every plan.</p></div></div></main><Footer/></div>}
+        <section className="border-y border-white/[.07] bg-[#0c0c0c] px-4 py-24 sm:px-6">
+          <div className="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
+            <motion.div {...reveal}>
+              <p className="mono text-xs uppercase tracking-[.2em] text-[#bdbdbd]">The Sprintly loop</p>
+              <h2 className="text-balance mt-4 max-w-xl text-3xl font-semibold tracking-[-.045em] sm:text-5xl">Small signals add up to a body of work.</h2>
+              <p className="mt-5 max-w-lg leading-7 text-[#929292]">Sprintly keeps the feedback loop close to the work: start with intention, review the signal, then decide what deserves another session.</p>
+              <Link href="/product" className="mt-7 inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-[#d0d0d0]">See the product surface <ArrowRight className="size-4" /></Link>
+            </motion.div>
+            <div className="grid gap-3">
+              {[{icon:Play,step:"01",title:"Start with intent",detail:"A session only exists when you choose to begin. The timer is a boundary, not a surveillance layer."},{icon:Gauge,step:"02",title:"Read the signal",detail:"Focus time, rhythm, projects, and streaks turn a vague feeling into something you can actually review."},{icon:Users,step:"03",title:"Share the right slice",detail:"Keep the full record private and publish only the metrics that make sense for your people."}].map(({icon:Icon,step,title,detail},i)=><motion.div key={step} {...reveal} transition={{delay:i*.06}} className="group grid gap-4 rounded-xl border border-white/[.07] bg-white/[.02] p-5 sm:grid-cols-[48px_1fr_auto] sm:items-start"><span className="mono grid size-10 place-items-center rounded-lg bg-white/[.06] text-xs text-[#bdbdbd]">{step}</span><div><h3 className="text-base font-semibold tracking-[-.02em]">{title}</h3><p className="mt-2 max-w-xl text-sm leading-6 text-[#858585]">{detail}</p></div><Icon aria-hidden="true" className="hidden size-5 text-[#8f8f8f] transition-transform group-hover:translate-x-1 sm:mt-1 sm:block" /></motion.div>)}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-4 py-24 sm:px-6">
+          <div className="mx-auto max-w-[1180px]">
+            <motion.div {...reveal} className="max-w-2xl"><p className="mono text-xs uppercase tracking-[.2em] text-[#f2f2f2]">Fits the way you work</p><h2 className="text-balance mt-4 text-3xl font-semibold tracking-[-.045em] sm:text-5xl">One quiet layer for the work behind the work.</h2></motion.div>
+            <div className="mt-10 grid gap-3 md:grid-cols-3">
+              {[{k:"DEEP WORK",t:"Protect the session",d:"A clear start and stop makes it easier to enter focus without turning focus into a performance."},{k:"WEEKLY REVIEW",t:"See the shape of a week",d:"Use trends and project breakdowns to notice what is moving, what is stuck, and what to change next."},{k:"DEVELOPER IDENTITY",t:"Carry proof forward",d:"Build a durable record of consistency that belongs to you, whether or not you share it publicly."}].map(({k,t,d},i)=><motion.div key={k} {...reveal} transition={{delay:i*.06}} className="panel min-h-[220px] p-6"><p className="mono text-[10px] tracking-[.18em] text-[#737373]">{k}</p><h3 className="mt-16 text-xl font-semibold tracking-[-.025em]">{t}</h3><p className="mt-3 text-sm leading-6 text-[#8e8e8e]">{d}</p></motion.div>)}
+            </div>
+          </div>
+        </section>
