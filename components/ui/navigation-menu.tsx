@@ -12,7 +12,9 @@ import { FlowButton } from "@/components/ui/flow-button";
 
 const navItems = [
   { name: "Home", href: "/" },
+  { name: "Product", href: "/product" },
   { name: "How it works", href: "/how-it-works" },
+  { name: "For teams", href: "/for-teams", mobileHidden: true },
   { name: "Pricing", href: "/pricing" },
   { name: "Sign in", href: "/sign-in", mobileHidden: true },
   { name: "Get Started", href: "/app" },
