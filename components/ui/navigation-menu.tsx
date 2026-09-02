@@ -14,6 +14,7 @@ const navItems = [
   { name: "Home", href: "/" },
   { name: "Product", href: "/product" },
   { name: "How it works", href: "/how-it-works" },
+  { name: "Leaderboard", href: "/app/community" },
   { name: "For teams", href: "/for-teams", mobileHidden: true },
   { name: "Pricing", href: "/pricing" },
   { name: "Sign in", href: "/sign-in", mobileHidden: true },

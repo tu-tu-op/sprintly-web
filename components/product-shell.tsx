@@ -33,6 +33,7 @@ const commands = [
   { label: "Open workspace", hint: "G W", href: "/app/workspace", icon: Target },
   { label: "View recap", hint: "G A", href: "/app/analytics", icon: BarChart3 },
   { label: "View achievements", hint: "G H", href: "/app/achievements", icon: Trophy },
+  { label: "View leaderboard", hint: "G L", href: "/app/community", icon: UsersRound },
   { label: "Create a goal", hint: "N G", href: "/app/goals", icon: Goal },
   { label: "Search sessions", hint: "G S", href: "/app/sessions", icon: Search },
   { label: "Open settings", hint: "G ,", href: "/app/settings", icon: Settings },
