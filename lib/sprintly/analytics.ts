@@ -252,7 +252,10 @@ export function filterSessionsByRange(sessions: SprintlySession[], range: DateRa
       return key >= start && key <= end;
     });
   }
-  return sessions.filter((session) => dateKey(session.startedAt, timeZone) >= from && dateKey(session.startedAt, timeZone) <= today);
+  return sessions.filter((session) => {
+    const key = dateKey(session.startedAt, timeZone);
+    return key >= from && key <= today;
+  });
 }
 
 export function getStreakStats(sessions: SprintlySession[], referenceDate = new Date(), timeZone?: string): StreakStats {
