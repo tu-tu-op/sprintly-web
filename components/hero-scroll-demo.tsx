@@ -113,7 +113,7 @@ export function HeroScrollDemo({ titleComponent, afterComponent }: HeroScrollDem
                 fill
                 sizes="(max-width: 768px) 100vw, 1024px"
                 className="object-cover object-center opacity-45"
-                priority={false}
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/30 via-[#0a0a0a]/25 to-[#0a0a0a]/95" />
               <div className="absolute right-4 top-4 rounded-full border border-white/10 bg-[#101010]/80 px-3 py-1.5 text-[10px] text-[#bdbdbd] backdrop-blur-md sm:right-7 sm:top-7">
