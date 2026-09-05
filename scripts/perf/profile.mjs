@@ -9,7 +9,7 @@ import * as chromeLauncher from '../../.performance/tools/node_modules/chrome-la
 const label = process.argv[2] || 'baseline';
 const mode = process.argv[3] || 'full';
 const root = process.cwd();
-const app = path.join(root, '.performance/app');
+const app = process.env.PERF_APP_DIR || path.join(root, '.performance/app');
 const out = path.join(root, '.performance/results', label);
 fs.mkdirSync(out, { recursive: true });
 const base = 'http://127.0.0.1:3100';

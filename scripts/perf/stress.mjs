@@ -14,7 +14,7 @@ const records = Array.from({length:500}, (_,i) => {
   const start = now.getTime() - (i % 7) * 86400000;
   return {record:{...record,sessionId:`stress-${i}`,startedAt:new Date(start).toISOString(),endedAt:new Date(start+record.activeDurationSeconds*1000).toISOString()},source:'imported',importedAt:now.toISOString(),verified:false};
 });
-const server = spawn(process.execPath, [path.join(root,'node_modules/next/dist/bin/next'),'start','-p','3101'], {cwd:path.join(root,'.performance/app'),windowsHide:true,stdio:'ignore'});
+const server = spawn(process.execPath, [path.join(root,'node_modules/next/dist/bin/next'),'start','-p','3101'], {cwd:process.env.PERF_APP_DIR || path.join(root,'.performance/app'),windowsHide:true,stdio:'ignore'});
 const wait = ms => new Promise(r=>setTimeout(r,ms));
 let browser;
 const results = {label,sessions:records.length,actions:[]};

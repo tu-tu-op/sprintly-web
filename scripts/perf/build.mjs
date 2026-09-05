@@ -3,13 +3,13 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const root = process.cwd();
-const target = path.join(root, '.performance', 'app');
+const target = process.env.PERF_APP_DIR || path.join(root, '.performance', 'app');
 fs.mkdirSync(target, { recursive: true });
-for (const entry of ['app', 'components', 'lib', 'public', 'package.json', 'tsconfig.json', 'postcss.config.mjs', 'next-env.d.ts']) {
+for (const entry of process.env.PERF_APP_DIR ? [] : ['app', 'components', 'lib', 'public', 'package.json', 'tsconfig.json', 'postcss.config.mjs', 'next-env.d.ts', '.gitignore']) {
   fs.cpSync(path.join(root, entry), path.join(target, entry), { recursive: true, preserveTimestamps: true });
 }
 if (!fs.existsSync(path.join(target, 'node_modules'))) fs.symlinkSync(path.join(root, 'node_modules'), path.join(target, 'node_modules'), 'junction');
-const config = fs.readFileSync(path.join(root, 'next.config.ts'), 'utf8');
+const config = fs.readFileSync(path.join(process.env.PERF_APP_DIR || root, 'next.config.ts'), 'utf8');
 const instrumentedConfig = config.replace('export default nextConfig;', `
 const previousWebpack = nextConfig.webpack;
 nextConfig.webpack = (config, context) => {
