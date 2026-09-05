@@ -299,9 +299,15 @@ export function computeAchievements(sessions: SprintlySession[], streaks = getSt
   const aggregate = aggregateSessions(sessions);
   const tests = aggregate.terminal.test;
   const terminal = aggregate.terminal.totalCommands;
-  const weekendSessions = sessions.filter((session) => zonedClock(session.startedAt, timeZone).weekday === 0 || zonedClock(session.startedAt, timeZone).weekday === 6).length;
-  const nightSessions = sessions.filter((session) => zonedClock(session.startedAt, timeZone).hour >= 21).length;
-  const earlySessions = sessions.filter((session) => zonedClock(session.startedAt, timeZone).hour < 8).length;
+  let weekendSessions = 0;
+  let nightSessions = 0;
+  let earlySessions = 0;
+  for (const session of sessions) {
+    const { weekday, hour } = zonedClock(session.startedAt, timeZone);
+    if (weekday === 0 || weekday === 6) weekendSessions += 1;
+    if (hour >= 21) nightSessions += 1;
+    if (hour < 8) earlySessions += 1;
+  }
   const recovered = aggregate.reliability.recoveredFailures;
   const aiShare = aggregate.coding.aiAssistedPercent;
   const hasRecord = sessions.length > 0;
