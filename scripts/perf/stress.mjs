@@ -8,7 +8,7 @@ const label = process.argv[2] || 'baseline';
 const root = process.cwd(), base = 'http://127.0.0.1:3101';
 const out = path.join(root, '.performance/results', label);
 fs.mkdirSync(out, {recursive:true});
-const now = new Date(); now.setHours(12,0,0,0);
+const now = new Date('2026-09-05T12:00:00+05:30');
 const records = Array.from({length:500}, (_,i) => {
   const record = DEMO_SESSIONS[i % DEMO_SESSIONS.length];
   const start = now.getTime() - (i % 7) * 86400000;
@@ -38,6 +38,9 @@ try {
     window.requestAnimationFrame=fn=>{window.__stress.raf++;return raf(fn);};
   },records);
   const page=await context.newPage();
+  // Hold calendar ranges constant across midnight; timers and performance.now
+  // continue in real time so interaction measurements remain meaningful.
+  await page.clock.setFixedTime(now);
   const cdp=await context.newCDPSession(page);
   await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
