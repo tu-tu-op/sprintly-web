@@ -15,7 +15,7 @@ import { Brand } from "./brand";
 const HeroScrollDemo = dynamic(
   () => import("./hero-scroll-demo").then(({ HeroScrollDemo }) => HeroScrollDemo),
   {
-    ssr: false,
+    ssr: true,
     loading: () => <div aria-hidden="true" className="min-h-[56rem] md:min-h-[72rem]" />,
   },
 );
@@ -40,7 +40,7 @@ export function HomePage() {
           <div className="absolute left-1/2 top-0 -z-10 h-[520px] w-[760px] -translate-x-1/2 rounded-full bg-[#f2f2f2]/[.08] blur-[110px]" />
           <HeroScrollDemo
             titleComponent={
-              <motion.div {...reveal} className="mx-auto max-w-[920px] px-3 text-center">
+              <motion.div {...reveal} initial={false} className="mx-auto max-w-[920px] px-3 text-center">
                 <h1 className="text-balance text-[clamp(2.8rem,7vw,6.25rem)] font-semibold leading-[.94] tracking-[-.065em]">Make your coding<br /><span className="bg-gradient-to-r from-[#f4f2ed] via-[#9b8cff] to-[#32c7d9] bg-clip-text text-transparent">progress visible.</span></h1>
               </motion.div>
             }
