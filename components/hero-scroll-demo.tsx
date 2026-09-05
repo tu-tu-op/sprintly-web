@@ -15,10 +15,8 @@ type HeroScrollDemoProps = {
   afterComponent?: ReactNode;
 };
 
-const imageIcon = (src: string) => (props: React.SVGProps<SVGSVGElement>) => (
-  <svg {...props} viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg">
-    <image href={src} x="0" y="0" width="1" height="1" preserveAspectRatio="xMidYMid meet" />
-  </svg>
+const imageIcon = (src: string) => ({ className, "aria-hidden": ariaHidden }: React.SVGProps<SVGSVGElement>) => (
+  <Image src={src} alt="" width={40} height={40} sizes="40px" className={className} aria-hidden={ariaHidden} />
 );
 
 const IconGitHub = (props: React.SVGProps<SVGSVGElement>) => (
