@@ -32,3 +32,6 @@ next-env.d.ts
 
 # local dev server output
 .next-dev*.log
+
+# Isolated performance builds, tools and raw browser traces
+/.performance/
