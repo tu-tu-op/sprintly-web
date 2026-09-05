@@ -69,6 +69,7 @@ try {
   }
   await page.goto(base+'/app/settings',{waitUntil:'load'});await page.locator('h1').waitFor({state:'visible'});await wait(1000);
   results.settingsButtons=await page.getByRole('button').allTextContents();
+  await action('togglePreference',()=>page.getByRole('switch').first().click());
   await action('idleSettings1s',()=>wait(1000));
   await cdp.send('HeapProfiler.collectGarbage');results.heapBefore=(await cdp.send('Runtime.getHeapUsage')).usedSize;
   for(let i=0;i<5;i++)for(const route of ['/app/analytics','/app/settings']){await page.locator(`nav a[href="${route}"]`).first().click();await page.waitForURL(base+route);await wait(200);}
