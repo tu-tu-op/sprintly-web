@@ -23,6 +23,14 @@ try {
   browser=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
   const context=await browser.newContext({viewport:{width:1365,height:900}});
   await context.addInitScript(records=>{
+    // Freeze Date only. Keep native timers and RAF so their work is measured.
+    const NativeDate = Date;
+    const fixedNow = NativeDate.parse('2026-09-05T12:00:00+05:30');
+    window.Date = new Proxy(NativeDate, {
+      construct(target, args) { return Reflect.construct(target, args.length ? args : [fixedNow]); },
+      apply() { return new NativeDate(fixedNow).toString(); },
+      get(target, property, receiver) { return property === 'now' ? () => fixedNow : Reflect.get(target, property, receiver); },
+    });
     localStorage.setItem('sprintly:auth:v1',JSON.stringify({userId:'demo-user',email:'demo@sprintly.local',displayName:'Alex Rivera',mode:'demo',issuedAt:new Date().toISOString()}));
     localStorage.setItem('sprintly:demo-user:sessions:v1',JSON.stringify(records));
     window.__stress={dateFormatters:0,numberFormatters:0,dateParts:0,writes:0,writeBytes:0,raf:0};
@@ -38,9 +46,6 @@ try {
     window.requestAnimationFrame=fn=>{window.__stress.raf++;return raf(fn);};
   },records);
   const page=await context.newPage();
-  // Hold calendar ranges constant across midnight; timers and performance.now
-  // continue in real time so interaction measurements remain meaningful.
-  await page.clock.setFixedTime(now);
   const cdp=await context.newCDPSession(page);
   await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));

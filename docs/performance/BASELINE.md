@@ -1,117 +1,107 @@
 # Baseline performance report
 
-Source revision: 88e6156. Application code was unchanged for these measurements. Captured 2026-09-05 on Windows, Chrome 152.0.7977.77, Next 15.5.23, production build. No pre-existing skills were used.
+Original application revision: 88e6156. This controlled rerun uses a detached Git worktree with its original ignore rules. The initial report, captured before any fixes, is preserved in [INITIAL-CAPTURE.md](INITIAL-CAPTURE.md). An isolation mistake in that initial capture let Tailwind scan generated output; its large CSS/build-time figures are excluded from final real-site claims.
 
-## Method and limits
+## Conditions
 
-Lighthouse 12.8.2: three fresh Chrome profiles, desktop 1365 × 900, 4× CPU slowdown, 1.6 Mbps download, 750 Kbps upload, 40 ms configured latency, DevTools throttling. TTFB measurements are local loopback responses, not deployed-origin latency. Lighthouse diagnostic TTI is retained in JSON even though modern Lighthouse no longer includes it in the score.
+Windows; Chrome 152.0.7977.77; Next 15.5.23 production; Lighthouse 12.8.2; Playwright 1.63.0; webpack-bundle-analyzer 5.3.2. Desktop viewport 1365×900, DPR 1, 4× CPU slowdown, 1.6 Mbps download, 750 Kbps upload, 40 ms configured network latency. Three independent Lighthouse profiles. All network origins are local loopback: server TTFB cannot establish deployed-origin or CDN performance.
 
-Chrome DevTools Protocol captured Network responses, JavaScript coverage, a Performance trace and screenshots. Route bundles come from production webpack manifests; the table includes each route and its ancestor layouts, counts shared files once, and includes CSS. Raw, gzip and Brotli sizes are recorded in measurements/baseline.json; gzip is what the local server actually sends. Dynamic post-hydration chunks and speculative prefetch bytes are additional.
+Each browser cold load uses a new context. Local demo authentication is seeded only into test contexts. Initial visible loads use CDP Performance, Network and JS coverage; homepage traces can be opened in Chrome DevTools Performance. A real link click, changed visible h1 and two animation frames define a transition. Timings include browser-automation dispatch, so compare the identical method. Browser route observations are single samples; Lighthouse uses medians.
 
-Production server starts in about 1.0 s. Server samples are five warm requests per static route. Browser load and transition figures below are single diagnostic runs; Lighthouse has three runs. Transition timings include real Playwright click dispatch, URL change, a changed visible h1 and two animation frames. They are not pure framework-router timings.
-
-The large-history browser fixture has 500 submitted records; the real validator retains eligible records and the selected calendar range further filters them. The independent CPU benchmark has 3,000 records, seven timed repetitions after warm-up, fixed 2026-09-05 date and Asia/Kolkata zone. Do not compare these CPU milliseconds to throttled browser measurements.
-
-## Lighthouse homepage baseline
+## Homepage Lighthouse
 
 | Metric | Median |
 |---|---:|
-| Performance score | 75 |
-| FCP (ms) | 1098.6 |
-| LCP (ms) | 2872.5 |
-| TTI (ms) | 2165 |
-| TBT (ms) | 143.3 |
+| Performance score | 77 |
+| FCP ms | 969.6 |
+| LCP ms | 2879.5 |
+| TTI ms | 2187 |
+| Blocking time ms | 115.7 |
 | CLS | 0 |
 
-The LCP element is the hero photograph. In run 2, 2,156 ms (75%) is image discovery delay; 664 ms is transfer time. It is inside an ssr:false component and is loading=lazy despite appearing in the initial viewport. Lighthouse reports 1,784,904 transferred bytes; the decorative Kiro PNG alone is 1,366,812 bytes. Short-window CDP transfer totals can exclude image bodies still downloading; use Lighthouse total-byte-weight for the complete transfer budget.
+TTI is the diagnostic interactive value retained in Lighthouse JSON, not a component of its current score. The LCP photograph waits for a client-only component and is lazy-loaded even though visible. The 1,366,812-byte Kiro icon uses an unoptimized SVG image. The original correctly scoped production CSS is 77,769 bytes. The initial isolation experiment reported 110,816 bytes, which is not the original real-site budget.
 
-## Initial browser loads
+## Cold loads
 
-| Route | TTFB ms | FCP ms | LCP ms | Evaluated JS bytes |
+| Route | TTFB ms | FCP ms | LCP ms | JS evaluated bytes |
 |---|---:|---:|---:|---:|
-| / | 4.4 | 1036 | 3280 | 684734 |
-| /product | 4.6 | 1068 | 2268 | 905316 |
-| /pricing | 3.7 | 892 | 892 | 884656 |
-| /sign-in | 5.6 | 672 | 1592 | 749259 |
-| /app | 5.4 | 2680 | 2680 | 1434938 |
-| /app/sessions | 3.6 | 2408 | 2408 | 1035877 |
-| /app/analytics | 4.1 | 2472 | 2472 | 1035882 |
-| /app/settings | 4.1 | 2392 | 2392 | 1035825 |
+| / | 5.2 | 928 | 3480 | 684223 |
+| /product | 7.6 | 868 | 2300 | 904805 |
+| /pricing | 3.9 | 776 | 776 | 884145 |
+| /sign-in | 3.5 | 512 | 1536 | 748748 |
+| /app | 4.0 | 2552 | 2552 | 1434425 |
+| /app/sessions | 3.3 | 2332 | 2332 | 1035364 |
+| /app/analytics | 3.8 | 2412 | 2412 | 1035369 |
+| /app/settings | 4.5 | 2392 | 2392 | 1035312 |
 
-## Every menu transition exercised
+## Menu transitions
 
-| From | To | Click to visible heading ms | Document reload |
+| From | To | Click-to-heading ms | Full reload |
 |---|---|---:|---|
-| / | /product | 567.7 | Yes |
-| /product | /how-it-works | 396.7 | Yes |
-| /how-it-works | /for-teams | 398.8 | Yes |
-| /for-teams | /pricing | 373.2 | Yes |
-| /pricing | /sign-in | 436.2 | Yes |
-| /app | /app/workspace | 963.8 | No |
-| /app/workspace | /app/sessions | 138.5 | No |
-| /app/sessions | /app/analytics | 199.1 | No |
-| /app/analytics | /app/achievements | 222.6 | No |
-| /app/achievements | /app/goals | 247.7 | No |
-| /app/goals | /app/profile | 198.4 | No |
-| /app/profile | /app/community | 156.9 | No |
-| /app/community | /app/settings | 173.8 | No |
-| /app/settings | /app/billing | 184.5 | No |
-| /app/billing | /app | 334.8 | No |
+| / | /product | 534.0 | Yes |
+| /product | /how-it-works | 352.9 | Yes |
+| /how-it-works | /for-teams | 358.5 | Yes |
+| /for-teams | /pricing | 330.4 | Yes |
+| /pricing | /sign-in | 435.7 | Yes |
+| /app | /app/workspace | 986.0 | No |
+| /app/workspace | /app/sessions | 128.3 | No |
+| /app/sessions | /app/analytics | 175.8 | No |
+| /app/analytics | /app/achievements | 197.4 | No |
+| /app/achievements | /app/goals | 191.5 | No |
+| /app/goals | /app/profile | 211.5 | No |
+| /app/profile | /app/community | 148.8 | No |
+| /app/community | /app/settings | 134.5 | No |
+| /app/settings | /app/billing | 153.0 | No |
+| /app/billing | /app | 316.9 | No |
 
-## Bundle and server inventory
+## Route bundle inventory
 
-| Route | Raw JS + CSS bytes | Gzip bytes | Warm TTFB median ms |
+Raw/gzip totals include JS and CSS for the route plus ancestor layouts, counting shared chunks once. Async hydration chunks and prefetch downloads are additional and appear in JS-coverage/network results. Server latency is the median of five warm responses.
+
+| Route | Raw bytes | Gzip bytes | Server TTFB ms |
 |---|---:|---:|---:|
-| /_not-found | 500866 | 134745 | 5.0 |
-| /account-recovery | 776613 | 222495 | 4.9 |
-| /create-account | 776613 | 222495 | 2.3 |
-| /leaderboard | 500866 | 134745 | 4.4 |
-| /onboarding | 776596 | 222485 | 2.2 |
-| /forgot-password | 776613 | 222495 | 2.5 |
-| / | 688339 | 196877 | 2.8 |
-| /share/[id] | 596433 | 162588 | Dynamic parameter required |
-| /profile/[handle] | 733450 | 207609 | Dynamic parameter required |
-| /verify-email | 776613 | 222495 | 3.5 |
-| /for-teams | 675223 | 192384 | 3.3 |
-| /how-it-works | 688339 | 196876 | 2.7 |
-| /product | 675223 | 192385 | 2.4 |
-| /pricing | 688339 | 196876 | 2.7 |
-| /privacy | 688339 | 196876 | 2.7 |
-| /sign-in | 521397 | 142571 | 2.4 |
-| /app | 788107 | 224498 | 2.1 |
-| /app/achievements | 851633 | 248299 | 2.3 |
-| /app/analytics | 856937 | 249715 | 2.2 |
-| /app/billing | 850001 | 247102 | 3.1 |
-| /app/profile | 862842 | 251227 | 2.7 |
-| /app/community | 859148 | 250373 | 2.5 |
-| /app/goals | 850173 | 247123 | 2.6 |
-| /app/sessions/[id] | 857056 | 249649 | Dynamic parameter required |
-| /app/sessions | 866074 | 251920 | 2.2 |
-| /app/workspace | 854995 | 248469 | 3.0 |
-| /app/settings | 868965 | 252587 | 2.3 |
-| /app/share | 860556 | 250820 | 2.2 |
+| /_not-found | 468343 | 128308 | 4.2 |
+| /account-recovery | 744090 | 216058 | 4.1 |
+| /create-account | 744090 | 216058 | 2.3 |
+| /forgot-password | 744090 | 216058 | 1.9 |
+| /onboarding | 744069 | 216046 | 2.0 |
+| / | 655816 | 190440 | 2.5 |
+| /leaderboard | 468343 | 128308 | 3.6 |
+| /profile/[handle] | 700927 | 201174 | Parameterized route |
+| /share/[id] | 563912 | 156149 | Parameterized route |
+| /for-teams | 642698 | 185948 | 2.8 |
+| /how-it-works | 655816 | 190440 | 2.2 |
+| /privacy | 655816 | 190439 | 2.3 |
+| /product | 642700 | 185948 | 2.5 |
+| /pricing | 655816 | 190440 | 2.3 |
+| /verify-email | 744090 | 216058 | 2.0 |
+| /sign-in | 488874 | 136135 | 1.8 |
+| /app/billing | 817478 | 240664 | 2.3 |
+| /app/analytics | 824414 | 243281 | 2.3 |
+| /app | 755584 | 218060 | 2.1 |
+| /app/achievements | 819108 | 241864 | 1.9 |
+| /app/profile | 830319 | 244792 | 2.6 |
+| /app/goals | 817648 | 240684 | 1.8 |
+| /app/share | 828035 | 244384 | 2.2 |
+| /app/sessions/[id] | 824533 | 243213 | Parameterized route |
+| /app/settings | 836442 | 246150 | 2.3 |
+| /app/sessions | 833551 | 245483 | 2.2 |
+| /app/community | 826627 | 243936 | 2.3 |
+| /app/workspace | 822470 | 242031 | 2.2 |
 
-## Confirmed causes and existing good behavior
+## CPU and interaction findings
 
-- Marketing menu uses motion.a: five measured transitions caused five document reloads (373–568 ms). Product menu already uses client routing; retain it.
-- Client-only hero defers both the main heading and image discovery. The LCP photograph is incorrectly lazy-loaded.
-- A 1.37 MB decorative icon bypasses Next image optimization. Other raster icon assets also use SVG image elements.
-- Product shell schedules every product route for idle prefetch and also uses default viewport and hover prefetch. A settings visit evaluates about 1.04 MB of JS after hydration; this is more than its route needs.
-- Opening import with a large history takes 1,089 ms: 642 DateTimeFormat constructions and 699 formatToParts calls. Closing takes 862 ms. Returning to sessions takes 1,540 ms. DOM reaches 7,719 elements with All time.
-- Date filtering repeats conversion for the same record. Achievements scan and format each timestamp up to four times. Weekly personal records repeatedly copy growing arrays. Sorting scores builds full aggregates inside the comparator.
-- Data hydration writes four storage resources (359,532 characters in the stress fixture), even without a user change.
-- Settings schedules 305 animation frames during one idle second; the global Lenis loop is a contributor.
-- Ten alternating analytics/settings visits grow collected JS heap from 7.55 MB to 8.43 MB. This alone does not establish a leak: route and framework caches can grow normally. Longer plateau checks will be used for the final audit.
-- Fonts are already self-hosted, preloaded, WOFF2 and display:swap with metric fallbacks. Leave the font strategy in place.
-- Production JS/CSS is already minified and tree-shaken. Static hashed assets send gzip and Cache-Control: public, max-age=31536000, immutable. Do not duplicate these controls.
-- Next already provides route splitting; Recharts is already dynamically imported. Installed packages are not automatically transferred bytes; do not remove dependencies merely because package.json lists them.
-- The project is browser-local demo data with no API/database layer and no analytics/chat/ad scripts. No N+1 query, database index, query-cache library or third-party deferral change is justified. No deployment target is configured, so CDN and real-origin cold starts remain unverified.
+The independent, fixed-date 3,000-session CPU baseline is in measurements/baseline-cpu.json: date filtering 28.43 ms, achievement classification 59.09 ms, personal records 26.65 ms and score sorting 75.18 ms (seven samples after warm-up). Browser stress measurements use a 500-record fixture through the real validator and a fixed September 5 calendar. Two original demo templates fail validation; the fixture retains 374 valid records and 321 rows in the week view. This validation behavior was not changed.
 
-## Reproduce and inspect
+Opening the import dialog originally rebuilt every visible row, hundreds of Intl formatters and all filtering/aggregation results. All-time history rendered thousands of DOM nodes. Product shells prefetched all destinations even on settings visits. Data loading rewrote all four resources; preference changes rewrote unchanged session history too. A global smooth-scroll loop scheduled animation frames while settings was idle.
 
-Install tools separately: npm install --prefix .performance/tools --no-save --package-lock=false --ignore-scripts playwright lighthouse webpack-bundle-analyzer. Then run node scripts/perf/build.mjs; node scripts/perf/profile.mjs LABEL full; node --experimental-strip-types scripts/perf/cpu.mjs LABEL; node --experimental-strip-types scripts/perf/stress.mjs LABEL. The build uses a disposable source copy and shares installed dependencies, preserving the existing dev server.
+## Already working; retained
 
-Raw Lighthouse HTML/JSON, Chrome trace, JS coverage, Network captures, screenshots and the interactive webpack report are under .performance/results/baseline* (ignored because of size). Compact measurement JSON is committed beside this report. The package-manager build shortcut hits a pre-existing Sharp approval configuration error, so profiling directly invokes the installed Next CLI. Sandbox setup failed before executing commands; authorized commands and apply_patch ran through the escalation path.
+Client routing already works inside the product. Next already splits routes, and Recharts is dynamically imported. Fonts are self-hosted WOFF2, preloaded and display:swap. Production JS/CSS is minified/tree-shaken, static hashes receive gzip and Cache-Control: public, max-age=31536000, immutable. There is no database/API or analytics/chat/ad script in this local demo. No database indexes, query-cache dependency, blanket memoization, font replacement or manual compression server were added. CDN behavior and production cold starts are unverified because no deployment was placed in scope.
 
-Sources for metric interpretation: [Chrome Lighthouse TTI change](https://developer.chrome.com/blog/lighthouse-10-0?hl=en), [Next client navigation](https://nextjs.org/docs/app/getting-started/linking-and-navigating).
+## Reproduce
+
+Install isolated tools: npm install --prefix .performance/tools --no-save --package-lock=false --ignore-scripts playwright@1.63.0 lighthouse@12.8.2 webpack-bundle-analyzer@5.3.2. Run node scripts/perf/build.mjs, then node scripts/perf/profile.mjs LABEL full and node --experimental-strip-types scripts/perf/stress.mjs LABEL. CPU: node --experimental-strip-types scripts/perf/cpu.mjs LABEL. For the original worktree set PERF_APP_DIR to .performance/original using its absolute path. Profile outputs and interactive bundle reports are under .performance/results; compact measurements are committed here.
+
+Use [Lighthouse metric documentation](https://developer.chrome.com/blog/lighthouse-10-0?hl=en) and [Next client-navigation documentation](https://nextjs.org/docs/app/getting-started/linking-and-navigating) to interpret the metrics. No pre-existing skill files were used.
 
