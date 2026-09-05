@@ -28,13 +28,17 @@ try {
     await wait(500);
   }
   const manifest = JSON.parse(fs.readFileSync(path.join(app, '.next/app-build-manifest.json')));
+  const assetSizes = new Map();
   for (const [route, files] of Object.entries(manifest.pages)) {
     if (!route.endsWith('/page')) continue;
     const pathname = route.replace(/\/page$/, '') || '/';
     const chunks = [...new Set([...manifest.pages['/layout'], ...files, ...(pathname.startsWith('/app') ? manifest.pages['/app/layout'] || [] : [])])];
     summary.routes[pathname] = { chunks: chunks.map(file => {
+      if (assetSizes.has(file)) return assetSizes.get(file);
       const data = fs.readFileSync(path.join(app, '.next', file));
-      return { file, bytes: data.length, gzip: gzipSync(data).length, brotli: brotliCompressSync(data).length };
+      const sizes = { file, bytes: data.length, gzip: gzipSync(data).length, brotli: brotliCompressSync(data).length };
+      assetSizes.set(file, sizes);
+      return sizes;
     }) };
     const item = summary.routes[pathname];
     for (const field of ['bytes', 'gzip', 'brotli']) item[field] = item.chunks.reduce((sum, chunk) => sum + chunk[field], 0);
