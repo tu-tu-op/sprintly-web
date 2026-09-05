@@ -8,6 +8,7 @@ import * as chromeLauncher from '../../.performance/tools/node_modules/chrome-la
 
 const label = process.argv[2] || 'baseline';
 const mode = process.argv[3] || 'full';
+const comprehensive = mode === 'full' || mode === 'routes';
 const root = process.cwd();
 const app = process.env.PERF_APP_DIR || path.join(root, '.performance/app');
 const out = path.join(root, '.performance/results', label);
@@ -76,7 +77,7 @@ try {
     await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 40, downloadThroughput: 200000, uploadThroughput: 93750, connectionType: 'cellular4g' });
     return { context, page, cdp };
   }
-  const loadRoutes = mode === 'lighthouse' ? [] : mode === 'full' ? ['/', '/product', '/pricing', '/sign-in', '/app', '/app/sessions', '/app/analytics', '/app/settings'] : ['/'];
+  const loadRoutes = mode === 'lighthouse' ? [] : comprehensive ? ['/', '/product', '/pricing', '/sign-in', '/app', '/app/sessions', '/app/analytics', '/app/settings'] : ['/'];
   for (const route of loadRoutes) {
     const {context, page, cdp} = await contextPage();
     const network = [], errors = [];
@@ -87,7 +88,7 @@ try {
     if (route === '/') await cdp.send('Tracing.start', { categories: 'devtools.timeline,v8.execute,blink.user_timing,loading,disabled-by-default-v8.cpu_profiler', transferMode: 'ReturnAsStream' });
     await page.goto(base + route, { waitUntil: 'load', timeout: 90000 });
     await page.locator('h1').first().waitFor({ state: 'visible', timeout: 30000 });
-    await wait(mode === 'full' ? 6000 : 3000);
+    await wait(comprehensive ? 6000 : 3000);
     const metrics = await page.evaluate(() => {
       const nav = performance.getEntriesByType('navigation')[0];
       const resources = performance.getEntriesByType('resource');
@@ -114,7 +115,7 @@ try {
     console.log(JSON.stringify({ load: route, ttfb: metrics.ttfb, fcp: metrics.fcp, lcp: metrics.lcp, js: metrics.jsBytes, network: metrics.networkBytes, errors }));
     await context.close();
   }
-  const sequences = mode === 'full' ? [
+  const sequences = comprehensive ? [
     ['/', '/product', '/how-it-works', '/for-teams', '/pricing', '/sign-in'],
     ['/app', '/app/workspace', '/app/sessions', '/app/analytics', '/app/achievements', '/app/goals', '/app/profile', '/app/community', '/app/settings', '/app/billing', '/app'],
   ] : mode === 'lighthouse' ? [] : [['/', '/product', '/how-it-works', '/for-teams', '/pricing']];
