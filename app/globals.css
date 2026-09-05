@@ -1,4 +1,7 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+@source "./";
+@source "../components";
+@source "../lib";
 
 :root {
   --font-sans: var(--font-src-sans), "IBM Plex Sans Variable";

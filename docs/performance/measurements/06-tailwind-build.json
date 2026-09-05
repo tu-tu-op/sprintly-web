@@ -1,0 +1,5 @@
+{
+  "before": { "webpackMs": 161449.494, "nextBuildMs": 178249.914, "globalCssMs": 156458.185, "cssBytes": 110816 },
+  "after": { "webpackMs": 8234.865, "nextBuildMs": 25285.217, "globalCssMs": 3088.974, "cssBytes": 77529 },
+  "source": "Next production build traces; before is the preceding client-navigation build; after is the explicit-source build. Isolated profiling artifacts amplify the default scanner's cost."
+}
