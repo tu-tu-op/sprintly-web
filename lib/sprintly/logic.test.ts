@@ -9,6 +9,21 @@ import { parseSprintlyImportText } from "./contract.ts";
 // @ts-expect-error Node's strip-types test runner resolves TypeScript extensions directly.
 import { sanitizeNextPath } from "./auth.ts";
 
+// @ts-expect-error Node's strip-types runner resolves TypeScript extensions.
+import { computePersonalRecords } from "./analytics.ts";
+
+test("personal records preserve the baseline and handle a dense history", () => {
+  assert.deepEqual(computePersonalRecords(DEMO_SESSIONS, { current: 0, longest: 7, activeDays: [] }, "Asia/Kolkata"), {
+    longestSessionSeconds: 7980, bestFocus: 94, bestRecovery: 100,
+    bestWeeklyDevScore: 851, longestStreak: 7, mostSessionsInWeek: 7,
+    mostTestsInSession: 7, highestShippingActivity: 15,
+  });
+  const dense = Array.from({ length: 150_000 }, () => DEMO_SESSIONS[0]);
+  const records = computePersonalRecords(dense, { current: 0, longest: 1, activeDays: [] }, "UTC");
+  assert.equal(records.mostSessionsInWeek, dense.length);
+  assert.equal(records.bestWeeklyDevScore, DEMO_SESSIONS[0].scores.devScore);
+});
+
 test("accepts the v1 contract and skips an existing duplicate", () => {
   const payload = JSON.stringify({ contract: "devstrava.session.v1", schemaVersion: 1, sessions: [DEMO_SESSIONS[0]] });
   const result = parseSprintlyImportText(payload, new Set([DEMO_SESSIONS[0].sessionId]));

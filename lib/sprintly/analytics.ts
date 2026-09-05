@@ -333,23 +333,29 @@ export function computeAchievements(sessions: SprintlySession[], streaks = getSt
 }
 
 export function computePersonalRecords(sessions: SprintlySession[], streaks = getStreakStats(sessions), timeZone?: string): PersonalRecords {
-  const byWeek = new Map<string, SprintlySession[]>();
+  const byWeek = new Map<string, { count: number; score: number }>();
+  const records: PersonalRecords = {
+    longestSessionSeconds: 0, bestFocus: 0, bestRecovery: 0,
+    bestWeeklyDevScore: 0, longestStreak: streaks.longest,
+    mostSessionsInWeek: 0, mostTestsInSession: 0, highestShippingActivity: 0,
+  };
   for (const session of sessions) {
     const week = getIsoWeek(session.startedAt, timeZone);
-    byWeek.set(week, [...(byWeek.get(week) ?? []), session]);
+    const bucket = byWeek.get(week) ?? { count: 0, score: 0 };
+    bucket.count += 1;
+    bucket.score += session.scores.devScore;
+    byWeek.set(week, bucket);
+    records.longestSessionSeconds = Math.max(records.longestSessionSeconds, session.activeDurationSeconds);
+    records.bestFocus = Math.max(records.bestFocus, session.scores.focus);
+    records.bestRecovery = Math.max(records.bestRecovery, session.reliability.recoveryRate);
+    records.mostTestsInSession = Math.max(records.mostTestsInSession, session.terminal.test);
+    records.highestShippingActivity = Math.max(records.highestShippingActivity, session.terminal.build + session.terminal.git);
   }
-  const weeklyScores = [...byWeek.values()].map((week) => aggregateSessions(week).scores.devScore);
-  const sessionCounts = [...byWeek.values()].map((week) => week.length);
-  return {
-    longestSessionSeconds: Math.max(0, ...sessions.map((session) => session.activeDurationSeconds)),
-    bestFocus: Math.max(0, ...sessions.map((session) => session.scores.focus)),
-    bestRecovery: Math.max(0, ...sessions.map((session) => session.reliability.recoveryRate)),
-    bestWeeklyDevScore: Math.max(0, ...weeklyScores),
-    longestStreak: streaks.longest,
-    mostSessionsInWeek: Math.max(0, ...sessionCounts),
-    mostTestsInSession: Math.max(0, ...sessions.map((session) => session.terminal.test)),
-    highestShippingActivity: Math.max(0, ...sessions.map((session) => session.terminal.build + session.terminal.git)),
-  };
+  for (const bucket of byWeek.values()) {
+    records.bestWeeklyDevScore = Math.max(records.bestWeeklyDevScore, Math.round(bucket.score / bucket.count));
+    records.mostSessionsInWeek = Math.max(records.mostSessionsInWeek, bucket.count);
+  }
+  return records;
 }
 
 export function computeCompositeDevScore(aggregate: SessionAggregate) {
