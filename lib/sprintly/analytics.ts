@@ -358,7 +358,7 @@ export function computePersonalRecords(sessions: SprintlySession[], streaks = ge
   return records;
 }
 
-export function computeCompositeDevScore(aggregate: SessionAggregate) {
+export function computeCompositeDevScore(aggregate: Pick<SessionAggregate, "sessionCount" | "scores" | "terminal">) {
   if (!aggregate.sessionCount) return 0;
   const score = aggregate.scores.focus * 0.25
     + aggregate.scores.consistency * 0.2
@@ -370,7 +370,20 @@ export function computeCompositeDevScore(aggregate: SessionAggregate) {
 }
 
 export function sessionCompositeScore(session: SprintlySession) {
-  return computeCompositeDevScore(aggregateSessions([session]));
+  // A one-record aggregate rounds every score before applying v1 weights.
+  // Preserve that rule without constructing coding, AI, trait and activity totals.
+  return computeCompositeDevScore({
+    sessionCount: 1,
+    terminal: session.terminal,
+    scores: {
+      focus: Math.round(session.scores.focus),
+      consistency: Math.round(session.scores.consistency),
+      recovery: Math.round(session.scores.recovery),
+      testingDiscipline: Math.round(session.scores.testingDiscipline),
+      aiBalance: Math.round(session.scores.aiBalance),
+      devScore: Math.round(session.scores.devScore),
+    },
+  });
 }
 
 export function buildLeaderboardPacket(sessions: SprintlySession[], region: string, referenceDate = new Date(), timeZone?: string): LeaderboardPacket {

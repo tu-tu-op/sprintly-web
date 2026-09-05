@@ -24,6 +24,14 @@ test("personal records preserve the baseline and handle a dense history", () => 
   assert.equal(records.bestWeeklyDevScore, DEMO_SESSIONS[0].scores.devScore);
 });
 
+test("direct session scoring matches aggregation for fractional scores and shipping caps", () => {
+  for (let i = 0; i <= 100; i++) {
+    const source = DEMO_SESSIONS[i % DEMO_SESSIONS.length];
+    const session = { ...source, scores: { ...source.scores, focus: i / 3, consistency: i / 7, recovery: i / 11, testingDiscipline: i / 13, aiBalance: i / 17 }, terminal: { ...source.terminal, build: i, git: i } };
+    assert.equal(sessionCompositeScore(session), computeCompositeDevScore(aggregateSessions([session])));
+  }
+});
+
 test("accepts the v1 contract and skips an existing duplicate", () => {
   const payload = JSON.stringify({ contract: "devstrava.session.v1", schemaVersion: 1, sessions: [DEMO_SESSIONS[0]] });
   const result = parseSprintlyImportText(payload, new Set([DEMO_SESSIONS[0].sessionId]));
