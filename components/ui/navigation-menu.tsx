@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   AnimatePresence,
   motion,
@@ -23,8 +25,10 @@ const navItems = [
 
 const COLLAPSE_SCROLL_POSITION = 150;
 const EXPAND_SCROLL_DISTANCE = 80;
+const MotionLink = motion.create(Link);
 
 export function AnimatedNavFramer() {
+  const router = useRouter();
   const [isExpanded, setIsExpanded] = React.useState(true);
   const isExpandedRef = React.useRef(true);
   const lastScrollY = React.useRef(0);
@@ -91,9 +95,12 @@ export function AnimatedNavFramer() {
               <div className="flex min-w-0 items-center gap-1 pr-3 sm:gap-4 sm:pr-4">
                 {navItems.map((item, index) => {
                   const link = (
-                    <motion.a
+                    <MotionLink
                       key={item.name}
                       href={item.href}
+                      prefetch={false}
+                      onMouseEnter={() => router.prefetch(item.href)}
+                      onFocus={() => router.prefetch(item.href)}
                       initial={{ opacity: 0, x: -12, scale: 0.96 }}
                       animate={{ opacity: 1, x: 0, scale: 1 }}
                       transition={{
@@ -107,7 +114,7 @@ export function AnimatedNavFramer() {
                       }`}
                     >
                       {item.name}
-                    </motion.a>
+                    </MotionLink>
                   );
 
                   if (item.href !== "/app") return link;
