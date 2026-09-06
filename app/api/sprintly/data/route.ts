@@ -12,11 +12,11 @@ function jsonError(message: string, status: number) {
   );
 }
 
-function mapPreferences(row: Record<string, unknown> | null) {
+function mapPreferences(row: Record<string, unknown> | null, profileVisibility: unknown) {
   if (!row) return { ...defaultPreferences };
   return {
     ...defaultPreferences,
-    profileVisibility: row.profile_visibility === "public" ? "public" as const : "private" as const,
+    profileVisibility: profileVisibility === "public" ? "public" as const : "private" as const,
     leaderboardOptIn: row.leaderboard_opt_in === true,
     leaderboardScope: row.leaderboard_scope === "country" || row.leaderboard_scope === "region"
       ? row.leaderboard_scope
@@ -80,8 +80,8 @@ export async function GET() {
   if (!admin) return jsonError("Remote synchronization is not configured", 503);
 
   const [profileResult, preferencesResult, sessionsResult] = await Promise.all([
-    admin.from("profiles").select("display_name,handle,bio,avatar_url,avatar_style,country,region,city_label").eq("user_id", identity.userId).maybeSingle(),
-    admin.from("user_preferences").select("profile_visibility,leaderboard_opt_in,leaderboard_scope,sync_preference,ai_usage_visibility,terminal_activity_visibility,retention_duration_days,public_profile_consent,timezone").eq("user_id", identity.userId).maybeSingle(),
+    admin.from("profiles").select("display_name,handle,bio,avatar_url,avatar_style,country,region,city_label,profile_visibility").eq("user_id", identity.userId).maybeSingle(),
+    admin.from("user_preferences").select("leaderboard_opt_in,leaderboard_scope,sync_preference,ai_usage_visibility,terminal_activity_visibility,retention_duration_days,public_profile_consent,timezone").eq("user_id", identity.userId).maybeSingle(),
     admin.from("sessions").select("id,aggregate_payload,signature,public_key_id,verified,received_at").eq("user_id", identity.userId).order("started_at", { ascending: false }),
   ]);
 
@@ -101,11 +101,13 @@ export async function GET() {
     {
       ok: true,
       sessions,
-      preferences: mapPreferences(preferencesResult.data as Record<string, unknown> | null),
+      preferences: mapPreferences(
+        preferencesResult.data as Record<string, unknown> | null,
+        (profileResult.data as Record<string, unknown> | null)?.profile_visibility,
+      ),
       profile: mapProfile(profileResult.data as Record<string, unknown> | null),
       lastSyncAt,
     },
     { headers: { "cache-control": "no-store" } },
   );
 }
-

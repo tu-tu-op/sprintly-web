@@ -25,9 +25,9 @@ function jsonError(message: string, status: number) {
   );
 }
 
-function uiPreferences(row: Record<string, unknown> | null) {
+function uiPreferences(row: Record<string, unknown> | null, profileVisibility: unknown) {
   return {
-    profileVisibility: row?.profile_visibility === "public" ? "public" as const : "private" as const,
+    profileVisibility: profileVisibility === "public" ? "public" as const : "private" as const,
     leaderboardOptIn: row?.leaderboard_opt_in === true,
     leaderboardScope: row?.leaderboard_scope === "country" || row?.leaderboard_scope === "region" ? row.leaderboard_scope : "global" as const,
     syncPreference: row?.sync_preference === "never" || row?.sync_preference === "completed" || row?.sync_preference === "leaderboard" ? row.sync_preference : "selected" as const,
@@ -67,14 +67,24 @@ export async function POST(request: Request) {
   const admin = createSupabaseAdminClient();
   if (!admin) return jsonError("Remote synchronization is not configured", 503);
 
-  const currentResult = await admin
-    .from("user_preferences")
-    .select("profile_visibility,leaderboard_opt_in,leaderboard_scope,sync_preference,ai_usage_visibility,terminal_activity_visibility,retention_duration_days,public_profile_consent,timezone")
-    .eq("user_id", identity.userId)
-    .maybeSingle();
-  if (currentResult.error) return jsonError("Unable to read preferences", 500);
+  const [currentResult, profileResult] = await Promise.all([
+    admin
+      .from("user_preferences")
+      .select("leaderboard_opt_in,leaderboard_scope,sync_preference,ai_usage_visibility,terminal_activity_visibility,retention_duration_days,public_profile_consent,timezone")
+      .eq("user_id", identity.userId)
+      .maybeSingle(),
+    admin
+      .from("profiles")
+      .select("profile_visibility")
+      .eq("user_id", identity.userId)
+      .maybeSingle(),
+  ]);
+  if (currentResult.error || profileResult.error) return jsonError("Unable to read preferences", 500);
 
-  const previous = uiPreferences(currentResult.data as Record<string, unknown> | null);
+  const previous = uiPreferences(
+    currentResult.data as Record<string, unknown> | null,
+    (profileResult.data as Record<string, unknown> | null)?.profile_visibility,
+  );
   const next = { ...previous, ...parsed.data };
   if (!next.publicProfileConsent) next.profileVisibility = "private";
   if (!next.geographicLeaderboardOptIn) next.leaderboardScope = "global";
@@ -84,7 +94,6 @@ export async function POST(request: Request) {
 
   const databasePreferences = {
     user_id: identity.userId,
-    profile_visibility: next.profileVisibility,
     leaderboard_opt_in: next.leaderboardOptIn,
     leaderboard_scope: next.leaderboardScope,
     sync_preference: next.syncPreference,
@@ -95,12 +104,20 @@ export async function POST(request: Request) {
     timezone: next.timeZone,
   };
 
+  const { error: profileError } = await admin
+    .from("profiles")
+    .update({ profile_visibility: next.profileVisibility })
+    .eq("user_id", identity.userId);
+  if (profileError) return jsonError("Unable to save profile visibility", 500);
+
   const { error: saveError } = await admin
     .from("user_preferences")
     .upsert(databasePreferences, { onConflict: "user_id" });
   if (saveError) return jsonError("Unable to save preferences", 500);
 
-  if (previous.leaderboardOptIn && !next.leaderboardOptIn) {
+  const leaderboardScopeChanged = previous.leaderboardScope !== next.leaderboardScope
+    || previous.geographicLeaderboardOptIn !== next.geographicLeaderboardOptIn;
+  if (previous.leaderboardOptIn && (!next.leaderboardOptIn || leaderboardScopeChanged)) {
     const { error } = await admin.rpc("revoke_user_leaderboard_entries", { target_user_id: identity.userId });
     if (error) return jsonError("Unable to revoke leaderboard entries", 500);
   }
@@ -122,4 +139,3 @@ export async function POST(request: Request) {
     { headers: { "cache-control": "no-store" } },
   );
 }
-
