@@ -1,2 +1,2 @@
-import { AuthScreen } from "@/components/auth-onboarding";
-export default function Page(){return <AuthScreen mode="verify-email"/>}
+import { ConfiguredAuthScreen } from "@/components/configured-auth-screen";
+export default function Page(){return <ConfiguredAuthScreen mode="verify-email"/>}

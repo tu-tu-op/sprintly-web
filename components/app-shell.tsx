@@ -27,6 +27,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { clearAuthSession } from "@/lib/sprintly/auth";
+import { hasSupabasePublicConfig } from "@/lib/sprintly/config";
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { cn } from "@/lib/utils";
 import { Brand, SprintlyMark } from "./brand";
 import { useShellState } from "./shell-state";
@@ -46,6 +48,7 @@ function UserMenu() {
 
   const signOut = () => {
     clearAuthSession();
+    if (hasSupabasePublicConfig()) void createSupabaseBrowserClient()?.auth.signOut();
     router.replace("/sign-in");
   };
 

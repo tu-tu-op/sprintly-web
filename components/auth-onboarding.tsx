@@ -13,7 +13,7 @@ import { Brand, SprintlyMark } from "./brand";
 import { DEMO_USER } from "@/lib/sprintly/demo-data";
 import { patchStoredPreferences, saveOnboardingSnapshot, type SyncPreference } from "@/lib/sprintly/storage";
 
-type AuthMode="sign-in"|"create-account"|"forgot-password"|"verify-email"|"account-recovery";
+export type AuthMode="sign-in"|"create-account"|"forgot-password"|"verify-email"|"account-recovery";
 const schema=z.object({email:z.string().email("Enter a valid email address"),password:z.string().min(8,"Use at least 8 characters").optional()});
 type FormData=z.infer<typeof schema>;
 
