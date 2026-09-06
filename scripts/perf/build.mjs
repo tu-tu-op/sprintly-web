@@ -16,7 +16,7 @@ nextConfig.webpack = (config, context) => {
   if (!context.isServer) {
     config.plugins.push({ apply(compiler: any) {
       compiler.hooks.done.tap('PerformanceStats', (stats: any) => {
-        require('node:fs').writeFileSync(require('node:path').join(process.cwd(), 'client-stats.json'), JSON.stringify(stats.toJson({ all: false, assets: true, chunks: true, modules: true, nestedModules: true, chunkModules: true, ids: true, groupModulesByAttributes: false, groupModulesByCacheStatus: false, groupModulesByType: false, modulesSpace: Infinity, chunkModulesSpace: Infinity, nestedModulesSpace: Infinity, reasons: false })));
+        require('node:fs').writeFileSync(require('node:path').join(process.cwd(), 'client-stats.json'), JSON.stringify(stats.toJson({ all: false, assets: true, cachedAssets: true, chunks: true, modules: true, cachedModules: true, nestedModules: true, chunkModules: true, ids: true, groupModulesByAttributes: false, groupModulesByCacheStatus: false, groupModulesByType: false, modulesSpace: Infinity, chunkModulesSpace: Infinity, nestedModulesSpace: Infinity, reasons: false })));
       });
     }});
   }
