@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { SPRINTLY_CONTRACT, SPRINTLY_SCHEMA_VERSION } from "@/lib/sprintly/contract";
+import { getDefaultRetentionDays } from "@/lib/sprintly/config";
 import {
   MAX_EXTENSION_REQUEST_BYTES,
   validateExtensionUpload,
@@ -37,7 +38,7 @@ function requestBytes(text: string) {
 function parseRetentionDays(value: unknown) {
   return typeof value === "number" && Number.isInteger(value) && value >= 1 && value <= 3650
     ? value
-    : 365;
+    : getDefaultRetentionDays();
 }
 
 function sanitizedAggregatePayload(
@@ -224,4 +225,3 @@ export async function POST(request: Request) {
     { status: 200, headers: { "cache-control": "no-store" } },
   );
 }
-

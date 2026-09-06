@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { getWebsiteIdentity } from "@/lib/sprintly/server-auth";
+import { getDefaultRetentionDays } from "@/lib/sprintly/config";
 import { SPRINTLY_CONTRACT, SPRINTLY_SCHEMA_VERSION } from "@/lib/sprintly/contract";
 import { MAX_EXTENSION_REQUEST_BYTES, validateExtensionUpload } from "@/lib/sprintly/extension";
 import { computeServerSessionMetrics, zeroAi, zeroTerminal } from "@/lib/sprintly/server-scoring";
@@ -41,7 +42,7 @@ export async function POST(request: Request) {
   const existingIds = new Set((existing ?? []).map((row: { session_id: string }) => row.session_id));
   const accepted: string[] = [];
   const duplicates: string[] = [];
-  const retentionDays = typeof preferences?.retention_duration_days === "number" ? preferences.retention_duration_days : 365;
+  const retentionDays = typeof preferences?.retention_duration_days === "number" ? preferences.retention_duration_days : getDefaultRetentionDays();
   const retentionExpiresAt = new Date(Date.now() + retentionDays * 86_400_000).toISOString();
   for (const { index, record } of validation.sessions) {
     if (existingIds.has(record.sessionId)) { duplicates.push(record.sessionId); continue; }
