@@ -1,0 +1,677 @@
+{
+  "label": "10-bounded-prefetch",
+  "date": "2026-09-05T22:12:25.748Z",
+  "environment": {
+    "cpuSlowdown": 4,
+    "latencyMs": 40,
+    "downloadMbps": 1.6,
+    "viewport": "1365x900",
+    "origin": "http://127.0.0.1:3100"
+  },
+  "routes": {
+    "/_not-found": {
+      "bytes": 468101,
+      "gzip": 128288,
+      "brotli": 108161,
+      "serverMs": [
+        19.16459999999961,
+        5.0677999999998065,
+        3.4785000000001673,
+        4.5099999999997635,
+        2.8389000000001943
+      ],
+      "serverMedianMs": 4.5099999999997635
+    },
+    "/account-recovery": {
+      "bytes": 743860,
+      "gzip": 216025,
+      "brotli": 185769,
+      "serverMs": [
+        6.996499999999742,
+        3.8402000000000953,
+        5.2357999999999265,
+        3.8983000000002903,
+        2.4283000000000357
+      ],
+      "serverMedianMs": 3.8983000000002903
+    },
+    "/create-account": {
+      "bytes": 743860,
+      "gzip": 216025,
+      "brotli": 185769,
+      "serverMs": [
+        5.294599999999718,
+        2.8934000000003834,
+        2.69820000000027,
+        2.1361000000001695,
+        2.3760999999999513
+      ],
+      "serverMedianMs": 2.69820000000027
+    },
+    "/forgot-password": {
+      "bytes": 743860,
+      "gzip": 216025,
+      "brotli": 185769,
+      "serverMs": [
+        5.026600000000144,
+        2.388799999999719,
+        1.7890999999999622,
+        1.9040999999997439,
+        2.1216999999996915
+      ],
+      "serverMedianMs": 2.1216999999996915
+    },
+    "/onboarding": {
+      "bytes": 743843,
+      "gzip": 216016,
+      "brotli": 185764,
+      "serverMs": [
+        4.451799999999821,
+        1.9227000000000771,
+        1.731999999999971,
+        1.5497999999997774,
+        1.9364999999997963
+      ],
+      "serverMedianMs": 1.9227000000000771
+    },
+    "/": {
+      "bytes": 656077,
+      "gzip": 190587,
+      "brotli": 163129,
+      "serverMs": [
+        3.981199999999262,
+        3.083799999999428,
+        3.1216000000003987,
+        3.319300000000112,
+        2.8314000000000306
+      ],
+      "serverMedianMs": 3.1216000000003987
+    },
+    "/leaderboard": {
+      "bytes": 468101,
+      "gzip": 128288,
+      "brotli": 108161,
+      "serverMs": [
+        9.752700000000004,
+        3.772899999999936,
+        3.36869999999999,
+        3.1950999999999112,
+        3.011700000000019
+      ],
+      "serverMedianMs": 3.36869999999999
+    },
+    "/profile/[handle]": {
+      "bytes": 701159,
+      "gzip": 201271,
+      "brotli": 172666
+    },
+    "/share/[id]": {
+      "bytes": 563668,
+      "gzip": 156131,
+      "brotli": 132651
+    },
+    "/verify-email": {
+      "bytes": 743860,
+      "gzip": 216025,
+      "brotli": 185769,
+      "serverMs": [
+        5.6872999999995955,
+        2.3270000000002256,
+        1.9828999999999724,
+        2.369999999999891,
+        3.009399999999914
+      ],
+      "serverMedianMs": 2.369999999999891
+    },
+    "/for-teams": {
+      "bytes": 642950,
+      "gzip": 186103,
+      "brotli": 159183,
+      "serverMs": [
+        5.595099999999547,
+        2.7611000000006243,
+        2.4958999999998923,
+        1.9561000000003332,
+        2.5083999999997104
+      ],
+      "serverMedianMs": 2.5083999999997104
+    },
+    "/how-it-works": {
+      "bytes": 656077,
+      "gzip": 190588,
+      "brotli": 163126,
+      "serverMs": [
+        4.696100000000115,
+        2.314300000000003,
+        2.2020000000002256,
+        2.1463999999996304,
+        2.0317999999997483
+      ],
+      "serverMedianMs": 2.2020000000002256
+    },
+    "/product": {
+      "bytes": 642950,
+      "gzip": 186104,
+      "brotli": 159183,
+      "serverMs": [
+        5.012399999999616,
+        2.0255999999999403,
+        1.896600000000035,
+        2.181300000000192,
+        1.998500000000604
+      ],
+      "serverMedianMs": 2.0255999999999403
+    },
+    "/pricing": {
+      "bytes": 656077,
+      "gzip": 190588,
+      "brotli": 163125,
+      "serverMs": [
+        4.805699999999888,
+        2.5697999999993044,
+        2.0268999999998414,
+        2.0833999999995285,
+        1.8894000000000233
+      ],
+      "serverMedianMs": 2.0833999999995285
+    },
+    "/privacy": {
+      "bytes": 656077,
+      "gzip": 190588,
+      "brotli": 163125,
+      "serverMs": [
+        5.438500000000204,
+        2.2411000000001877,
+        2.244499999999789,
+        2.0393999999996595,
+        2.2331999999996697
+      ],
+      "serverMedianMs": 2.2411000000001877
+    },
+    "/sign-in": {
+      "bytes": 488644,
+      "gzip": 136125,
+      "brotli": 115064,
+      "serverMs": [
+        5.890200000000732,
+        2.1377999999995154,
+        2.0771999999997206,
+        1.7534999999998035,
+        2.163300000000163
+      ],
+      "serverMedianMs": 2.1377999999995154
+    },
+    "/app/billing": {
+      "bytes": 817809,
+      "gzip": 240825,
+      "brotli": 207749,
+      "serverMs": [
+        6.0523999999995794,
+        2.2906999999995605,
+        1.7681000000002314,
+        2.10149999999976,
+        2.2538000000004104
+      ],
+      "serverMedianMs": 2.2538000000004104
+    },
+    "/app/goals": {
+      "bytes": 817981,
+      "gzip": 240846,
+      "brotli": 207768,
+      "serverMs": [
+        5.199900000000525,
+        2.241399999999885,
+        2.3133000000007087,
+        1.954899999999725,
+        1.844199999999546
+      ],
+      "serverMedianMs": 2.241399999999885
+    },
+    "/app/community": {
+      "bytes": 826956,
+      "gzip": 244096,
+      "brotli": 210588,
+      "serverMs": [
+        2.999499999999898,
+        2.0738000000001193,
+        2.043800000000374,
+        2.6648999999997613,
+        2.076100000000224
+      ],
+      "serverMedianMs": 2.076100000000224
+    },
+    "/app": {
+      "bytes": 755422,
+      "gzip": 218015,
+      "brotli": 187356,
+      "serverMs": [
+        5.906199999999444,
+        2.7893000000003667,
+        2.000300000000607,
+        1.9135999999998603,
+        1.6882999999997992
+      ],
+      "serverMedianMs": 2.000300000000607
+    },
+    "/app/sessions/[id]": {
+      "bytes": 824864,
+      "gzip": 243372,
+      "brotli": 209999
+    },
+    "/app/profile": {
+      "bytes": 830650,
+      "gzip": 244950,
+      "brotli": 211431,
+      "serverMs": [
+        5.600000000000364,
+        2.05409999999938,
+        2.057400000000598,
+        2.042099999999664,
+        1.9736000000002605
+      ],
+      "serverMedianMs": 2.05409999999938
+    },
+    "/app/achievements": {
+      "bytes": 819441,
+      "gzip": 242022,
+      "brotli": 208802,
+      "serverMs": [
+        5.55120000000079,
+        2.0814000000000306,
+        1.6896999999999025,
+        2.5954000000001543,
+        2.083400000000438
+      ],
+      "serverMedianMs": 2.083400000000438
+    },
+    "/app/sessions": {
+      "bytes": 833882,
+      "gzip": 245643,
+      "brotli": 212046,
+      "serverMs": [
+        5.913099999999758,
+        2.4611000000004424,
+        1.926900000000387,
+        1.801300000000083,
+        1.6760999999996784
+      ],
+      "serverMedianMs": 1.926900000000387
+    },
+    "/app/workspace": {
+      "bytes": 822803,
+      "gzip": 242192,
+      "brotli": 208939,
+      "serverMs": [
+        5.217499999999745,
+        2.1098000000001775,
+        2.030800000000454,
+        2.0856999999996333,
+        1.6648999999997613
+      ],
+      "serverMedianMs": 2.0856999999996333
+    },
+    "/app/analytics": {
+      "bytes": 824745,
+      "gzip": 243438,
+      "brotli": 210042,
+      "serverMs": [
+        5.435999999999694,
+        2.485200000000077,
+        1.9877000000005864,
+        1.9447000000000116,
+        2.1599999999998545
+      ],
+      "serverMedianMs": 2.1599999999998545
+    },
+    "/app/share": {
+      "bytes": 828364,
+      "gzip": 244543,
+      "brotli": 210932,
+      "serverMs": [
+        5.605000000000473,
+        1.86029999999937,
+        2.1840999999994892,
+        2.1096999999999753,
+        2.717999999999847
+      ],
+      "serverMedianMs": 2.1840999999994892
+    },
+    "/app/settings": {
+      "bytes": 836773,
+      "gzip": 246310,
+      "brotli": 212556,
+      "serverMs": [
+        7.372000000000298,
+        2.189400000000205,
+        1.7970000000004802,
+        2.263600000000224,
+        2.1966999999995096
+      ],
+      "serverMedianMs": 2.1966999999995096
+    }
+  },
+  "loads": [
+    {
+      "route": "/",
+      "ttfb": 5.199999988079071,
+      "fcp": 1000,
+      "lcp": 1600,
+      "load": 2153.699999988079,
+      "longTasks": [
+        {
+          "start": 1727,
+          "duration": 177
+        },
+        {
+          "start": 1939,
+          "duration": 96
+        }
+      ],
+      "writes": 0,
+      "writeMs": 0,
+      "nodes": 421,
+      "jsBytes": 685582,
+      "networkBytes": 390869,
+      "errors": []
+    },
+    {
+      "route": "/product",
+      "ttfb": 5.599999964237213,
+      "fcp": 876,
+      "lcp": 2284,
+      "load": 1592.5999999642372,
+      "longTasks": [
+        {
+          "start": 1355,
+          "duration": 171
+        },
+        {
+          "start": 2495.199999988079,
+          "duration": 119
+        }
+      ],
+      "writes": 0,
+      "writeMs": 0,
+      "nodes": 232,
+      "jsBytes": 905542,
+      "networkBytes": 393650,
+      "errors": []
+    },
+    {
+      "route": "/pricing",
+      "ttfb": 3.600000023841858,
+      "fcp": 724,
+      "lcp": 724,
+      "load": 1690.6000000238419,
+      "longTasks": [
+        {
+          "start": 1482.9000000357628,
+          "duration": 175
+        },
+        {
+          "start": 2513.400000035763,
+          "duration": 122
+        }
+      ],
+      "writes": 0,
+      "writeMs": 0,
+      "nodes": 185,
+      "jsBytes": 884520,
+      "networkBytes": 383601,
+      "errors": []
+    },
+    {
+      "route": "/sign-in",
+      "ttfb": 3.5,
+      "fcp": 488,
+      "lcp": 1560,
+      "load": 1229.7999999523163,
+      "longTasks": [
+        {
+          "start": 1067.699999988079,
+          "duration": 140
+        },
+        {
+          "start": 2388.5,
+          "duration": 127
+        }
+      ],
+      "writes": 0,
+      "writeMs": 0,
+      "nodes": 128,
+      "jsBytes": 748937,
+      "networkBytes": 339478,
+      "errors": []
+    },
+    {
+      "route": "/app",
+      "ttfb": 3.899999976158142,
+      "fcp": 2532,
+      "lcp": 2532,
+      "load": 1638.5999999642372,
+      "longTasks": [
+        {
+          "start": 1322.800000011921,
+          "duration": 295
+        },
+        {
+          "start": 1742.3999999761581,
+          "duration": 204
+        },
+        {
+          "start": 2721.5,
+          "duration": 131
+        },
+        {
+          "start": 2933.800000011921,
+          "duration": 276
+        },
+        {
+          "start": 3335.599999964237,
+          "duration": 73
+        }
+      ],
+      "writes": 4,
+      "writeMs": 0.5999999642372131,
+      "nodes": 776,
+      "jsBytes": 1297086,
+      "networkBytes": 505711,
+      "errors": []
+    },
+    {
+      "route": "/app/sessions",
+      "ttfb": 3.299999952316284,
+      "fcp": 2340,
+      "lcp": 2340,
+      "load": 1778,
+      "longTasks": [
+        {
+          "start": 1424.7999999523163,
+          "duration": 269
+        },
+        {
+          "start": 1717.8999999761581,
+          "duration": 52
+        },
+        {
+          "start": 1877.699999988079,
+          "duration": 144
+        },
+        {
+          "start": 2022.5999999642372,
+          "duration": 269
+        }
+      ],
+      "writes": 4,
+      "writeMs": 0.40000003576278687,
+      "nodes": 254,
+      "jsBytes": 800243,
+      "networkBytes": 353233,
+      "errors": []
+    },
+    {
+      "route": "/app/analytics",
+      "ttfb": 4.100000023841858,
+      "fcp": 2368,
+      "lcp": 2368,
+      "load": 1730,
+      "longTasks": [
+        {
+          "start": 1389.5,
+          "duration": 264
+        },
+        {
+          "start": 1828.6000000238419,
+          "duration": 152
+        },
+        {
+          "start": 1981.199999988079,
+          "duration": 353
+        }
+      ],
+      "writes": 4,
+      "writeMs": 0.5,
+      "nodes": 330,
+      "jsBytes": 828712,
+      "networkBytes": 369949,
+      "errors": []
+    },
+    {
+      "route": "/app/settings",
+      "ttfb": 4.599999964237213,
+      "fcp": 2304,
+      "lcp": 2304,
+      "load": 1747.5999999642372,
+      "longTasks": [
+        {
+          "start": 1402.7999999523163,
+          "duration": 270
+        },
+        {
+          "start": 1847,
+          "duration": 132
+        },
+        {
+          "start": 1980.0999999642372,
+          "duration": 303
+        }
+      ],
+      "writes": 4,
+      "writeMs": 0.5999999642372131,
+      "nodes": 257,
+      "jsBytes": 796136,
+      "networkBytes": 351275,
+      "errors": []
+    }
+  ],
+  "transitions": [
+    {
+      "from": "/",
+      "to": "/product",
+      "ms": 447.94259999999485,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/product",
+      "to": "/how-it-works",
+      "ms": 170.28039999998873,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/how-it-works",
+      "to": "/for-teams",
+      "ms": 246.1493000000046,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/for-teams",
+      "to": "/pricing",
+      "ms": 111.64689999999246,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/pricing",
+      "to": "/sign-in",
+      "ms": 448.4753000000055,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app",
+      "to": "/app/workspace",
+      "ms": 532.4369000000006,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/workspace",
+      "to": "/app/sessions",
+      "ms": 129.06639999999607,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/sessions",
+      "to": "/app/analytics",
+      "ms": 169.3136999999988,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/analytics",
+      "to": "/app/achievements",
+      "ms": 177.44019999999728,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/achievements",
+      "to": "/app/goals",
+      "ms": 215.0124000000069,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/goals",
+      "to": "/app/profile",
+      "ms": 184.54430000000866,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/profile",
+      "to": "/app/community",
+      "ms": 132.6938999999984,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/community",
+      "to": "/app/settings",
+      "ms": 131.57759999998962,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/settings",
+      "to": "/app/billing",
+      "ms": 135.89359999999579,
+      "documentRequests": 0,
+      "fullReload": false
+    },
+    {
+      "from": "/app/billing",
+      "to": "/app",
+      "ms": 267.24299999998766,
+      "documentRequests": 0,
+      "fullReload": false
+    }
+  ],
+  "lighthouse": [],
+  "browser": "152.0.7977.77",
+  "heapAfterNavigation": 11439092
+}

@@ -1,35 +1,28 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
-
-const IDLE_TIMEOUT_MS = 1500;
-
-/**
- * Warms the router cache for the given destinations right after mount,
- * during browser idle time. Combined with per-route code splitting this
- * makes the first click on a never-visited page feel instant in
- * production builds (chunks + RSC payloads are already local).
- */
+/** Warm at most one likely destination after paint; intent handles the rest. */
 export function usePrefetchRoutes(hrefs: string[]) {
   const router = useRouter();
   const key = hrefs.join("|");
-  const scheduled = useRef(false);
-
-  useIsoLayoutEffect(() => {
-    if (scheduled.current) return;
-    scheduled.current = true;
-    const list = key.split("|");
-    const run = () => { for (const href of list) router.prefetch(href); };
+  useEffect(() => {
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    if (connection?.saveData || connection?.effectiveType?.includes("2g")) return;
+    const href = key.split("|")[0];
+    if (!href) return;
     const w = window as Window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
       cancelIdleCallback?: (id: number) => void;
     };
-    const handle = w.requestIdleCallback ? w.requestIdleCallback(run, { timeout: IDLE_TIMEOUT_MS }) : window.setTimeout(run, 200);
+    let idle: number | undefined;
+    const handle = window.setTimeout(() => {
+      if (w.requestIdleCallback) idle = w.requestIdleCallback(() => router.prefetch(href), { timeout: 1000 });
+      else router.prefetch(href);
+    }, 150);
     return () => {
-      if (w.cancelIdleCallback && typeof handle === "number") w.cancelIdleCallback(handle);
-      else window.clearTimeout(handle as number);
+      window.clearTimeout(handle);
+      if (idle !== undefined) w.cancelIdleCallback?.(idle);
     };
   }, [key, router]);
 }
