@@ -27,7 +27,9 @@ try {
     const image=page.getByAltText('Developer workspace with code visible on a monitor');
     assert.equal(await image.evaluate(el=>el.complete&&el.naturalWidth>0),true);
     await page.screenshot({path:path.join(out,`home-${viewport.width}.png`)});
-    checks.push(`Homepage ${viewport.width}px: no overflow, image loaded`);await context.close();
+    await page.mouse.wheel(0,600);await wait(300);
+    assert.ok(await page.evaluate(()=>scrollY>0));
+    checks.push(`Homepage ${viewport.width}px: no overflow, image loaded, native scrolling works`);await context.close();
   }
   const context=await browser.newContext({viewport:{width:1365,height:900}});
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
