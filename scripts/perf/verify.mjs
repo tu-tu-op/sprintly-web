@@ -68,6 +68,28 @@ try {
   checks.push('Preference changes survive reload');
   await page.screenshot({path:path.join(out,'settings.png')});
   await page.goto(base+'/app/sessions');await page.getByRole('button',{name:'All time',exact:true}).click();await page.screenshot({path:path.join(out,'sessions.png')});
+  const largeHistory=Array.from({length:121},(_,i)=>({record:{...DEMO_SESSIONS[0],sessionId:`pagination-${i}`},source:'imported',importedAt:new Date().toISOString(),verified:false}));
+  await page.evaluate(records=>localStorage.setItem('sprintly:demo-user:sessions:v1',JSON.stringify(records)),largeHistory);
+  await page.reload();await page.getByRole('button',{name:'All time',exact:true}).click();
+  const rows=page.locator('main button[aria-expanded]');
+  const pager=page.getByRole('navigation',{name:'Session history pagination'});
+  assert.equal(await rows.count(),50);
+  assert.match(await pager.textContent(),/Showing 1–50 of 121 sessions/);
+  assert.equal(await page.getByText('121 sessions',{exact:true}).count(),1);
+  await pager.getByRole('button',{name:'Next page'}).click();
+  assert.match(await pager.textContent(),/Showing 51–100/);
+  await pager.getByRole('button',{name:'Next page'}).click();
+  assert.equal(await rows.count(),21);
+  assert.equal(await pager.getByRole('button',{name:'Next page'}).isDisabled(),true);
+  await pager.getByRole('button',{name:'Previous page'}).click();
+  assert.equal(await rows.count(),50);
+  await page.locator('#session-sort').selectOption('longest');
+  assert.match(await pager.textContent(),/Showing 1–50/);
+  await pager.getByRole('button',{name:'Next page'}).click();
+  await page.getByRole('button',{name:'Custom range',exact:true}).click();
+  assert.match(await pager.textContent(),/Showing 1–50/);
+  checks.push('121-record history: bounded rows, full totals, all pages accessible, sort/filter reset pagination');
+  await page.screenshot({path:path.join(out,'sessions-paginated.png')});
   assert.deepEqual(errors,[]);checks.push('No uncaught browser errors');
   console.log(JSON.stringify({checks},null,2));
 }finally{
