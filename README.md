@@ -47,7 +47,11 @@ Sprintly routes include `/app`, `/app/sessions`, `/app/sessions/[id]`, `/app/ana
 Pure contract and aggregation tests run with:
 
 ```bash
-node --experimental-strip-types --test lib/sprintly/logic.test.ts
+node --experimental-strip-types --test lib/sprintly/logic.test.ts lib/sprintly/extension.test.ts
 ```
+
+The extension API contract, pairing flow, local Supabase commands, and privacy boundaries are documented in [`docs/sprintly-extension-api.md`](docs/sprintly-extension-api.md).
+
+When Supabase variables are configured, website authentication uses Supabase Auth and synchronized data is stored in PostgreSQL. Without those variables, the demo auth and LocalStorage repository remain available.
 
 The local adapter is deliberately isolated in `lib/sprintly/storage.ts`; a production implementation can replace it with authenticated API/database calls for auth, sessions, aggregates, profiles, shares, leaderboards, and achievements without changing the UI contract.
