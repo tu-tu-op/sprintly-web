@@ -4,9 +4,12 @@ import type { ShareField } from "./analytics";
 
 export type StoredSession = {
   record: SprintlySession;
-  source: "demo" | "imported";
+  source: "demo" | "imported" | "extension";
   importedAt: string;
   verified: boolean;
+  syncStatus: "local" | "synced" | "pending" | "rejected";
+  receivedAt?: string;
+  remoteId?: string;
 };
 
 export type SyncPreference = "never" | "selected" | "completed" | "leaderboard";
@@ -18,6 +21,9 @@ export type UserPreferences = {
   syncPreference: SyncPreference;
   showTokenUsage: boolean;
   showTerminalActivity: boolean;
+  retentionDurationDays: number;
+  publicProfileConsent: boolean;
+  geographicLeaderboardOptIn: boolean;
   timeZone: string;
 };
 
@@ -28,6 +34,7 @@ export type UserProfile = {
   region: string;
   country: string;
   bio: string;
+  avatarUrl?: string;
   avatarStyle: "gradient" | "mono" | "signal";
 };
 
@@ -73,6 +80,9 @@ const defaultPreferences: UserPreferences = {
   syncPreference: "selected",
   showTokenUsage: false,
   showTerminalActivity: false,
+  retentionDurationDays: 365,
+  publicProfileConsent: false,
+  geographicLeaderboardOptIn: false,
   timeZone: DEFAULT_TIME_ZONE,
 };
 
@@ -83,10 +93,17 @@ const defaultProfile: UserProfile = {
   region: DEMO_USER.region,
   country: DEMO_USER.country,
   bio: "Building useful things, one focused session at a time.",
+  avatarUrl: undefined,
   avatarStyle: "gradient",
 };
 
-const fallbackStoredSessions = DEMO_SESSIONS.map((record) => ({ record, source: "demo" as const, importedAt: "2026-08-15T00:00:00.000Z", verified: false }));
+const fallbackStoredSessions = DEMO_SESSIONS.map((record) => ({
+  record,
+  source: "demo" as const,
+  importedAt: "2026-08-15T00:00:00.000Z",
+  verified: false,
+  syncStatus: "local" as const,
+}));
 
 function read<T>(storageKey: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
@@ -144,14 +161,35 @@ function loadSessions(userId: string) {
   if (!Array.isArray(raw)) return fallbackStoredSessions;
   const validated = raw.flatMap((item) => {
     if (!item || typeof item !== "object" || !("record" in item)) return [];
-    const candidate = item as { record?: unknown; source?: unknown; importedAt?: unknown; verified?: unknown };
+    const candidate = item as {
+      record?: unknown;
+      source?: unknown;
+      importedAt?: unknown;
+      verified?: unknown;
+      syncStatus?: unknown;
+      receivedAt?: unknown;
+      remoteId?: unknown;
+    };
     const result = validateSprintlyImport(candidate.record);
     if (!result.sessions.length || result.issues.length) return [];
     return [{
       record: result.sessions[0],
-      source: candidate.source === "imported" ? "imported" as const : "demo" as const,
+      source: candidate.source === "imported"
+        ? "imported" as const
+        : candidate.source === "extension"
+          ? "extension" as const
+          : "demo" as const,
       importedAt: typeof candidate.importedAt === "string" ? candidate.importedAt : new Date().toISOString(),
       verified: candidate.verified === true,
+      syncStatus: candidate.syncStatus === "synced"
+        ? "synced" as const
+        : candidate.syncStatus === "pending"
+          ? "pending" as const
+          : candidate.syncStatus === "rejected"
+            ? "rejected" as const
+            : "local" as const,
+      receivedAt: typeof candidate.receivedAt === "string" ? candidate.receivedAt : undefined,
+      remoteId: typeof candidate.remoteId === "string" ? candidate.remoteId : undefined,
     }];
   });
   sessionsCache = { signature: rawText, userId, value: validated };
