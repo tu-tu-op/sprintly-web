@@ -10,7 +10,7 @@ for (const entry of process.env.PERF_APP_DIR ? [] : ['app', 'components', 'lib',
 }
 if (!fs.existsSync(path.join(target, 'node_modules'))) fs.symlinkSync(path.join(root, 'node_modules'), path.join(target, 'node_modules'), 'junction');
 const config = fs.readFileSync(path.join(process.env.PERF_APP_DIR || root, 'next.config.ts'), 'utf8');
-const instrumentedConfig = config.replace('export default nextConfig;', `
+const instrumentedConfig = config.includes("compiler.hooks.done.tap('PerformanceStats'") ? config : config.replace('export default nextConfig;', `
 const previousWebpack = nextConfig.webpack;
 nextConfig.webpack = (config, context) => {
   if (!context.isServer) {
