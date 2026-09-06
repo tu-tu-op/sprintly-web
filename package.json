@@ -18,6 +18,8 @@
     "@radix-ui/react-dialog": "latest",
     "@radix-ui/react-dropdown-menu": "latest",
     "@radix-ui/react-separator": "^1.1.15",
+    "@supabase/ssr": "^0.12.6",
+    "@supabase/supabase-js": "^2.115.0",
     "@tanstack/react-query": "latest",
     "clsx": "latest",
     "framer-motion": "latest",
