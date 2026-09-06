@@ -68,10 +68,10 @@ function UserMenu() {
           </div>
           <Separator.Root orientation="horizontal" className="my-1 h-px bg-white/[.1]" />
           <DropdownMenu.Item asChild className="flex min-h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-xs outline-none hover:bg-white/[.06]">
-            <Link prefetch={false} href="/app/profile"><Avatar.Root className="grid size-4 place-items-center"><Avatar.Fallback>{initials}</Avatar.Fallback></Avatar.Root>Profile</Link>
+            <Link href="/app/profile"><Avatar.Root className="grid size-4 place-items-center"><Avatar.Fallback>{initials}</Avatar.Fallback></Avatar.Root>Profile</Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item asChild className="flex min-h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-xs outline-none hover:bg-white/[.06]">
-            <Link prefetch={false} href="/app/settings"><Settings2 className="size-4 text-[#929292]" />Settings</Link>
+            <Link href="/app/settings"><Settings2 className="size-4 text-[#929292]" />Settings</Link>
           </DropdownMenu.Item>
           <Separator.Root orientation="horizontal" className="my-1 h-px bg-white/[.1]" />
           <DropdownMenu.Item onSelect={signOut} className="flex min-h-10 cursor-pointer items-center gap-2 rounded-lg px-3 text-xs text-[#c8c8c8] outline-none hover:bg-white/[.06]">Sign out</DropdownMenu.Item>
@@ -111,7 +111,7 @@ function Sidebar({ mobile = false, onClose, collapsed = false, onCollapsedChange
   return (
     <aside className={cn("flex h-full flex-col bg-[#0d0d0d] text-[#f4f4f4]", mobile ? "w-[286px]" : compact ? "w-[76px]" : "w-[248px]")}>
       <div className={cn("flex min-h-16 items-center", compact ? "justify-center px-3" : "justify-between px-5")}>
-        {compact ? <Link prefetch={false} href="/app" aria-label="Sprintly overview"><SprintlyMark className="size-8" /></Link> : <Brand />}
+        {compact ? <Link href="/app" aria-label="Sprintly overview"><SprintlyMark className="size-8" /></Link> : <Brand />}
         {mobile ? <button onClick={onClose} aria-label="Close navigation" className="grid size-10 place-items-center rounded-lg text-[#929292] hover:bg-white/[.06]"><X className="size-5" /></button> : <Collapsible.Root open={!collapsed} onOpenChange={(open) => onCollapsedChange?.(!open)}><Collapsible.Trigger asChild><button aria-label={compact ? "Expand sidebar" : "Collapse sidebar"} className="grid size-9 place-items-center rounded-lg text-[#929292] transition hover:bg-white/[.06] hover:text-[#f4f4f4]">{compact ? <PanelLeftOpen className="size-4" /> : <PanelLeftClose className="size-4" />}</button></Collapsible.Trigger></Collapsible.Root>}
       </div>
       <Separator.Root orientation="horizontal" className="h-px bg-white/[.08]" />
@@ -120,13 +120,13 @@ function Sidebar({ mobile = false, onClose, collapsed = false, onCollapsedChange
         <nav className="mt-3 space-y-1" aria-label="Sprintly navigation">
           {navItems.map(({ label, href, icon: Icon }) => {
             const active = href === "/app" ? pathname === href : pathname.startsWith(href);
-            return <Link prefetch={false} key={href} href={href} onMouseEnter={() => router.prefetch(href)} onFocus={() => router.prefetch(href)} onClick={onClose} aria-current={active ? "page" : undefined} title={compact ? label : undefined} className={cn("group flex min-h-11 items-center rounded-lg text-xs font-medium transition", compact ? "justify-center px-0" : "gap-3 px-3", active ? "bg-[#f2f2f2] text-[#0b0b0b] shadow-[0_8px_20px_rgba(255,255,255,.1)]" : "text-[#929292] hover:bg-white/[.06] hover:text-[#f4f4f4]")}><Icon className={cn("size-[17px] shrink-0", active ? "text-[#0b0b0b]" : "text-[#777777] group-hover:text-[#f4f4f4]")} aria-hidden="true" />{!compact && <span>{label}</span>}{active && !compact && <span className="ml-auto size-1.5 rounded-full bg-[#0b0b0b]/75" />}</Link>;
+            return <Link key={href} href={href} onMouseEnter={() => router.prefetch(href)} onFocus={() => router.prefetch(href)} onClick={onClose} aria-current={active ? "page" : undefined} title={compact ? label : undefined} className={cn("group flex min-h-11 items-center rounded-lg text-xs font-medium transition", compact ? "justify-center px-0" : "gap-3 px-3", active ? "bg-[#f2f2f2] text-[#0b0b0b] shadow-[0_8px_20px_rgba(255,255,255,.1)]" : "text-[#929292] hover:bg-white/[.06] hover:text-[#f4f4f4]")}><Icon className={cn("size-[17px] shrink-0", active ? "text-[#0b0b0b]" : "text-[#777777] group-hover:text-[#f4f4f4]")} aria-hidden="true" />{!compact && <span>{label}</span>}{active && !compact && <span className="ml-auto size-1.5 rounded-full bg-[#0b0b0b]/75" />}</Link>;
           })}
         </nav>
       </div>
       <div className="mt-auto space-y-3 p-3">
         {!compact && <div className="rounded-xl border border-white/[.12] bg-white/[.05] p-3"><div className="flex items-center gap-2 text-[11px] font-semibold text-[#e2e2e2]"><ShieldCheck className="size-3.5" /> Local boundary active</div><p className="mt-1.5 text-[10px] leading-4 text-[#919191]">Your sessions stay private until you choose to sync.</p></div>}
-        <Link prefetch={false} href="/app/profile" title={compact ? displayName : undefined} className={cn("flex min-h-12 items-center rounded-lg border border-white/[.1] bg-white/[.04]", compact ? "justify-center" : "gap-3 px-2.5")}><Avatar.Root className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-lg bg-gradient-to-br from-[#f3f3f3] to-[#707070] text-[10px] font-bold text-[#0b0b0b]"><Avatar.Fallback>{initials}</Avatar.Fallback></Avatar.Root>{!compact && <><span className="min-w-0 flex-1"><span className="block truncate text-[11px] font-semibold">{displayName}</span><span className="mt-0.5 block truncate text-[10px] text-[#828282]">Local demo account</span></span><ChevronRight className="size-3.5 text-[#747474]" /></>}</Link>
+        <Link href="/app/profile" title={compact ? displayName : undefined} className={cn("flex min-h-12 items-center rounded-lg border border-white/[.1] bg-white/[.04]", compact ? "justify-center" : "gap-3 px-2.5")}><Avatar.Root className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-lg bg-gradient-to-br from-[#f3f3f3] to-[#707070] text-[10px] font-bold text-[#0b0b0b]"><Avatar.Fallback>{initials}</Avatar.Fallback></Avatar.Root>{!compact && <><span className="min-w-0 flex-1"><span className="block truncate text-[11px] font-semibold">{displayName}</span><span className="mt-0.5 block truncate text-[10px] text-[#828282]">Local demo account</span></span><ChevronRight className="size-3.5 text-[#747474]" /></>}</Link>
       </div>
     </aside>
   );

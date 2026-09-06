@@ -20,7 +20,18 @@ export function usePrefetchRoutes(hrefs: readonly string[]) {
     const handle = window.setTimeout(() => {
       const warm = () => {
         if (cancelled) return;
-        destinations.forEach((href) => router.prefetch(href));
+        destinations.forEach((href) => {
+          if (process.env.NODE_ENV === "development") {
+            const separator = href.includes("?") ? "&" : "?";
+            void fetch(`${href}${separator}_rsc=${Math.random().toString(36).slice(2)}`, {
+              credentials: "same-origin",
+              cache: "no-store",
+              headers: { RSC: "1", "Next-Router-Prefetch": "1" },
+            }).catch(() => {});
+          } else {
+            router.prefetch(href);
+          }
+        });
       };
       if (w.requestIdleCallback) idle = w.requestIdleCallback(warm, { timeout: 1000 });
       else warm();
