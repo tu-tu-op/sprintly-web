@@ -35,3 +35,6 @@ next-env.d.ts
 
 # Isolated performance builds, tools and raw browser traces
 /.performance/
+
+# Supabase local CLI state
+/supabase/.temp/
