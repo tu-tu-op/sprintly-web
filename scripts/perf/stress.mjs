@@ -79,6 +79,16 @@ try {
   await cdp.send('HeapProfiler.collectGarbage');results.heapBefore=(await cdp.send('Runtime.getHeapUsage')).usedSize;
   for(let i=0;i<5;i++)for(const route of ['/app/analytics','/app/settings']){await page.locator(`nav a[href="${route}"]`).first().click();await page.waitForURL(base+route);await wait(200);}
   await cdp.send('HeapProfiler.collectGarbage');results.heapAfter=(await cdp.send('Runtime.getHeapUsage')).usedSize;
+  if(label === 'final') {
+    results.heapSamples=[results.heapBefore,results.heapAfter];
+    for(let batch=0;batch<3;batch++) {
+      for(let i=0;i<5;i++)for(const route of ['/app/analytics','/app/settings']) {
+        await page.locator(`nav a[href="${route}"]`).first().click();await page.waitForURL(base+route);await wait(200);
+      }
+      await cdp.send('HeapProfiler.collectGarbage');
+      results.heapSamples.push((await cdp.send('Runtime.getHeapUsage')).usedSize);
+    }
+  }
   results.errors=errors;
 }finally{
   fs.mkdirSync('docs/performance/measurements',{recursive:true});
