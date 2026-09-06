@@ -30,6 +30,7 @@
     "react-dom": "19",
     "react-hook-form": "latest",
     "recharts": "latest",
+    "server-only": "^0.0.1",
     "sonner": "latest",
     "tailwind-merge": "latest",
     "zod": "latest",
