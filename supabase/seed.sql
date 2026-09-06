@@ -23,3 +23,10 @@ begin
 end;
 $$;
 
+update public.user_preferences
+set
+  sync_preference = 'completed',
+  retention_duration_days = 365,
+  ai_usage_visibility = true,
+  terminal_activity_visibility = true
+where user_id = '00000000-0000-0000-0000-000000000001'::uuid;
