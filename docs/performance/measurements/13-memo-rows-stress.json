@@ -1,0 +1,139 @@
+{
+  "label": "13-memo-rows",
+  "sessions": 500,
+  "actions": [
+    {
+      "name": "openImport",
+      "ms": 666.6068999999998,
+      "dateFormatters": 0,
+      "numberFormatters": 0,
+      "dateParts": 1,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 20,
+      "nodes": 6676
+    },
+    {
+      "name": "closeImport",
+      "ms": 477.1944000000003,
+      "dateFormatters": 0,
+      "numberFormatters": 0,
+      "dateParts": 1,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 14,
+      "nodes": 6653
+    },
+    {
+      "name": "allSessions",
+      "ms": 666.4814999999999,
+      "dateFormatters": 0,
+      "numberFormatters": 0,
+      "dateParts": 1,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 21,
+      "nodes": 7713
+    },
+    {
+      "name": "sortScore",
+      "ms": 505.54519999999866,
+      "dateFormatters": 0,
+      "numberFormatters": 0,
+      "dateParts": 1,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 15,
+      "nodes": 7713
+    },
+    {
+      "name": "navigate:/app/analytics",
+      "ms": 378.0496999999996,
+      "dateFormatters": 0,
+      "numberFormatters": 6,
+      "dateParts": 1133,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 24,
+      "nodes": 318
+    },
+    {
+      "name": "navigate:/app/profile",
+      "ms": 399.4364000000005,
+      "dateFormatters": 0,
+      "numberFormatters": 2,
+      "dateParts": 1877,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 41,
+      "nodes": 354
+    },
+    {
+      "name": "navigate:/app/settings",
+      "ms": 182.18059999999969,
+      "dateFormatters": 0,
+      "numberFormatters": 0,
+      "dateParts": 0,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 42,
+      "nodes": 245
+    },
+    {
+      "name": "navigate:/app/sessions",
+      "ms": 1220.1296999999995,
+      "dateFormatters": 0,
+      "numberFormatters": 0,
+      "dateParts": 379,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 101,
+      "nodes": 6653
+    },
+    {
+      "name": "togglePreference",
+      "ms": 77.30129999999917,
+      "dateFormatters": 0,
+      "numberFormatters": 0,
+      "dateParts": 0,
+      "writes": 4,
+      "writeBytes": 359531,
+      "raf": 18,
+      "nodes": 258
+    },
+    {
+      "name": "idleSettings1s",
+      "ms": 1018.7443000000003,
+      "dateFormatters": 0,
+      "numberFormatters": 0,
+      "dateParts": 0,
+      "writes": 0,
+      "writeBytes": 0,
+      "raf": 309,
+      "nodes": 258
+    }
+  ],
+  "initialMs": 2356.7335999999996,
+  "initial": {
+    "dateFormatters": 5,
+    "numberFormatters": 1,
+    "dateParts": 1877,
+    "writes": 4,
+    "writeBytes": 359532,
+    "raf": 530,
+    "nodes": 6653
+  },
+  "settingsButtons": [
+    "",
+    "Search sessions, tasks, goals…⌘ K",
+    "Import data",
+    "",
+    "Privacy Center",
+    "Sync scope",
+    "Import & export",
+    "Account"
+  ],
+  "heapBefore": 7282264,
+  "heapAfter": 8068680,
+  "errors": []
+}
