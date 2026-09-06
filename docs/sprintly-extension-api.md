@@ -19,7 +19,7 @@ The local Supabase project is configured in `supabase/config.toml`. With the Sup
 ```bash
 supabase start
 supabase db reset
-supabase db test --linked=false
+supabase db test --local
 ```
 
 `supabase db reset` applies every migration and then runs `supabase/seed.sql`. The seed user is `00000000-0000-0000-0000-000000000001`; it contains no production credentials.
