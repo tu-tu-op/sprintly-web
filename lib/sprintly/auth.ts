@@ -16,6 +16,9 @@ export type AuthSession = {
   issuedAt: string;
 };
 
+export const DEMO_USER_ID = "demo-user" as const;
+export const DEMO_AUTH_COOKIE = "sprintly_demo_auth" as const;
+
 export type AuthProvider = {
   signIn: (email: string, password: string) => Promise<{ ok: true; session: AuthSession } | { ok: false; error: string }>;
 };
@@ -61,7 +64,7 @@ export const demoAuthProvider: AuthProvider = {
       return { ok: false, error: "Use the marked Demo Account credentials for this development build." };
     }
     const session: AuthSession = {
-      userId: "demo-user",
+      userId: DEMO_USER_ID,
       email: DEMO_CREDENTIALS.email,
       displayName: "Alex Rivera",
       mode: "demo",
@@ -70,6 +73,9 @@ export const demoAuthProvider: AuthProvider = {
     const persisted = writeStorage(AUTH_STORAGE_KEY, JSON.stringify(session));
     if (!persisted) {
       return { ok: false, error: "This browser is blocking local storage, so the session cannot be kept. Allow storage for this site and try again." };
+    }
+    if (typeof document !== "undefined") {
+      document.cookie = `${DEMO_AUTH_COOKIE}=1; Path=/; SameSite=Lax`;
     }
     return { ok: true, session };
   },
@@ -80,9 +86,14 @@ export function getAuthSession(): AuthSession | null {
   if (!raw) return null;
   try {
     const parsed = JSON.parse(raw) as Partial<AuthSession>;
-    if (parsed.userId !== "demo-user" || parsed.mode !== "demo" || typeof parsed.email !== "string" || typeof parsed.displayName !== "string") return null;
+    if (parsed.userId !== DEMO_USER_ID || parsed.mode !== "demo" || typeof parsed.email !== "string" || typeof parsed.displayName !== "string") return null;
     return parsed as AuthSession;
   } catch { return null; }
 }
 
-export function clearAuthSession() { writeStorage(AUTH_STORAGE_KEY, null); }
+export function clearAuthSession() {
+  writeStorage(AUTH_STORAGE_KEY, null);
+  if (typeof document !== "undefined") {
+    document.cookie = `${DEMO_AUTH_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`;
+  }
+}
