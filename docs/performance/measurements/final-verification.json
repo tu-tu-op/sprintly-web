@@ -1,0 +1,17 @@
+{
+  "checks": [
+    "Hero heading visible without JavaScript",
+    "Homepage 1365px: no overflow, image loaded, native scrolling works",
+    "Homepage 390px: no overflow, image loaded, native scrolling works",
+    "Marketing links keep the same document",
+    "Demo sign-in reaches the authenticated dashboard",
+    "Validated import persists a session",
+    "Duplicate import remains rejected",
+    "Failed history write stays dirty and retries on the next update",
+    "Session sort, expansion and detail route work",
+    "Every product menu destination renders",
+    "Preference changes survive reload",
+    "121-record history: bounded rows, full totals, all pages accessible, sort/filter reset pagination",
+    "No uncaught browser errors"
+  ]
+}

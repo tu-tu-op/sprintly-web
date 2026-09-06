@@ -4,7 +4,7 @@ Original application revision: 88e6156. This controlled rerun uses a detached Gi
 
 ## Conditions
 
-Windows; Chrome 152.0.7977.77; Next 15.5.23 production; Lighthouse 12.8.2; Playwright 1.63.0; webpack-bundle-analyzer 5.3.2. Desktop viewport 1365×900, DPR 1, 4× CPU slowdown, 1.6 Mbps download, 750 Kbps upload, 40 ms configured network latency. Three independent Lighthouse profiles. All network origins are local loopback: server TTFB cannot establish deployed-origin or CDN performance.
+Windows; Chrome 152.0.7977.77; Next 15.5.23 production; Lighthouse 12.8.2; Playwright 1.63.0; webpack-bundle-analyzer 5.3.2. Desktop viewport 1365×900, DPR 1, 4× CPU slowdown, 1.6 Mbps download, 750 Kbps upload, 40 ms configured network latency. Three independent Lighthouse profiles. Page requests use the local loopback origin; the image optimizer may fetch remote source images. The server and image cache are warm. Server TTFB cannot establish deployed-origin or CDN performance.
 
 Each browser cold load uses a new context. Local demo authentication is seeded only into test contexts. Initial visible loads use CDP Performance, Network and JS coverage; homepage traces can be opened in Chrome DevTools Performance. A real link click, changed visible h1 and two animation frames define a transition. Timings include browser-automation dispatch, so compare the identical method. Browser route observations are single samples; Lighthouse uses medians.
 
@@ -101,7 +101,12 @@ Client routing already works inside the product. Next already splits routes, and
 
 ## Reproduce
 
+For a fresh checkout, first create the original-revision control with:
+
+    git worktree add --detach .performance/original 88e6156
+
+Then set PERF_APP_DIR to the absolute path of that worktree before running build.mjs and profile.mjs. The build script creates its dependency junction automatically. Clear PERF_APP_DIR to build current sources again. Do not add the worktree a second time if it already exists.
+
 Install isolated tools: npm install --prefix .performance/tools --no-save --package-lock=false --ignore-scripts playwright@1.63.0 lighthouse@12.8.2 webpack-bundle-analyzer@5.3.2. Run node scripts/perf/build.mjs, then node scripts/perf/profile.mjs LABEL full and node --experimental-strip-types scripts/perf/stress.mjs LABEL. CPU: node --experimental-strip-types scripts/perf/cpu.mjs LABEL. For the original worktree set PERF_APP_DIR to .performance/original using its absolute path. Profile outputs and interactive bundle reports are under .performance/results; compact measurements are committed here.
 
-Use [Lighthouse metric documentation](https://developer.chrome.com/blog/lighthouse-10-0?hl=en) and [Next client-navigation documentation](https://nextjs.org/docs/app/getting-started/linking-and-navigating) to interpret the metrics. No pre-existing skill files were used.
-
+Use [Lighthouse metric documentation](https://developer.chrome.com/blog/lighthouse-10-0?hl=en) and [Next client-navigation documentation](https://nextjs.org/docs/app/getting-started/linking-and-navigating) to interpret the metrics. The initial capture and original-revision control preceded the required framework review applied during continuation.
