@@ -75,8 +75,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const { collapsed,mobileOpen,setMobileOpen }=useSprintlyStore();
   const router = useRouter();
   const [palette,setPalette]=useState(false);
-  const currentIndex = nav.findIndex((item) => item.href === "/app" ? pathname === item.href : pathname.startsWith(item.href));
-  usePrefetchRoutes([nav[(currentIndex + 1) % nav.length].href]);
+  usePrefetchRoutes(nav.map((item) => item.href));
   useEffect(()=>{const onKey=(e:KeyboardEvent)=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();setPalette(v=>!v)}};window.addEventListener("keydown",onKey);return()=>window.removeEventListener("keydown",onKey)},[]);
   const onImport=()=>router.push("/app/settings");
   if (pathname === "/app") return <>{children}</>;
