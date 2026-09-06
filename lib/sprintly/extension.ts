@@ -6,7 +6,8 @@ import {
   SPRINTLY_SCHEMA_VERSION,
   sprintlySessionSchema,
   type SprintlySession,
-} from "@/lib/sprintly/contract";
+// @ts-expect-error Node's strip-types test runner resolves TypeScript extensions directly.
+} from "./contract.ts";
 
 export const MAX_EXTENSION_REQUEST_BYTES = 1_000_000;
 export const MAX_EXTENSION_SESSIONS = 100;
@@ -98,4 +99,3 @@ export function validateExtensionUpload(payload: unknown): ExtensionUploadValida
 
   return { ok: rejected.every((item) => item.reason !== "invalid"), sessions, rejected };
 }
-

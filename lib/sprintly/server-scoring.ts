@@ -1,4 +1,4 @@
-import type { SprintlySession } from "@/lib/sprintly/contract";
+import type { SprintlySession } from "./contract.ts";
 
 export type ServerSessionMetrics = {
   focusScore: number;
@@ -70,4 +70,3 @@ export function zeroAi() {
     tokenTotals: { claude: 0, codex: 0, copilot: 0 },
   };
 }
-

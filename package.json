@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit",
-    "test:sprintly": "node --experimental-strip-types --test lib/sprintly/logic.test.ts"
+    "test:sprintly": "node --experimental-strip-types --test lib/sprintly/logic.test.ts lib/sprintly/extension.test.ts"
   },
   "dependencies": {
     "@fontsource-variable/ibm-plex-sans": "^5.3.0",
