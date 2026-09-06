@@ -14,14 +14,14 @@ const codingSchema = z.object({
   aiAssistedPercent: percentage,
   automationPercent: percentage,
   unknownBulkEditPercent: percentage,
-});
+}).strict();
 
 const activitySchema = z.object({
   edits: count,
   saves: count,
   filesTouched: count,
   linesChangedEstimate: count,
-});
+}).strict();
 
 const terminalSchema = z.object({
   totalCommands: count,
@@ -32,7 +32,7 @@ const terminalSchema = z.object({
   devServer: count,
   lint: count,
   other: count,
-});
+}).strict();
 
 const aiSchema = z.object({
   claudeCodePrompts: promptCount,
@@ -43,13 +43,13 @@ const aiSchema = z.object({
     codex: tokenCount,
     copilot: tokenCount,
   }),
-});
+}).strict();
 
 const reliabilitySchema = z.object({
   failures: count,
   recoveredFailures: count,
   recoveryRate: percentage,
-});
+}).strict();
 
 const scoresSchema = z.object({
   focus: boundedScore,
@@ -58,12 +58,12 @@ const scoresSchema = z.object({
   consistency: boundedScore,
   aiBalance: boundedScore,
   devScore: z.number().finite().min(0).max(1000),
-});
+}).strict();
 
 const archetypeSchema = z.object({
   primary: z.string().trim().min(1).max(80),
   traits: z.array(z.string().trim().min(1).max(60)).max(8),
-});
+}).strict();
 
 const RFC3339_PATTERN = /^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}(\.\d+)?([Zz]|[+-]\d{2}:\d{2})$/;
 const isRfc3339 = (value: string) => RFC3339_PATTERN.test(value.trim());
@@ -145,7 +145,7 @@ export const sprintlySessionSchema = z.object({
       ctx.addIssue({ code: "custom", path: ["reliability", "recoveryRate"], message: "recoveryRate must match recoveredFailures / failures" });
     }
   }
-});
+}).strict();
 
 export type SprintlySession = z.infer<typeof sprintlySessionSchema>;
 
