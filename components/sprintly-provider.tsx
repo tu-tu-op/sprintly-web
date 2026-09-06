@@ -15,6 +15,7 @@ import type {
   ExtensionDevice,
   PairingCode,
   RepositoryMode,
+  SessionUploadResult,
   SprintlyRepository,
 } from "@/lib/sprintly/repository";
 import {
@@ -39,6 +40,7 @@ type SprintlyContextValue = UserData & {
   syncError: string | null;
   lastSyncAt: string | null;
   importSessions: (sessions: SprintlySession[]) => number;
+  migrateLocalSessions: () => Promise<SessionUploadResult>;
   updatePreferences: (patch: Partial<UserPreferences>) => void;
   updateProfile: (patch: Partial<UserProfile>) => void;
   createShare: (snapshot: ShareSnapshot) => void;
@@ -159,6 +161,18 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
       });
       return added;
     },
+    migrateLocalSessions: async () => {
+      const localSessions = data.sessions.filter((session) => session.source === "imported");
+      if (repository.mode === "local") return { accepted: [], duplicates: [], rejected: [{ reason: "local-only", message: "Connect Supabase before migrating local records" }] };
+      if (!localSessions.length) return { accepted: [], duplicates: [], rejected: [] };
+      const result = await repository.uploadSessions(userId, localSessions.map((session) => session.record));
+      const completed = new Set([...result.accepted, ...result.duplicates]);
+      if (completed.size) {
+        setData((current) => ({ ...current, sessions: current.sessions.map((session) => completed.has(session.record.sessionId) ? { ...session, source: "extension", syncStatus: "synced", receivedAt: new Date().toISOString() } : session) }));
+        await refresh();
+      }
+      return result;
+    },
     updatePreferences: (patch) => {
       setData((current) => ({ ...current, preferences: { ...current.preferences, ...patch } }));
       if (repository.mode === "remote") {
@@ -217,4 +231,3 @@ export function useSprintly() {
   if (!context) throw new Error("useSprintly must be used inside SprintlyProvider");
   return context;
 }
-
