@@ -54,6 +54,25 @@ try {
   await page.locator('input[type="file"]').setInputFiles({name:'session.json',mimeType:'application/json',buffer:Buffer.from(payload)});
   assert.equal(await page.getByRole('button',{name:'Import validated sessions',exact:true}).isDisabled(),true);
   await page.getByRole('button',{name:'Close import dialog'}).click();checks.push('Duplicate import remains rejected');
+  await page.evaluate(()=>{
+    window.__originalStorageWrite=Storage.prototype.setItem;
+    Storage.prototype.setItem=function(key,value){
+      if(key.endsWith(':sessions:v1')) throw new DOMException('Test quota failure','QuotaExceededError');
+      return window.__originalStorageWrite.call(this,key,value);
+    };
+  });
+  await page.getByRole('button',{name:'Import JSON',exact:true}).click();
+  const retryPayload=JSON.stringify({...imported,sessionId:'perf-retry-import'});
+  await page.locator('input[type="file"]').setInputFiles({name:'retry.json',mimeType:'application/json',buffer:Buffer.from(retryPayload)});
+  await page.getByRole('button',{name:'Import validated sessions',exact:true}).click();
+  assert.equal(await page.evaluate(()=>localStorage.getItem('sprintly:demo-user:sessions:v1').includes('perf-retry-import')),false);
+  await page.evaluate(()=>{Storage.prototype.setItem=window.__originalStorageWrite;delete window.__originalStorageWrite;});
+  await page.locator('nav a[href="/app/settings"]').first().click();await page.waitForURL(base+'/app/settings');
+  await page.getByRole('switch').first().click();
+  assert.equal(await page.evaluate(()=>localStorage.getItem('sprintly:demo-user:sessions:v1').includes('perf-retry-import')),true);
+  checks.push('Failed history write stays dirty and retries on the next update');
+  await page.locator('nav a[href="/app/sessions"]').first().click();await page.waitForURL(base+'/app/sessions');
+  await page.getByRole('button',{name:'All time',exact:true}).click();
   await page.locator('#session-sort').selectOption('score');
   await page.locator('main button[aria-expanded]').first().click();
   await page.getByRole('link',{name:'Open full session'}).first().click();
@@ -89,7 +108,7 @@ try {
   await page.getByRole('button',{name:'Custom range',exact:true}).click();
   assert.match(await pager.textContent(),/Showing 1–50/);
   checks.push('121-record history: bounded rows, full totals, all pages accessible, sort/filter reset pagination');
-  await page.screenshot({path:path.join(out,'sessions-paginated.png')});
+  await wait(400);await page.screenshot({path:path.join(out,'sessions-paginated.png')});
   assert.deepEqual(errors,[]);checks.push('No uncaught browser errors');
   console.log(JSON.stringify({checks},null,2));
 }finally{

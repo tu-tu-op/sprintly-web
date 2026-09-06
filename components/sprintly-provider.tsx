@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { getAuthSession } from "@/lib/sprintly/auth";
 import type { SprintlySession } from "@/lib/sprintly/contract";
@@ -28,6 +28,7 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<string>(DEMO_USER.id);
   const [data, setData] = useState<UserData>(createEmptyUserData);
   const [hydrated, setHydrated] = useState(false);
+  const persisted = useRef<{ userId: string; data: Partial<UserData> } | null>(null);
 
   // Hydrate synchronously before paint so no placeholder frame is visible.
   useIsoLayoutEffect(() => {
@@ -39,7 +40,9 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (hydrated) saveUserData(userId, data);
+    if (!hydrated) return;
+    const previous = persisted.current?.userId === userId ? persisted.current.data : undefined;
+    persisted.current = { userId, data: saveUserData(userId, data, previous) };
   }, [data, hydrated, userId]);
 
   const value = useMemo<SprintlyContextValue>(() => ({

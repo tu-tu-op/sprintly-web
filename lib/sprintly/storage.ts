@@ -96,9 +96,10 @@ function read<T>(storageKey: string, fallback: T): T {
   } catch { return fallback; }
 }
 
-function write(storageKey: string, value: unknown) {
-  if (typeof window === "undefined") return;
-  try { window.localStorage.setItem(storageKey, JSON.stringify(value)); } catch { /* The in-memory provider remains usable. */ }
+function write(storageKey: string, value: unknown): boolean {
+  if (typeof window === "undefined") return false;
+  try { window.localStorage.setItem(storageKey, JSON.stringify(value)); return true; }
+  catch { return false; /* The in-memory provider remains usable. */ }
 }
 
 // Persists a preference patch without requiring the React provider,
@@ -166,11 +167,15 @@ export function loadUserData(userId: string): UserData {
   };
 }
 
-export function saveUserData(userId: string, data: UserData) {
-  write(key(userId, "sessions"), data.sessions);
-  write(key(userId, "preferences"), data.preferences);
-  write(key(userId, "profile"), data.profile);
-  write(key(userId, "shares"), data.shares);
+export function saveUserData(userId: string, data: UserData, previous: Partial<UserData> = {}): Partial<UserData> {
+  const saved = { ...previous };
+  for (const resource of ["sessions", "preferences", "profile", "shares"] as const) {
+    // Provider updates are immutable. Failed writes remain dirty for a later retry.
+    if (data[resource] !== previous[resource] && write(key(userId, resource), data[resource])) {
+      Object.assign(saved, { [resource]: data[resource] });
+    }
+  }
+  return saved;
 }
 
 export function clearUserData(userId: string) {
