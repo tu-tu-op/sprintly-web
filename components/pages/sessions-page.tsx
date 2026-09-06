@@ -23,6 +23,7 @@ import { DEMO_USER } from "@/lib/sprintly/demo-data";
 import { clearAuthSession } from "@/lib/sprintly/auth";
 import { downloadTextFile, DEFAULT_TIME_ZONE, loadUserData, type ShareSnapshot, type SyncPreference } from "@/lib/sprintly/storage";
 import { useSprintly } from "@/components/sprintly-provider";
+import { SessionMetadata } from "@/components/pages/session-metadata";
 
 const panelMotion = { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, transition: { duration: .28 } };
 
@@ -97,9 +98,13 @@ function avatarStyle(archetype: string, traits: string[]) {
 
 const HISTORY_PAGE_SIZE = 50;
 
-const SessionRow = memo(function SessionRow({ session }: { session: SprintlySession }) {
+const SessionRowContent = memo(function SessionRowContent({ session }: { session: SprintlySession }) {
   const [expanded, setExpanded] = useState(false);
   return <Panel className="overflow-hidden"><button onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} className="grid min-h-[94px] w-full gap-4 p-4 text-left sm:grid-cols-[125px_1fr_auto] sm:items-center sm:p-5"><div><p className="text-xs font-medium">{dateLabel(session.startedAt)}</p><p className="mono mt-1 text-[10px] text-[#797979]">{timeFormatter.format(new Date(session.startedAt))}</p></div><div className="flex min-w-0 items-center gap-3"><div className={`grid size-10 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${avatarStyle(session.archetype.primary, session.archetype.traits)}`}><Code2 className="size-4"/></div><div className="min-w-0"><p className="truncate text-sm font-medium">{session.archetype.primary}</p><p className="mt-1 truncate text-xs text-[#7e7e7e]">{session.archetype.traits.join(" · ")}</p></div></div><div className="flex items-center gap-5"><div className="text-right"><p className="mono text-base font-semibold">{formatDuration(session.activeDurationSeconds)}</p><p className="mt-1 text-[10px] text-[#c0c0c0]">{session.scores.focus}% focus</p></div><ChevronDown className={`size-4 text-[#6c6c6c] transition-transform ${expanded ? "rotate-180" : ""}`}/></div></button>{expanded && <div className="border-t border-white/[.07] bg-black/10 p-4 sm:p-5"><div className="grid grid-cols-2 gap-2 sm:grid-cols-5">{[[FileCode2, number(session.activity.filesTouched), "files"], [Code2, number(session.activity.edits), "edits"], [Terminal, number(session.terminal.totalCommands), "commands"], [HeartPulse, `${session.reliability.recoveryRate}%`, "recovery"], [Trophy, sessionCompositeScore(session).toString(), "dev score v1"]].map(([Icon, value, label]) => { const C = Icon as typeof FileCode2; return <div key={String(label)} className="rounded-lg bg-white/[.025] p-3"><C className="size-3.5 text-[#767676]"/><p className="mono mt-3 text-sm font-semibold">{String(value)}</p><p className="mt-1 text-[10px] text-[#777777]">{String(label)}</p></div>; })}</div><div className="mt-4 flex flex-wrap items-center gap-3"><Link href={`/app/sessions/${session.sessionId}`} className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#f2f2f2] text-[#0b0b0b] px-3 text-xs font-semibold">Open full session <ChevronRight className="size-3.5"/></Link><Pill tone="gray"><HardDrive className="size-3"/> {session.signature ? "Signed · not verified" : "Demo / unverified"}</Pill></div></div>}</Panel>;
+});
+
+const SessionRow = memo(function SessionRow({ session }: { session: SprintlySession }) {
+  return <div><SessionMetadata sessionId={session.sessionId} /><SessionRowContent session={session} /></div>;
 });
 
 export function SessionsPage() {
