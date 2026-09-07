@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Copy, Download, HeartPulse, Radar, RefreshCw } from "lucide-react";
+import { Copy, Download, HeartPulse, Radar, RefreshCw, TimerReset } from "lucide-react";
 
 import { useSprintly } from "@/components/sprintly-provider";
 import { downloadTextFile } from "@/lib/sprintly/storage";
@@ -12,6 +12,12 @@ function Pill({ children, tone = "gray" }: { children: React.ReactNode; tone?: "
     : "border-white/10 bg-white/[.035] text-[#9c9c9c]";
 
   return <span className={"inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium " + toneClass}>{children}</span>;
+}
+
+function formatPairingCountdown(totalSeconds: number) {
+  const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
+  const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+  return minutes + ":" + seconds;
 }
 
 export function SettingsConnectionPanel() {
@@ -32,6 +38,7 @@ export function SettingsConnectionPanel() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
 
   const refreshDevices = async () => {
     if (repositoryMode === "local") return;
@@ -47,13 +54,34 @@ export function SettingsConnectionPanel() {
     void refreshDevices();
   }, [repositoryMode]);
 
+  useEffect(() => {
+    if (!pairing) {
+      setRemainingSeconds(0);
+      return;
+    }
+
+    const updateRemaining = () => {
+      const expiresAt = Date.parse(pairing.expiresAt);
+      const remaining = Number.isFinite(expiresAt)
+        ? Math.max(0, Math.ceil((expiresAt - Date.now()) / 1000))
+        : Math.max(0, pairing.expiresInSeconds);
+      setRemainingSeconds(remaining);
+    };
+
+    updateRemaining();
+    const timer = window.setInterval(updateRemaining, 1000);
+    return () => window.clearInterval(timer);
+  }, [pairing]);
+
   const startPairing = async () => {
     setBusy(true);
     setStatus(null);
     setCopied(false);
 
     try {
-      setPairing(await createPairingCode());
+      const nextPairing = await createPairingCode();
+      setPairing(nextPairing);
+      setRemainingSeconds(nextPairing.expiresInSeconds);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Unable to create pairing code");
     } finally {
@@ -61,8 +89,10 @@ export function SettingsConnectionPanel() {
     }
   };
 
+  const pairingExpired = Boolean(pairing && remainingSeconds <= 0);
+
   const copyPairingCode = async () => {
-    if (!pairing) return;
+    if (!pairing || pairingExpired) return;
 
     if (!navigator.clipboard) {
       setStatus("Clipboard access is unavailable. Select the code manually.");
@@ -189,14 +219,24 @@ export function SettingsConnectionPanel() {
             <button
               type="button"
               onClick={() => void copyPairingCode()}
+              disabled={pairingExpired}
               className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-white/[.1] px-3 text-[11px] font-medium transition hover:bg-white/[.06]"
             >
               <Copy className="size-3.5" />
               {copied ? "Copied" : "Copy code"}
             </button>
           </div>
+          <div className="mt-4 flex items-center gap-2 text-[#d6d6d6]" aria-live="polite">
+            <TimerReset className="size-4" />
+            <span className="mono text-sm font-semibold">
+              {pairingExpired ? "Expired" : formatPairingCountdown(remainingSeconds)}
+            </span>
+            <span className="text-[11px] text-[#8b8b8b]">
+              {pairingExpired ? "Generate a new code to continue." : "remaining"}
+            </span>
+          </div>
           <p className="mt-2 text-[11px] text-[#8b8b8b]">
-            Expires in {pairing.expiresInSeconds}s. The device token is returned only after the one-time exchange.
+            This one-time code expires automatically and is consumed when the extension completes pairing.
           </p>
         </div>
       )}
