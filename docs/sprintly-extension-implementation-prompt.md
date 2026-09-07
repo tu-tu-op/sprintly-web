@@ -9,6 +9,38 @@ Connect the VS Code extension to the Sprintly website through its authenticated 
 Website development base URL: `http://localhost:3000`.
 Website API documentation: `docs/sprintly-extension-api.md` in the website repository.
 
+## Hosted Supabase connection handoff
+
+The extension connects to the website API, not to Supabase directly. Supabase PostgreSQL, RLS, Auth, retention, consent, leaderboard aggregation, and service-role operations remain server-only inside the website.
+
+Configure the extension with one replaceable API origin:
+
+```text
+SPRINTLY_API_BASE_URL=http://localhost:3000
+```
+
+Use `${SPRINTLY_API_BASE_URL}/api/...` for every request. Do not add `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, a database password, a Supabase access token, or a PostgreSQL connection string to the extension. Never ask users to paste any of those values into VS Code.
+
+Before pairing, call:
+
+```http
+GET /api/extension/health
+```
+
+Require this response before proceeding:
+
+```json
+{
+  "ok": true,
+  "contract": "devstrava.session.v1",
+  "schemaVersion": 1
+}
+```
+
+The signed-in website creates the pairing code and owns the Supabase session. The extension only completes the one-time exchange, stores the returned device token in VS Code `SecretStorage`, and calls the website API with that token. The extension must never create Supabase users, query Supabase tables, or infer a `user_id`.
+
+For local development, use the website repository’s explicitly configured development bearer token only when the website is running in development mode. Keep the extension’s development-token support disabled by default, clearly label it as local-only, and do not include a token in source control, packaged builds, screenshots, diagnostics, or logs.
+
 ## Non-negotiable boundaries
 
 - Do not add Supabase client packages, Supabase URLs, publishable keys, service-role keys, database migrations, or direct PostgreSQL access to the extension.
