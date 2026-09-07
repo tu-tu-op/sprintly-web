@@ -9,6 +9,8 @@ import { SPRINTLY_CONTRACT, SPRINTLY_SCHEMA_VERSION } from "./contract.ts";
 import { validateExtensionUpload } from "./extension.ts";
 // @ts-expect-error Node's strip-types test runner resolves TypeScript extensions directly.
 import { computeServerSessionMetrics } from "./server-scoring.ts";
+// @ts-expect-error Node's strip-types test runner resolves TypeScript extensions directly.
+import { buildSprintlyVSCodePairingUri } from "./vscode-uri.ts";
 
 const session = DEMO_SESSIONS[0];
 
@@ -55,4 +57,36 @@ test("server score calculation ignores the client devScore field", () => {
     scores: { ...session.scores, devScore: 0, focus: 0, testingDiscipline: 0, recovery: 0, consistency: 0, aiBalance: 0 },
   });
   assert.deepEqual(tampered, original);
+});
+
+test("VS Code pairing URI targets the installed Sprintly extension", () => {
+  assert.equal(
+    buildSprintlyVSCodePairingUri({
+      code: " A1B2C3D4E5F6 ",
+      apiOrigin: "http://localhost:3000/app/settings?from=test",
+      extensionId: "tu-tu-op.sprintly",
+    }),
+    "vscode://tu-tu-op.sprintly/connect?code=A1B2C3D4E5F6&api=http%3A%2F%2Flocalhost%3A3000",
+  );
+});
+
+test("VS Code pairing URI supports Insiders and rejects an invalid extension identity", () => {
+  assert.equal(
+    buildSprintlyVSCodePairingUri({
+      code: "A1B2C3D4E5F6",
+      apiOrigin: "https://sprintly.example",
+      scheme: "vscode-insiders",
+      extensionId: "tu-tu-op.sprintly",
+    }),
+    "vscode-insiders://tu-tu-op.sprintly/connect?code=A1B2C3D4E5F6&api=https%3A%2F%2Fsprintly.example",
+  );
+
+  assert.throws(
+    () => buildSprintlyVSCodePairingUri({
+      code: "A1B2C3D4E5F6",
+      apiOrigin: "http://localhost:3000",
+      extensionId: "sprintly",
+    }),
+    /extension ID/i,
+  );
 });

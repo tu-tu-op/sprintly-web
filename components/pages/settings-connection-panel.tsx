@@ -5,6 +5,10 @@ import { Copy, Download, ExternalLink, HeartPulse, Radar, RefreshCw, TimerReset 
 
 import { useSprintly } from "@/components/sprintly-provider";
 import { downloadTextFile } from "@/lib/sprintly/storage";
+import {
+  buildSprintlyVSCodePairingUri,
+  type SprintlyVSCodeScheme,
+} from "@/lib/sprintly/vscode-uri";
 
 function Pill({ children, tone = "gray" }: { children: React.ReactNode; tone?: "green" | "gray" }) {
   const toneClass = tone === "green"
@@ -39,6 +43,9 @@ export function SettingsConnectionPanel() {
   const [status, setStatus] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(0);
+  const [awaitingExtension, setAwaitingExtension] = useState(false);
+  const [deviceIdsBeforePairing, setDeviceIdsBeforePairing] = useState<Set<string>>(new Set());
+  const pairingExpired = Boolean(pairing && remainingSeconds <= 0);
 
   const refreshDevices = async () => {
     if (repositoryMode === "local") return;
@@ -73,6 +80,45 @@ export function SettingsConnectionPanel() {
     return () => window.clearInterval(timer);
   }, [pairing]);
 
+  useEffect(() => {
+    if (!awaitingExtension || !pairing || pairingExpired || repositoryMode === "local") return;
+
+    let cancelled = false;
+    const pollForExtension = async () => {
+      try {
+        const nextDevices = await listExtensionDevices();
+        if (cancelled) return;
+
+        setDevices(nextDevices);
+        const pairedDevice = nextDevices.find(
+          (device) => !device.revoked_at && !deviceIdsBeforePairing.has(device.id),
+        );
+
+        if (pairedDevice) {
+          setAwaitingExtension(false);
+          setPairing(null);
+          setStatus(`${pairedDevice.device_name} connected successfully`);
+        }
+      } catch {
+        // Keep polling while the short-lived code remains valid. The final
+        // connection error remains available through the manual status check.
+      }
+    };
+
+    void pollForExtension();
+    const timer = window.setInterval(() => void pollForExtension(), 2_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, [awaitingExtension, deviceIdsBeforePairing, listExtensionDevices, pairing, pairingExpired, repositoryMode]);
+
+  useEffect(() => {
+    if (!awaitingExtension || !pairingExpired) return;
+    setAwaitingExtension(false);
+    setStatus("The extension did not complete pairing before the code expired. Generate a new code and try again.");
+  }, [awaitingExtension, pairingExpired]);
+
   const startPairing = async () => {
     setBusy(true);
     setStatus(null);
@@ -80,8 +126,10 @@ export function SettingsConnectionPanel() {
 
     try {
       const nextPairing = await createPairingCode();
+      setDeviceIdsBeforePairing(new Set(devices.map((device) => device.id)));
       setPairing(nextPairing);
       setRemainingSeconds(nextPairing.expiresInSeconds);
+      setAwaitingExtension(false);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Unable to create pairing code");
     } finally {
@@ -89,20 +137,25 @@ export function SettingsConnectionPanel() {
     }
   };
 
-  const pairingExpired = Boolean(pairing && remainingSeconds <= 0);
-
-  const openVSCode = () => {
+  const openVSCode = (scheme: SprintlyVSCodeScheme = "vscode") => {
     if (!pairing || pairingExpired) return;
 
-    const deepLink = "vscode://sprintly/connect?code="
-      + encodeURIComponent(pairing.code)
-      + "&api="
-      + encodeURIComponent(window.location.origin);
+    try {
+      const applicationName = scheme === "vscode-insiders" ? "VS Code Insiders" : "VS Code";
+      if (!window.confirm(`Open ${applicationName} and connect the Sprintly extension?`)) return;
 
-    if (!window.confirm("Open VS Code and connect the Sprintly extension with this pairing code?")) return;
+      const deepLink = buildSprintlyVSCodePairingUri({
+        code: pairing.code,
+        apiOrigin: window.location.origin,
+        scheme,
+      });
 
-    setStatus("Opening VS Code...");
-    window.location.assign(deepLink);
+      setAwaitingExtension(true);
+      setStatus(`Opening ${applicationName} and waiting for Sprintly...`);
+      window.location.assign(deepLink);
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Unable to open VS Code");
+    }
   };
 
   const copyPairingCode = async () => {
@@ -254,13 +307,26 @@ export function SettingsConnectionPanel() {
           </p>
           <button
             type="button"
-            onClick={openVSCode}
+            onClick={() => openVSCode("vscode")}
             disabled={pairingExpired}
             className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#f2f2f2] px-3 text-xs font-semibold text-[#0b0b0b] transition hover:bg-[#ededed] disabled:opacity-40"
           >
             <ExternalLink className="size-3.5" />
             Open VS Code
           </button>
+          <button
+            type="button"
+            onClick={() => openVSCode("vscode-insiders")}
+            disabled={pairingExpired}
+            className="ml-2 mt-4 inline-flex min-h-10 items-center gap-2 rounded-lg border border-white/[.1] px-3 text-xs font-medium transition hover:bg-white/[.06] disabled:opacity-40"
+          >
+            <ExternalLink className="size-3.5" />
+            Use VS Code Insiders
+          </button>
+          <p className="mt-3 text-[11px] leading-5 text-[#8b8b8b]">
+            Sprintly must be installed in the selected VS Code edition. Opening the extension source folder alone does not install it.
+            {awaitingExtension ? " This page will confirm automatically when the extension finishes pairing." : ""}
+          </p>
         </div>
       )}
 

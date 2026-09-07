@@ -14,6 +14,14 @@ The website owns Sprintly’s database and API. The VS Code extension remains a 
 npm run dev
 ```
 
+The website opens the companion extension through
+`vscode://tu-tu-op.sprintly/connect`. That authority must match
+`publisher.name` in the extension manifest. Override
+`NEXT_PUBLIC_SPRINTLY_VSCODE_EXTENSION_ID` only when testing a differently
+published build. The extension must be installed in VS Code (or VS Code
+Insiders); merely opening its source repository does not register the URI
+handler.
+
 The local Supabase project is configured in `supabase/config.toml`. With the Supabase CLI installed, the normal migration workflow is:
 
 ```bash
