@@ -51,6 +51,7 @@ node --experimental-strip-types --test lib/sprintly/logic.test.ts lib/sprintly/e
 ```
 
 The extension API contract, pairing flow, local Supabase commands, and privacy boundaries are documented in [`docs/sprintly-extension-api.md`](docs/sprintly-extension-api.md).
+The companion VS Code extension handoff is in [`docs/sprintly-extension-implementation-prompt.md`](docs/sprintly-extension-implementation-prompt.md).
 
 When Supabase variables are configured, website authentication uses Supabase Auth and synchronized data is stored in PostgreSQL. Without those variables, the demo auth and LocalStorage repository remain available.
 
