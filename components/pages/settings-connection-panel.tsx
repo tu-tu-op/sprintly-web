@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download, HeartPulse, Radar, RefreshCw } from "lucide-react";
+import { Copy, Download, HeartPulse, Radar, RefreshCw } from "lucide-react";
 
 import { useSprintly } from "@/components/sprintly-provider";
 import { downloadTextFile } from "@/lib/sprintly/storage";
@@ -31,6 +31,7 @@ export function SettingsConnectionPanel() {
   const [pairing, setPairing] = useState<Awaited<ReturnType<typeof createPairingCode>> | null>(null);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const refreshDevices = async () => {
     if (repositoryMode === "local") return;
@@ -49,6 +50,7 @@ export function SettingsConnectionPanel() {
   const startPairing = async () => {
     setBusy(true);
     setStatus(null);
+    setCopied(false);
 
     try {
       setPairing(await createPairingCode());
@@ -56,6 +58,23 @@ export function SettingsConnectionPanel() {
       setStatus(error instanceof Error ? error.message : "Unable to create pairing code");
     } finally {
       setBusy(false);
+    }
+  };
+
+  const copyPairingCode = async () => {
+    if (!pairing) return;
+
+    if (!navigator.clipboard) {
+      setStatus("Clipboard access is unavailable. Select the code manually.");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(pairing.code);
+      setCopied(true);
+      setStatus("Pairing code copied to clipboard");
+    } catch {
+      setStatus("Unable to copy the pairing code. Select it manually.");
     }
   };
 
@@ -165,7 +184,17 @@ export function SettingsConnectionPanel() {
       {pairing && (
         <div className="mt-4 rounded-xl border border-[#d0d0d0]/25 p-4">
           <p className="text-xs font-medium">Enter this code in the Sprintly extension</p>
-          <p className="mono mt-2 text-2xl tracking-[.22em]">{pairing.code}</p>
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <p className="mono text-2xl tracking-[.22em]">{pairing.code}</p>
+            <button
+              type="button"
+              onClick={() => void copyPairingCode()}
+              className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-white/[.1] px-3 text-[11px] font-medium transition hover:bg-white/[.06]"
+            >
+              <Copy className="size-3.5" />
+              {copied ? "Copied" : "Copy code"}
+            </button>
+          </div>
           <p className="mt-2 text-[11px] text-[#8b8b8b]">
             Expires in {pairing.expiresInSeconds}s. The device token is returned only after the one-time exchange.
           </p>
