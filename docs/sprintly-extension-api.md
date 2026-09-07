@@ -24,6 +24,19 @@ supabase db test --local
 
 `supabase db reset` applies every migration and then runs `supabase/seed.sql`. The seed user is `00000000-0000-0000-0000-000000000001`; it contains no production credentials.
 
+## Hosted Supabase setup
+
+For a hosted project, configure the website runtime values in an untracked `.env.local` file using `.env.example` as the template. The service-role key must remain server-only. To apply these migrations remotely, configure a Supabase CLI access token in the shell and use the project ref from the Supabase URL:
+
+```powershell
+$env:SUPABASE_ACCESS_TOKEN = "<your Supabase CLI access token>"
+npx --yes supabase@latest link --project-ref <your-project-ref>
+npx --yes supabase@latest db push --linked --include-all
+npx --yes supabase@latest db test --linked
+```
+
+Run the remote commands only against the intended project. Do not commit the access token, database password, service-role key, or `.env.local`.
+
 ## Health check
 
 ```http
