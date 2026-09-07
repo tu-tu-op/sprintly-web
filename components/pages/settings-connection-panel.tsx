@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Copy, Download, HeartPulse, Radar, RefreshCw, TimerReset } from "lucide-react";
+import { Copy, Download, ExternalLink, HeartPulse, Radar, RefreshCw, TimerReset } from "lucide-react";
 
 import { useSprintly } from "@/components/sprintly-provider";
 import { downloadTextFile } from "@/lib/sprintly/storage";
@@ -90,6 +90,20 @@ export function SettingsConnectionPanel() {
   };
 
   const pairingExpired = Boolean(pairing && remainingSeconds <= 0);
+
+  const openVSCode = () => {
+    if (!pairing || pairingExpired) return;
+
+    const deepLink = "vscode://sprintly/connect?code="
+      + encodeURIComponent(pairing.code)
+      + "&api="
+      + encodeURIComponent(window.location.origin);
+
+    if (!window.confirm("Open VS Code and connect the Sprintly extension with this pairing code?")) return;
+
+    setStatus("Opening VS Code...");
+    window.location.assign(deepLink);
+  };
 
   const copyPairingCode = async () => {
     if (!pairing || pairingExpired) return;
@@ -238,6 +252,15 @@ export function SettingsConnectionPanel() {
           <p className="mt-2 text-[11px] text-[#8b8b8b]">
             This one-time code expires automatically and is consumed when the extension completes pairing.
           </p>
+          <button
+            type="button"
+            onClick={openVSCode}
+            disabled={pairingExpired}
+            className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-lg bg-[#f2f2f2] px-3 text-xs font-semibold text-[#0b0b0b] transition hover:bg-[#ededed] disabled:opacity-40"
+          >
+            <ExternalLink className="size-3.5" />
+            Open VS Code
+          </button>
         </div>
       )}
 
