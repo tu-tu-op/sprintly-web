@@ -26,15 +26,15 @@ export function StatusPill({
   tone?: "green" | "violet" | "amber" | "gray" | "cyan";
 }) {
   const colors = {
-    green: "border-[#36C98F]/30 bg-[#36C98F]/10 text-[#36C98F]",
-    violet: "border-[#7C6CF2]/35 bg-[#7C6CF2]/10 text-[#9B8CFF]",
-    amber: "border-[#F6A94A]/30 bg-[#F6A94A]/10 text-[#F6A94A]",
-    cyan: "border-[#32C7D9]/30 bg-[#32C7D9]/10 text-[#32C7D9]",
-    gray: "border-white/10 bg-white/[.04] text-[#a5a5a5]",
+    green: "border-white/15 bg-white/[.06] text-[#f2f2f2]",
+    violet: "border-white/15 bg-white/[.05] text-[#e0e0e0]",
+    amber: "border-white/10 bg-white/[.04] text-[#d0d0d0]",
+    cyan: "border-white/10 bg-white/[.04] text-[#cccccc]",
+    gray: "border-white/[.08] bg-white/[.025] text-[#a5a5a5]",
   };
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium tracking-wide ${colors[tone]}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium tracking-wide ${colors[tone] || colors.gray}`}
     >
       {children}
     </span>
@@ -56,7 +56,7 @@ export function InteractiveStudioSection() {
         {/* Header */}
         <motion.div {...reveal} className="max-w-3xl">
           <div className="flex items-center gap-2">
-            <StatusPill tone="violet">
+            <StatusPill tone="gray">
               <Cpu className="size-3.5" /> Interactive Product Studio
             </StatusPill>
             <span className="mono text-xs text-[#6e6e6e]">v1.0.4 SPEC</span>
@@ -82,11 +82,11 @@ export function InteractiveStudioSection() {
               onClick={() => setActiveTab(id)}
               className={`flex items-center gap-2.5 rounded-xl border px-4 py-2.5 text-xs font-medium transition-all sm:text-sm ${
                 activeTab === id
-                  ? "border-[#7C6CF2]/60 bg-[#7C6CF2]/15 text-[#f4f4f4] shadow-[0_0_24px_rgba(124,108,242,0.15)]"
+                  ? "border-white/30 bg-white/10 text-[#f4f4f4] shadow-[0_0_24px_rgba(255,255,255,0.06)]"
                   : "border-white/[.06] bg-white/[.02] text-[#888888] hover:border-white/15 hover:bg-white/[.04] hover:text-[#d0d0d0]"
               }`}
             >
-              <Icon className={`size-4 ${activeTab === id ? "text-[#9B8CFF]" : "text-[#777777]"}`} />
+              <Icon className={`size-4 ${activeTab === id ? "text-white" : "text-[#777777]"}`} />
               {label}
             </button>
           ))}
@@ -119,8 +119,8 @@ function SensorStreamMock() {
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[.07] pb-4">
           <div className="flex items-center gap-2.5">
             <span className="relative flex size-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#36C98F] opacity-75" />
-              <span className="relative inline-flex size-2.5 rounded-full bg-[#36C98F]" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/50 opacity-75" />
+              <span className="relative inline-flex size-2.5 rounded-full bg-[#f2f2f2]" />
             </span>
             <span className="mono text-xs font-semibold uppercase tracking-wider text-[#e6e6e6]">
               devstrava.session.v1 / live telemetry
@@ -128,7 +128,7 @@ function SensorStreamMock() {
           </div>
           <div className="flex items-center gap-2">
             <span className="mono text-xs text-[#888888]">SESSION:</span>
-            <span className="mono rounded bg-white/[.05] px-2 py-0.5 text-xs text-[#9B8CFF]">
+            <span className="mono rounded bg-white/[.05] px-2 py-0.5 text-xs text-[#d6d6d6]">
               sess_94f82a1c
             </span>
           </div>
@@ -137,11 +137,11 @@ function SensorStreamMock() {
         {/* Real-time telemetry feed */}
         <div className="mt-5 space-y-2 font-mono text-xs">
           {[
-            { time: "00:14:02", type: "BUILD", event: "tsc --noEmit", status: "OK (0 errors)", color: "text-[#36C98F]" },
-            { time: "00:14:38", type: "GIT", event: "git commit -m 'feat(auth): token pairing'", status: "SHA a83f21", color: "text-[#32C7D9]" },
-            { time: "00:16:11", type: "TEST", event: "pnpm test:sprintly (18 passed, 0 failed)", status: "100% RECOVERY", color: "text-[#36C98F]" },
-            { time: "00:18:45", type: "EDIT", event: "lib/sprintly/scoring.ts (+42 lines)", status: "MANUAL 84%", color: "text-[#F6A94A]" },
-            { time: "00:21:04", type: "AI", event: "copilot.inline_completion accepted", status: "16% AI ASSIST", color: "text-[#9B8CFF]" },
+            { time: "00:14:02", type: "BUILD", event: "tsc --noEmit", status: "OK (0 errors)", color: "text-[#f2f2f2]" },
+            { time: "00:14:38", type: "GIT", event: "git commit -m 'feat(auth): token pairing'", status: "SHA a83f21", color: "text-[#d0d0d0]" },
+            { time: "00:16:11", type: "TEST", event: "pnpm test:sprintly (18 passed, 0 failed)", status: "100% RECOVERY", color: "text-[#f2f2f2]" },
+            { time: "00:18:45", type: "EDIT", event: "lib/sprintly/scoring.ts (+42 lines)", status: "MANUAL 84%", color: "text-[#b0b0b0]" },
+            { time: "00:21:04", type: "AI", event: "copilot.inline_completion accepted", status: "16% AI ASSIST", color: "text-[#999999]" },
           ].map((item, i) => (
             <div
               key={i}
@@ -159,15 +159,15 @@ function SensorStreamMock() {
           ))}
         </div>
 
-        <div className="mt-5 flex items-center justify-between rounded-xl border border-[#36C98F]/20 bg-[#36C98F]/[0.03] p-4 text-xs">
+        <div className="mt-5 flex items-center justify-between rounded-xl border border-white/10 bg-white/[.02] p-4 text-xs">
           <div className="flex items-center gap-3">
-            <ShieldCheck className="size-5 text-[#36C98F]" />
+            <ShieldCheck className="size-5 text-[#d6d6d6]" />
             <div>
               <p className="font-medium text-[#e4e4e4]">Zero Source Code Capture Verified</p>
               <p className="mt-0.5 text-[#888888]">Editor buffer text, file contents, secrets, and AST branches are discarded before aggregation.</p>
             </div>
           </div>
-          <StatusPill tone="green">Air-Gapped Safe</StatusPill>
+          <StatusPill tone="gray">Air-Gapped Safe</StatusPill>
         </div>
       </div>
 
@@ -177,12 +177,12 @@ function SensorStreamMock() {
           <div className="rounded-xl border border-white/[.07] bg-white/[.02] p-4">
             <span className="mono text-[10px] uppercase tracking-wider text-[#777777]">ACTIVE DURATION</span>
             <p className="mono mt-2 text-2xl font-semibold text-[#f4f4f4]">01h 48m</p>
-            <p className="mt-1 text-xs text-[#36C98F]">Continuous focus block</p>
+            <p className="mt-1 text-xs text-[#d0d0d0]">Continuous focus block</p>
           </div>
           <div className="rounded-xl border border-white/[.07] bg-white/[.02] p-4">
             <span className="mono text-[10px] uppercase tracking-wider text-[#777777]">COMMANDS LOGGED</span>
             <p className="mono mt-2 text-2xl font-semibold text-[#f4f4f4]">47</p>
-            <p className="mt-1 text-xs text-[#9B8CFF]">18 tests · 14 git · 15 dev</p>
+            <p className="mt-1 text-xs text-[#a0a0a0]">18 tests · 14 git · 15 dev</p>
           </div>
           <div className="rounded-xl border border-white/[.07] bg-white/[.02] p-4">
             <span className="mono text-[10px] uppercase tracking-wider text-[#777777]">FILES TOUCHED</span>
@@ -192,14 +192,14 @@ function SensorStreamMock() {
           <div className="rounded-xl border border-white/[.07] bg-white/[.02] p-4">
             <span className="mono text-[10px] uppercase tracking-wider text-[#777777]">AI ASSIST BALANCE</span>
             <p className="mono mt-2 text-2xl font-semibold text-[#f4f4f4]">24%</p>
-            <p className="mt-1 text-xs text-[#32C7D9]">76% manual craftsmanship</p>
+            <p className="mt-1 text-xs text-[#b0b0b0]">76% manual craftsmanship</p>
           </div>
         </div>
 
         <div className="rounded-xl border border-white/[.07] bg-[#0c0c0e] p-4">
           <div className="flex items-center justify-between text-xs">
             <span className="text-[#999999]">Session Integrity Hash</span>
-            <span className="mono text-[#7C6CF2]">SHA-256 (Signed)</span>
+            <span className="mono text-[#e0e0e0]">SHA-256 (Signed)</span>
           </div>
           <div className="mono mt-2 overflow-hidden text-ellipsis rounded bg-black/50 p-2 text-[11px] text-[#777777]">
             e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -223,7 +223,7 @@ function DevScoreEngineMock() {
       className="panel grid gap-8 p-6 lg:grid-cols-[1.1fr_1.4fr] lg:p-8"
     >
       {/* Archetype Identity Card */}
-      <div className="relative overflow-hidden rounded-2xl border border-[#7C6CF2]/30 bg-gradient-to-b from-[#7C6CF2]/10 via-[#0d0f14] to-[#0a0a0c] p-6">
+      <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-b from-white/[.05] via-[#0d0d0d] to-[#080808] p-6">
         <div className="flex items-center justify-between">
           <StatusPill tone="violet">
             <Sparkles className="size-3.5" /> Archetype Profile
@@ -232,7 +232,7 @@ function DevScoreEngineMock() {
         </div>
 
         <div className="mt-6">
-          <span className="mono text-[11px] uppercase tracking-[0.2em] text-[#9B8CFF]">
+          <span className="mono text-[11px] uppercase tracking-[0.2em] text-[#a0a0a0]">
             PRIMARY ARCHETYPE
           </span>
           <h3 className="mt-1 text-2xl font-bold tracking-tight text-[#f4f4f4] sm:text-3xl">
@@ -260,7 +260,7 @@ function DevScoreEngineMock() {
               <span className="mono text-[10px] uppercase text-[#777777]">CUMULATIVE DEVSCORE</span>
               <p className="mono text-4xl font-bold text-[#f4f4f4]">874<span className="text-sm font-normal text-[#666666]"> / 1000</span></p>
             </div>
-            <span className="mono rounded-full border border-[#36C98F]/30 bg-[#36C98F]/10 px-3 py-1 text-xs font-semibold text-[#36C98F]">
+            <span className="mono rounded-full border border-white/20 bg-white/[.08] px-3 py-1 text-xs font-semibold text-white">
               TOP 3.4%
             </span>
           </div>
@@ -275,11 +275,11 @@ function DevScoreEngineMock() {
         </div>
 
         {[
-          { label: "Testing Discipline", score: 94, desc: "Frequency of test executions per code modification cycle", color: "bg-[#36C98F]" },
-          { label: "Focus Depth & Continuity", score: 88, desc: "Unbroken editor engagement without context switching", color: "bg-[#7C6CF2]" },
-          { label: "Error Recovery Velocity", score: 92, desc: "Rate of transitioning from red (failed build/test) to green", color: "bg-[#32C7D9]" },
-          { label: "Consistency & Cadence", score: 85, desc: "Sustained rhythm across multi-day sprint cycles", color: "bg-[#F6A94A]" },
-          { label: "AI Collaboration Ratio", score: 80, desc: "Balanced synergy between manual craft and AI synthesis", color: "bg-[#9B8CFF]" },
+          { label: "Testing Discipline", score: 94, desc: "Frequency of test executions per code modification cycle", color: "bg-white" },
+          { label: "Focus Depth & Continuity", score: 88, desc: "Unbroken editor engagement without context switching", color: "bg-[#e0e0e0]" },
+          { label: "Error Recovery Velocity", score: 92, desc: "Rate of transitioning from red (failed build/test) to green", color: "bg-[#b8b8b8]" },
+          { label: "Consistency & Cadence", score: 85, desc: "Sustained rhythm across multi-day sprint cycles", color: "bg-[#909090]" },
+          { label: "AI Collaboration Ratio", score: 80, desc: "Balanced synergy between manual craft and AI synthesis", color: "bg-[#707070]" },
         ].map((vector) => (
           <div key={vector.label} className="rounded-xl border border-white/[.05] bg-white/[.02] p-3.5">
             <div className="flex items-center justify-between text-xs">
@@ -336,7 +336,7 @@ function CircadianMatrixMock() {
                 <div
                   className={`w-full rounded-t transition-all duration-200 group-hover:brightness-125 ${
                     isPeak
-                      ? "bg-gradient-to-t from-[#7C6CF2]/60 to-[#9B8CFF]"
+                      ? "bg-gradient-to-t from-[#888888] to-[#f4f4f4]"
                       : h.val > 50
                       ? "bg-[#454545]"
                       : "bg-[#252525]"
@@ -361,7 +361,7 @@ function CircadianMatrixMock() {
           <div key={item.label} className="rounded-xl border border-white/[.06] bg-white/[.02] p-3.5">
             <span className="mono text-[10px] uppercase text-[#777777]">{item.label}</span>
             <p className="mono mt-1 text-xl font-semibold text-[#f4f4f4]">{item.val}</p>
-            <p className="mt-0.5 text-[11px] text-[#36C98F]">{item.note}</p>
+            <p className="mt-0.5 text-[11px] text-[#b0b0b0]">{item.note}</p>
           </div>
         ))}
       </div>
@@ -407,49 +407,49 @@ function PrivacyPerimeterMock() {
           <h5 className="mono text-xs uppercase tracking-wider text-[#999999]">Data Ingress / Egress Status</h5>
           {level === "local" && (
             <div className="rounded-xl border border-white/[.08] bg-white/[.02] p-5 space-y-3 text-sm">
-              <div className="flex items-center gap-2 text-[#36C98F] font-medium">
-                <HardDrive className="size-4" /> 100% Resident on Client Machine
+              <div className="flex items-center gap-2 text-[#f2f2f2] font-medium">
+                <HardDrive className="size-4 text-[#d0d0d0]" /> 100% Resident on Client Machine
               </div>
               <p className="text-xs text-[#999999] leading-5">
                 All metrics are stored exclusively in local SQLite / IndexedDB. Zero outbound HTTP requests are initiated. Full exportable JSON format.
               </p>
               <ul className="space-y-1.5 text-xs text-[#bbbbbb]">
-                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#36C98F]" /> Local session history & streaks</li>
-                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#36C98F]" /> Terminal command classifications</li>
-                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#36C98F]" /> Manual vs AI balance telemetry</li>
-                <li className="flex items-center gap-2 text-[#F06464]"><EyeOff className="size-3.5" /> No account or network connection required</li>
+                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#d0d0d0]" /> Local session history & streaks</li>
+                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#d0d0d0]" /> Terminal command classifications</li>
+                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#d0d0d0]" /> Manual vs AI balance telemetry</li>
+                <li className="flex items-center gap-2 text-[#888888]"><EyeOff className="size-3.5" /> No account or network connection required</li>
               </ul>
             </div>
           )}
 
           {level === "synced" && (
-            <div className="rounded-xl border border-[#7C6CF2]/30 bg-[#7C6CF2]/[0.04] p-5 space-y-3 text-sm">
-              <div className="flex items-center gap-2 text-[#9B8CFF] font-medium">
-                <Cloud className="size-4" /> Authenticated Supabase Cloud Vault
+            <div className="rounded-xl border border-white/10 bg-white/[.02] p-5 space-y-3 text-sm">
+              <div className="flex items-center gap-2 text-[#f2f2f2] font-medium">
+                <Cloud className="size-4 text-[#d0d0d0]" /> Authenticated Supabase Cloud Vault
               </div>
               <p className="text-xs text-[#999999] leading-5">
                 Only aggregate session metadata is encrypted and pushed via paired token. Allows continuous streak tracking across work laptop and home desktop.
               </p>
               <ul className="space-y-1.5 text-xs text-[#bbbbbb]">
-                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#9B8CFF]" /> Multi-device session aggregation</li>
-                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#9B8CFF]" /> Cloud backup with granular wipe controls</li>
-                <li className="flex items-center gap-2 text-[#F6A94A]"><LockKeyhole className="size-3.5" /> Raw file paths and code strictly omitted</li>
+                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#d0d0d0]" /> Multi-device session aggregation</li>
+                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#d0d0d0]" /> Cloud backup with granular wipe controls</li>
+                <li className="flex items-center gap-2 text-[#888888]"><LockKeyhole className="size-3.5" /> Raw file paths and code strictly omitted</li>
               </ul>
             </div>
           )}
 
           {level === "public" && (
-            <div className="rounded-xl border border-[#F6A94A]/30 bg-[#F6A94A]/[0.04] p-5 space-y-3 text-sm">
-              <div className="flex items-center gap-2 text-[#F6A94A] font-medium">
-                <Globe2 className="size-4" /> Opt-In Public Showcase
+            <div className="rounded-xl border border-white/10 bg-white/[.02] p-5 space-y-3 text-sm">
+              <div className="flex items-center gap-2 text-[#f2f2f2] font-medium">
+                <Globe2 className="size-4 text-[#d0d0d0]" /> Opt-In Public Showcase
               </div>
               <p className="text-xs text-[#999999] leading-5">
                 Only your verified DevScore, archetype badges, and anonymous leaderboard standing are published. Never displays project names or timestamps.
               </p>
               <ul className="space-y-1.5 text-xs text-[#bbbbbb]">
-                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#F6A94A]" /> Verifiable public share link (/share/id)</li>
-                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#F6A94A]" /> Community leaderboard rank</li>
-                <li className="flex items-center gap-2 text-[#36C98F]"><ShieldCheck className="size-3.5" /> Granular instant toggle to make private</li>
+                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#d0d0d0]" /> Verifiable public share link (/share/id)</li>
+                <li className="flex items-center gap-2"><Check className="size-3.5 text-[#d0d0d0]" /> Community leaderboard rank</li>
+                <li className="flex items-center gap-2 text-[#d0d0d0]"><ShieldCheck className="size-3.5" /> Granular instant toggle to make private</li>
               </ul>
             </div>
           )}
@@ -459,7 +459,7 @@ function PrivacyPerimeterMock() {
         <div className="rounded-xl border border-white/[.08] bg-[#050507] p-4">
           <div className="flex items-center justify-between border-b border-white/[.06] pb-2 text-xs">
             <span className="mono text-[#888888]">CONTRACT PAYLOAD INSPECTOR</span>
-            <span className="mono text-[10px] text-[#36C98F]">devstrava.session.v1</span>
+            <span className="mono text-[10px] text-[#b0b0b0]">devstrava.session.v1</span>
           </div>
           <pre className="mono mt-3 max-h-56 overflow-y-auto text-[11px] leading-5 text-[#a8a8a8]">
             {level === "local" && `{\n  "schemaVersion": 1,\n  "sessionId": "sess_loc_09182",\n  "activeDurationSeconds": 6480,\n  "coding": {\n    "manualPercent": 78.4,\n    "aiAssistedPercent": 21.6\n  },\n  "terminal": {\n    "test": 12, "git": 6, "build": 4\n  },\n  "scores": {\n    "focus": 88, "devScore": 874\n  }\n}`}
@@ -505,7 +505,7 @@ export function ArchitecturePipelineSection() {
   ];
 
   return (
-    <section className="border-b border-white/[.07] bg-[#070709] px-4 py-24 sm:px-6">
+    <section className="border-b border-white/[.07] bg-[#080808] px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-[1240px]">
         <motion.div {...reveal} className="max-w-2xl">
           <StatusPill tone="cyan">
@@ -530,7 +530,7 @@ export function ArchitecturePipelineSection() {
               <div>
                 <div className="flex items-center justify-between">
                   <span className="mono text-2xl font-bold text-[#444444]">{step.num}</span>
-                  <span className="mono rounded bg-white/[.05] px-2 py-0.5 text-[10px] text-[#9B8CFF]">
+                  <span className="mono rounded border border-white/[.08] bg-white/[.05] px-2 py-0.5 text-[10px] text-[#d0d0d0]">
                     {step.badge}
                   </span>
                 </div>
@@ -551,48 +551,48 @@ export function ArchitecturePipelineSection() {
             <p className="mt-1 text-xs text-[#888888]">A clear, legally binding boundary between telemetry signals and private IP.</p>
           </div>
           <div className="mt-6 grid gap-6 md:grid-cols-2">
-            <div className="rounded-xl border border-[#36C98F]/20 bg-[#36C98F]/[0.02] p-5">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#36C98F]">
-                <CheckCircle2 className="size-4" /> What Sprintly Senses & Computes
+            <div className="rounded-xl border border-white/10 bg-white/[.02] p-5">
+              <div className="flex items-center gap-2 text-sm font-semibold text-[#f2f2f2]">
+                <CheckCircle2 className="size-4 text-[#d0d0d0]" /> What Sprintly Senses & Computes
               </div>
               <ul className="mt-4 space-y-2.5 text-xs text-[#b5b5b5]">
                 <li className="flex items-start gap-2">
-                  <span className="text-[#36C98F]">✓</span> Focus time duration (active minutes vs idle gaps)
+                  <span className="text-[#d0d0d0]">✓</span> Focus time duration (active minutes vs idle gaps)
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#36C98F]">✓</span> Terminal command categories (build, test, git, lint, packageManager)
+                  <span className="text-[#d0d0d0]">✓</span> Terminal command categories (build, test, git, lint, packageManager)
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#36C98F]">✓</span> Edit counts & rough line delta estimates
+                  <span className="text-[#d0d0d0]">✓</span> Edit counts & rough line delta estimates
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#36C98F]">✓</span> AI prompt frequencies and assistance ratios
+                  <span className="text-[#d0d0d0]">✓</span> AI prompt frequencies and assistance ratios
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#36C98F]">✓</span> Test suite execution success/failure recovery transitions
+                  <span className="text-[#d0d0d0]">✓</span> Test suite execution success/failure recovery transitions
                 </li>
               </ul>
             </div>
 
-            <div className="rounded-xl border border-[#F06464]/20 bg-[#F06464]/[0.02] p-5">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#F06464]">
-                <ShieldAlert className="size-4" /> What Sprintly Strictly Refuses to Touch
+            <div className="rounded-xl border border-white/10 bg-white/[.02] p-5">
+              <div className="flex items-center gap-2 text-sm font-semibold text-[#888888]">
+                <ShieldAlert className="size-4 text-[#888888]" /> What Sprintly Strictly Refuses to Touch
               </div>
-              <ul className="mt-4 space-y-2.5 text-xs text-[#b5b5b5]">
+              <ul className="mt-4 space-y-2.5 text-xs text-[#888888]">
                 <li className="flex items-start gap-2">
-                  <span className="text-[#F06464]">✕</span> Raw source code, function names, and variable definitions
+                  <span className="text-[#666666]">✕</span> Raw source code, function names, and variable definitions
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#F06464]">✕</span> Terminal output text, logs, and stack traces
+                  <span className="text-[#666666]">✕</span> Terminal output text, logs, and stack traces
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#F06464]">✕</span> Keystroke logs, clipboard content, or webcam telemetry
+                  <span className="text-[#666666]">✕</span> Keystroke logs, clipboard content, or webcam telemetry
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#F06464]">✕</span> Git diff payloads, commit messages, and commit hashes
+                  <span className="text-[#666666]">✕</span> Git diff payloads, commit messages, and commit hashes
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-[#F06464]">✕</span> .env variables, API credentials, and SSH keys
+                  <span className="text-[#666666]">✕</span> .env variables, API credentials, and SSH keys
                 </li>
               </ul>
             </div>
@@ -609,7 +609,7 @@ export function ArchitecturePipelineSection() {
 
 export function HumanAiSynergySection() {
   return (
-    <section className="border-b border-white/[.07] bg-[#09090b] px-4 py-24 sm:px-6">
+    <section className="border-b border-white/[.07] bg-[#080808] px-4 py-24 sm:px-6">
       <div className="mx-auto grid max-w-[1240px] gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
         <motion.div {...reveal}>
           <StatusPill tone="amber">
@@ -623,7 +623,7 @@ export function HumanAiSynergySection() {
           </p>
           <div className="mt-8 space-y-4">
             <div className="flex gap-4">
-              <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-white/[.05] text-[#9B8CFF]">
+              <div className="grid size-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[.04] text-[#d0d0d0]">
                 <Cpu className="size-5" />
               </div>
               <div>
@@ -634,7 +634,7 @@ export function HumanAiSynergySection() {
               </div>
             </div>
             <div className="flex gap-4">
-              <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-white/[.05] text-[#32C7D9]">
+              <div className="grid size-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[.04] text-[#d0d0d0]">
                 <Activity className="size-5" />
               </div>
               <div>
@@ -645,7 +645,7 @@ export function HumanAiSynergySection() {
               </div>
             </div>
             <div className="flex gap-4">
-              <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-white/[.05] text-[#36C98F]">
+              <div className="grid size-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[.04] text-[#d0d0d0]">
                 <Award className="size-5" />
               </div>
               <div>
@@ -662,7 +662,7 @@ export function HumanAiSynergySection() {
         <motion.div {...reveal} className="panel p-6 sm:p-8">
           <div className="flex items-center justify-between border-b border-white/[.07] pb-4">
             <span className="mono text-xs text-[#888888]">SESSION METRIC DISSECTION</span>
-            <span className="mono rounded bg-[#32C7D9]/10 px-2.5 py-1 text-xs text-[#32C7D9]">BALANCED COGNITION</span>
+            <span className="mono rounded border border-white/10 bg-white/10 px-2.5 py-1 text-xs text-white">BALANCED COGNITION</span>
           </div>
 
           <div className="mt-6 space-y-5">
@@ -679,20 +679,20 @@ export function HumanAiSynergySection() {
             <div>
               <div className="flex justify-between text-xs">
                 <span className="text-[#999999]">AI Assisted Synthesis</span>
-                <span className="mono font-semibold text-[#9B8CFF]">24% (Boilerplate & Test Gen)</span>
+                <span className="mono font-semibold text-[#c0c0c0]">24% (Boilerplate & Test Gen)</span>
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/[.08]">
-                <div className="h-full w-[24%] rounded-full bg-[#7C6CF2]" />
+                <div className="h-full w-[24%] rounded-full bg-white/50" />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-xs">
                 <span className="text-[#999999]">Automated Tooling & Linters</span>
-                <span className="mono font-semibold text-[#32C7D9]">8% (Formatters & Codegen)</span>
+                <span className="mono font-semibold text-[#909090]">8% (Formatters & Codegen)</span>
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/[.08]">
-                <div className="h-full w-[8%] rounded-full bg-[#32C7D9]" />
+                <div className="h-full w-[8%] rounded-full bg-white/25" />
               </div>
             </div>
           </div>
@@ -700,7 +700,7 @@ export function HumanAiSynergySection() {
           <div className="mt-8 rounded-xl border border-white/[.07] bg-[#0c0c0e] p-4 text-xs">
             <div className="flex items-center justify-between">
               <span className="text-[#888888]">Calculated AI Balance Rating</span>
-              <span className="mono font-bold text-[#36C98F]">84 / 100 (Optimal)</span>
+              <span className="mono font-bold text-white">84 / 100 (Optimal)</span>
             </div>
             <p className="mt-2 text-[11px] text-[#666666]">
               "High architecture autonomy paired with disciplined prompt verification. Zero evidence of unverified copy-paste regressions."
@@ -752,7 +752,7 @@ export function DeveloperIdentitySection() {
   ];
 
   return (
-    <section className="border-b border-white/[.07] bg-[#070709] px-4 py-24 sm:px-6">
+    <section className="border-b border-white/[.07] bg-[#080808] px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-[1240px]">
         <motion.div {...reveal} className="text-center max-w-3xl mx-auto">
           <StatusPill tone="green">
@@ -773,17 +773,17 @@ export function DeveloperIdentitySection() {
               key={arch.name}
               {...reveal}
               transition={{ delay: i * 0.08 }}
-              className="panel flex flex-col justify-between p-6 transition hover:border-[#7C6CF2]/40"
+              className="panel flex flex-col justify-between p-6 transition hover:border-white/25"
             >
               <div>
-                <span className="mono rounded bg-[#7C6CF2]/15 px-2.5 py-1 text-[11px] font-semibold text-[#9B8CFF]">
+                <span className="mono rounded border border-white/15 bg-white/[.06] px-2.5 py-1 text-[11px] font-semibold text-[#e0e0e0]">
                   {arch.badge}
                 </span>
                 <h3 className="mt-5 text-xl font-semibold text-[#f4f4f4]">{arch.name}</h3>
                 <p className="mt-2.5 text-xs leading-5 text-[#888888]">{arch.desc}</p>
               </div>
               <div className="mt-6 border-t border-white/[.06] pt-4">
-                <span className="mono text-xs font-semibold text-[#36C98F]">{arch.metric}</span>
+                <span className="mono text-xs font-semibold text-[#d0d0d0]">{arch.metric}</span>
               </div>
             </motion.div>
           ))}
@@ -796,7 +796,7 @@ export function DeveloperIdentitySection() {
               <h3 className="text-base font-semibold text-[#f4f4f4]">Verifiable Milestone Badges</h3>
               <p className="mt-1 text-xs text-[#888888]">Earned through mathematical telemetry signatures, not vanity claims.</p>
             </div>
-            <Link href="/app" className="inline-flex items-center gap-2 text-xs font-semibold text-[#9B8CFF] hover:underline">
+            <Link href="/app" className="inline-flex items-center gap-2 text-xs font-semibold text-white/80 transition hover:text-white hover:underline">
               View all 24 achievements <ChevronRight className="size-3.5" />
             </Link>
           </div>
@@ -804,7 +804,7 @@ export function DeveloperIdentitySection() {
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {badges.map(({ name, desc, icon: Icon }) => (
               <div key={name} className="flex items-start gap-3.5 rounded-xl border border-white/[.05] bg-white/[.02] p-4">
-                <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-[#7C6CF2]/15 text-[#9B8CFF]">
+                <div className="grid size-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/[.04] text-[#e0e0e0]">
                   <Icon className="size-4" />
                 </div>
                 <div>
@@ -826,7 +826,7 @@ export function DeveloperIdentitySection() {
 
 export function TeamsAndEnterpriseSection() {
   return (
-    <section className="border-b border-white/[.07] bg-[#09090b] px-4 py-24 sm:px-6">
+    <section className="border-b border-white/[.07] bg-[#080808] px-4 py-24 sm:px-6">
       <div className="mx-auto grid max-w-[1240px] gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
         <motion.div {...reveal} className="panel p-6 sm:p-8">
           <div className="flex items-center justify-between border-b border-white/[.07] pb-4">
@@ -841,12 +841,12 @@ export function TeamsAndEnterpriseSection() {
             <div className="rounded-xl border border-white/[.07] bg-white/[.02] p-4">
               <span className="mono text-[10px] text-[#777777]">TEAM FOCUS TIME</span>
               <p className="mono mt-1 text-2xl font-bold text-[#f4f4f4]">142.5 hrs</p>
-              <p className="mt-1 text-xs text-[#36C98F]">7 out of 8 contributing</p>
+              <p className="mt-1 text-xs text-[#b0b0b0]">7 out of 8 contributing</p>
             </div>
             <div className="rounded-xl border border-white/[.07] bg-white/[.02] p-4">
               <span className="mono text-[10px] text-[#777777]">MEETING DEBT REDUCTION</span>
               <p className="mono mt-1 text-2xl font-bold text-[#f4f4f4]">-22%</p>
-              <p className="mt-1 text-xs text-[#32C7D9]">Protected mornings</p>
+              <p className="mt-1 text-xs text-[#b0b0b0]">Protected mornings</p>
             </div>
           </div>
 
@@ -856,7 +856,7 @@ export function TeamsAndEnterpriseSection() {
               <span className="mono font-semibold text-[#f4f4f4]">86% Green</span>
             </div>
             <div className="mt-2.5 h-2 overflow-hidden rounded-full bg-white/[.08]">
-              <div className="h-full w-[86%] rounded-full bg-[#36C98F]" />
+              <div className="h-full w-[86%] rounded-full bg-white/80" />
             </div>
             <p className="mt-3 text-[11px] text-[#777777]">
               Zero individual leaderboard ranking. Team views measure sustainable collective momentum, not micromanaged individual outputs.
@@ -891,7 +891,7 @@ export function TeamsAndEnterpriseSection() {
               },
             ].map((item) => (
               <div key={item.title} className="flex gap-3.5">
-                <ShieldCheck className="size-5 shrink-0 text-[#36C98F] mt-0.5" />
+                <ShieldCheck className="size-5 shrink-0 text-[#d0d0d0] mt-0.5" />
                 <div>
                   <h4 className="text-sm font-semibold text-[#f4f4f4]">{item.title}</h4>
                   <p className="mt-1 text-xs leading-5 text-[#888888]">{item.desc}</p>
@@ -929,7 +929,7 @@ export function FocusCalculatorSection() {
   const potentialDevScore = Math.min(950, Math.round(620 + dailyHours * 30 + (20 - switches) * 8));
 
   return (
-    <section className="border-b border-white/[.07] bg-[#070709] px-4 py-24 sm:px-6">
+    <section className="border-b border-white/[.07] bg-[#080808] px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-[1180px]">
         <motion.div {...reveal} className="text-center max-w-2xl mx-auto">
           <StatusPill tone="cyan">
@@ -949,7 +949,7 @@ export function FocusCalculatorSection() {
             <div>
               <div className="flex justify-between text-xs">
                 <span className="font-medium text-[#f4f4f4]">Daily Coding Window</span>
-                <span className="mono font-semibold text-[#9B8CFF]">{dailyHours} hours / day</span>
+                <span className="mono font-semibold text-white">{dailyHours} hours / day</span>
               </div>
               <input
                 type="range"
@@ -957,7 +957,7 @@ export function FocusCalculatorSection() {
                 max="12"
                 value={dailyHours}
                 onChange={(e) => setDailyHours(Number(e.target.value))}
-                className="mt-3 w-full accent-[#7C6CF2]"
+                className="mt-3 w-full accent-white"
               />
               <div className="flex justify-between text-[10px] text-[#666666]">
                 <span>2 hrs (Part-time)</span>
@@ -969,7 +969,7 @@ export function FocusCalculatorSection() {
             <div>
               <div className="flex justify-between text-xs">
                 <span className="font-medium text-[#f4f4f4]">Daily Interruptions & Context Switches</span>
-                <span className="mono font-semibold text-[#F6A94A]">{switches} switches / day</span>
+                <span className="mono font-semibold text-white">{switches} switches / day</span>
               </div>
               <input
                 type="range"
@@ -977,7 +977,7 @@ export function FocusCalculatorSection() {
                 max="20"
                 value={switches}
                 onChange={(e) => setSwitches(Number(e.target.value))}
-                className="mt-3 w-full accent-[#F6A94A]"
+                className="mt-3 w-full accent-white"
               />
               <div className="flex justify-between text-[10px] text-[#666666]">
                 <span>1 (Isolated flow)</span>
@@ -992,14 +992,14 @@ export function FocusCalculatorSection() {
           </div>
 
           {/* Results Display */}
-          <div className="flex flex-col justify-between rounded-xl border border-[#7C6CF2]/30 bg-[#7C6CF2]/[0.05] p-6 sm:p-8">
+          <div className="flex flex-col justify-between rounded-xl border border-white/12 bg-gradient-to-b from-[#141414] to-[#0a0a0a] p-6 sm:p-8">
             <div>
-              <span className="mono text-xs uppercase tracking-wider text-[#9B8CFF]">
+              <span className="mono text-xs uppercase tracking-wider text-[#a0a0a0]">
                 PROJECTED FOCUS RECOVERY
               </span>
               <div className="mt-4">
                 <p className="mono text-4xl font-bold text-[#f4f4f4] sm:text-5xl">+{reclaimedHours} hrs</p>
-                <p className="mt-1 text-xs text-[#36C98F]">Reclaimed deep work per sprint week</p>
+                <p className="mt-1 text-xs text-[#b0b0b0]">Reclaimed deep work per sprint week</p>
               </div>
 
               <div className="mt-6 border-t border-white/[.08] pt-4">
@@ -1009,7 +1009,7 @@ export function FocusCalculatorSection() {
                 </div>
                 <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/[.08]">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#7C6CF2] to-[#36C98F]"
+                    className="h-full rounded-full bg-gradient-to-r from-[#777777] to-white"
                     style={{ width: `${(potentialDevScore / 1000) * 100}%` }}
                   />
                 </div>
@@ -1066,7 +1066,7 @@ export function DeveloperFaqSection() {
   ];
 
   return (
-    <section className="border-b border-white/[.07] bg-[#09090b] px-4 py-24 sm:px-6">
+    <section className="border-b border-white/[.07] bg-[#080808] px-4 py-24 sm:px-6">
       <div className="mx-auto max-w-[980px]">
         <motion.div {...reveal} className="text-center">
           <StatusPill tone="gray">
@@ -1090,12 +1090,12 @@ export function DeveloperFaqSection() {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="flex w-full items-center justify-between p-5 text-left text-sm font-semibold text-[#f4f4f4] hover:text-[#9B8CFF]"
+                className="flex w-full items-center justify-between p-5 text-left text-sm font-semibold text-[#f4f4f4] hover:text-white"
               >
                 <span>{faq.q}</span>
                 <ChevronDown
                   className={`size-4 shrink-0 text-[#888888] transition-transform duration-200 ${
-                    openIndex === i ? "rotate-180 text-[#9B8CFF]" : ""
+                    openIndex === i ? "rotate-180 text-white" : ""
                   }`}
                 />
               </button>
@@ -1121,7 +1121,7 @@ export function FinalCtaSection() {
     <section className="px-4 py-24 sm:px-6">
       <motion.div
         {...reveal}
-        className="panel mx-auto max-w-[1240px] overflow-hidden rounded-[24px] border border-[#7C6CF2]/30 bg-gradient-to-b from-[#141419] via-[#0d0f14] to-[#08080a] p-8 sm:p-14"
+        className="panel mx-auto max-w-[1240px] overflow-hidden rounded-[24px] border border-white/12 bg-gradient-to-b from-[#161616] via-[#0d0d0d] to-[#080808] p-8 sm:p-14"
       >
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
           <div>
@@ -1158,7 +1158,7 @@ export function FinalCtaSection() {
           <div className="rounded-xl border border-white/[.08] bg-[#050507] p-5">
             <div className="flex items-center justify-between border-b border-white/[.06] pb-3 text-xs">
               <span className="mono text-[#888888]">QUICK SETUP COMPANION</span>
-              <span className="mono text-[10px] text-[#36C98F]">VS CODE MARKETPLACE</span>
+              <span className="mono text-[10px] text-[#b0b0b0]">VS CODE MARKETPLACE</span>
             </div>
             <div className="mono mt-4 space-y-2 text-xs">
               <div className="flex items-center justify-between rounded bg-white/[.03] p-2.5 text-[#a8a8a8]">
@@ -1167,11 +1167,11 @@ export function FinalCtaSection() {
               </div>
               <div className="flex items-center justify-between rounded bg-white/[.03] p-2.5 text-[#a8a8a8]">
                 <span>demo@sprintly.local</span>
-                <span className="text-[10px] text-[#9B8CFF]">DEMO USER</span>
+                <span className="text-[10px] text-[#a0a0a0]">DEMO USER</span>
               </div>
             </div>
             <div className="mt-4 flex items-center gap-2 text-[11px] text-[#777777]">
-              <ShieldCheck className="size-3.5 text-[#36C98F]" />
+              <ShieldCheck className="size-3.5 text-[#a0a0a0]" />
               <span>Includes demo credentials with 40+ mock sessions</span>
             </div>
           </div>
@@ -1192,7 +1192,7 @@ export function RedesignedFooter() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_2fr]">
           <div>
             <Link href="/" className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-[#f4f4f4]">
-              <span className="grid size-7 place-items-center rounded-lg bg-[#7C6CF2] text-white">
+              <span className="grid size-7 place-items-center rounded-lg border border-white/20 bg-white/10 text-white">
                 <Flame className="size-4" />
               </span>
               Sprintly
@@ -1201,7 +1201,7 @@ export function RedesignedFooter() {
               The developer productivity operating system. Private by default, useful every day, and built to turn focused coding into lasting progress.
             </p>
             <div className="mt-6 flex items-center gap-2">
-              <span className="size-2 rounded-full bg-[#36C98F] shadow-[0_0_10px_#36C98F]" />
+              <span className="size-2 rounded-full bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.4)]" />
               <span className="mono text-xs text-[#888888]">All Systems Operational · v1.0.4</span>
             </div>
           </div>
