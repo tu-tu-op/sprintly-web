@@ -5,12 +5,11 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, BarChart3, Check, ChevronRight, Cloud, Code2, Gauge,
+  ArrowRight, BarChart3, ChevronRight, Cloud, Code2, Gauge,
   EyeOff, FileCode2, Flame, Globe2, HardDrive, LockKeyhole, MousePointer2,
-  Play, ShieldCheck, TerminalSquare, Trophy, UserRoundCheck, Users,
+  Play, TerminalSquare, Trophy, UserRoundCheck, Users,
 } from "lucide-react";
 import { PublicNav } from "./public-nav";
-import { Brand } from "./brand";
 import {
   InteractiveStudioSection,
   ArchitecturePipelineSection,
@@ -276,121 +275,3 @@ export function PrivacyPage() {
   );
 }
 
-const plans = [
-  {
-    name: "Free (Local-First)",
-    price: "$0",
-    note: "For building the habit with total privacy",
-    features: [
-      "Unlimited local sessions",
-      "Full local DevScore computation",
-      "Core streaks & milestone badges",
-      "Export & import canonical JSON",
-      "Zero account or cloud required",
-    ],
-    cta: "Start locally",
-    featured: false,
-  },
-  {
-    name: "Pro Engineer",
-    price: "$8",
-    note: "For understanding rhythm & multi-machine sync",
-    features: [
-      "Multi-device authenticated sync",
-      "Circadian focus & chrono analytics",
-      "Sprint goals & milestone replays",
-      "Shareable verified summary cards",
-      "AI vs manual balance telemetry",
-      "Community leaderboard eligibility",
-    ],
-    cta: "Try Pro",
-    featured: true,
-  },
-  {
-    name: "Engineering Teams",
-    price: "Custom",
-    note: "For engineering groups seeking sustainable momentum",
-    features: [
-      "Aggregate team focus pulse",
-      "Meeting debt & cognitive thrash reduction",
-      "Shared sprint retrospectives",
-      "Zero individual surveillance guarantee",
-      "Enterprise air-gapped deployment",
-    ],
-    cta: "Explore Team Mode",
-    featured: false,
-  },
-];
-
-export function PricingPage() {
-  return (
-    <div className="noise min-h-dvh">
-      <PublicNav />
-      <main className="px-4 py-16 sm:px-6 sm:py-24">
-        <div className="mx-auto max-w-[1120px]">
-          <div className="max-w-3xl">
-            <p className="mono text-xs uppercase tracking-[.2em] text-[#f2f2f2]">Simple, transparent plans</p>
-            <h1 className="text-balance mt-4 text-4xl font-semibold tracking-[-.055em] sm:text-6xl">
-              Start local. Upgrade when history becomes insight.
-            </h1>
-            <p className="mt-6 text-lg text-[#989898]">
-              Core tracking never depends on a subscription or a cloud server.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-5 lg:grid-cols-3">
-            {plans.map((p) => (
-              <div
-                key={p.name}
-                className={`panel relative flex min-h-[500px] flex-col p-6 sm:p-8 ${
-                  p.featured
-                    ? "border-[#7C6CF2]/60 shadow-[0_24px_80px_rgba(124,108,242,0.15)]"
-                    : ""
-                }`}
-              >
-                {p.featured && (
-                  <span className="absolute right-6 top-6 rounded-full bg-[#7C6CF2] px-3 py-1 text-xs font-semibold text-white">
-                    Most Popular
-                  </span>
-                )}
-                <p className="mono text-xs uppercase tracking-[.16em] text-[#8b8b8b]">{p.name}</p>
-                <p className="mono mt-6 text-4xl font-semibold tracking-[-.05em] text-[#f4f4f4]">
-                  {p.price}
-                  {p.price.startsWith("$") && <span className="text-sm font-normal text-[#797979]"> / month</span>}
-                </p>
-                <p className="mt-3 text-xs leading-5 text-[#919191]">{p.note}</p>
-                <div className="my-7 h-px bg-white/[.08]" />
-                <ul className="space-y-3.5">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex gap-3 text-xs text-[#b7b7b7]">
-                      <Check className="size-4 shrink-0 text-[#36C98F]" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/app"
-                  className={`mt-auto inline-flex min-h-12 items-center justify-center rounded-xl text-xs font-semibold transition ${
-                    p.featured
-                      ? "bg-[#f2f2f2] text-[#0b0b0b] hover:bg-white"
-                      : "border border-white/10 bg-white/[.04] text-[#d7d7d7] hover:bg-white/[.08]"
-                  }`}
-                >
-                  {p.cta}
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 flex items-start gap-3 rounded-xl border border-[#36C98F]/20 bg-[#36C98F]/[0.03] p-4 text-xs text-[#a4a4a4]">
-            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-[#36C98F]" />
-            <p>
-              Subscription status never changes what the extension records locally. Synchronization categories remain completely under your control on every plan.
-            </p>
-          </div>
-        </div>
-      </main>
-      <RedesignedFooter />
-    </div>
-  );
-}

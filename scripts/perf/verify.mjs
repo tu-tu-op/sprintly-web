@@ -35,7 +35,7 @@ try {
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base);await page.locator('h1').waitFor();
   const origin=await page.evaluate(()=>performance.timeOrigin);
-  for(const route of ['/product','/how-it-works','/for-teams','/pricing','/sign-in']){
+  for(const route of ['/product','/how-it-works','/sign-in']){
     await page.locator(`nav a[href="${route}"]`).first().click();await page.waitForURL(base+route);await page.locator('h1').waitFor({state:'visible'});
     assert.equal(await page.evaluate(()=>performance.timeOrigin),origin);
   }

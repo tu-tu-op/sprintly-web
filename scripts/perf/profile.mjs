@@ -77,7 +77,7 @@ try {
     await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 40, downloadThroughput: 200000, uploadThroughput: 93750, connectionType: 'cellular4g' });
     return { context, page, cdp };
   }
-  const loadRoutes = mode === 'lighthouse' ? [] : comprehensive ? ['/', '/product', '/pricing', '/sign-in', '/app', '/app/sessions', '/app/analytics', '/app/settings'] : ['/'];
+  const loadRoutes = mode === 'lighthouse' ? [] : comprehensive ? ['/', '/product', '/sign-in', '/app', '/app/sessions', '/app/analytics', '/app/settings'] : ['/'];
   for (const route of loadRoutes) {
     const {context, page, cdp} = await contextPage();
     const network = [], errors = [];
@@ -116,9 +116,9 @@ try {
     await context.close();
   }
   const sequences = comprehensive ? [
-    ['/', '/product', '/how-it-works', '/for-teams', '/pricing', '/sign-in'],
+    ['/', '/product', '/how-it-works', '/sign-in'],
     ['/app', '/app/workspace', '/app/sessions', '/app/analytics', '/app/achievements', '/app/goals', '/app/profile', '/app/community', '/app/settings', '/app/billing', '/app'],
-  ] : mode === 'lighthouse' ? [] : [['/', '/product', '/how-it-works', '/for-teams', '/pricing']];
+  ] : mode === 'lighthouse' ? [] : [['/', '/product', '/how-it-works']];
   for (const routes of sequences) {
     const {context,page,cdp} = await contextPage();
     await page.goto(base + routes[0], {waitUntil:'load'});

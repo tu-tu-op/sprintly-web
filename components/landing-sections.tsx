@@ -902,10 +902,10 @@ export function TeamsAndEnterpriseSection() {
 
           <div className="mt-8">
             <Link
-              href="/for-teams"
+              href="/app"
               className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#f2f2f2] px-5 text-xs font-semibold text-[#09090b] transition hover:bg-white"
             >
-              Explore Sprintly for Teams <ArrowRight className="size-4" />
+              Get Started with Sprintly <ArrowRight className="size-4" />
             </Link>
           </div>
         </motion.div>
@@ -1212,8 +1212,6 @@ export function RedesignedFooter() {
               <div className="mt-4 grid gap-3 text-[#9a9a9a]">
                 <Link href="/product" className="hover:text-white transition">Features</Link>
                 <Link href="/how-it-works" className="hover:text-white transition">How it works</Link>
-                <Link href="/for-teams" className="hover:text-white transition">For Teams</Link>
-                <Link href="/pricing" className="hover:text-white transition">Pricing</Link>
               </div>
             </div>
 
@@ -1252,7 +1250,7 @@ export function RedesignedFooter() {
           <p>© 2026 Sprintly Technologies. Built for focused developers.</p>
           <div className="flex gap-6 text-[#777777]">
             <Link href="/privacy" className="hover:text-[#a0a0a0]">Privacy Policy</Link>
-            <Link href="/pricing" className="hover:text-[#a0a0a0]">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-[#a0a0a0]">Terms of Service</Link>
             <span className="mono">Contract: devstrava.session.v1</span>
           </div>
         </div>

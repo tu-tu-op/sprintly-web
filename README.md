@@ -18,7 +18,7 @@ pnpm build
 
 ## Product routes
 
-- Public: `/`, `/how-it-works`, `/privacy`, `/pricing`
+- Public: `/`, `/product`, `/how-it-works`, `/privacy`
 - Account: `/sign-in`, `/create-account`, `/forgot-password`, `/verify-email`, `/account-recovery`
 - Setup: `/onboarding`
 - Product: `/app`, `/app/workspace`, `/app/sessions`, `/app/analytics`, `/app/goals`, `/app/profile`, `/app/community`, `/app/settings`, `/app/billing`
