@@ -7,8 +7,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {
   BarChart3, Bell, CheckCircle2, ChevronRight,
-  CreditCard, Flame, Goal, LayoutDashboard, Menu, PanelLeftClose, PanelLeftOpen,
-  FileUp, Search, Settings, Target, Timer, Trophy, UserRound, UsersRound, X,
+  Flame, Goal, LayoutDashboard, Menu, PanelLeftClose, PanelLeftOpen,
+  FileUp, Search, Settings, Share2, Target, Timer, Trophy, UserRound, UsersRound, X,
 } from "lucide-react";
 import { Brand, SprintlyMark } from "./brand";
 import { useSprintlyStore } from "@/lib/store";
@@ -24,8 +24,8 @@ const nav = [
   { label: "Goals", href: "/app/goals", icon: Goal },
   { label: "Profile", href: "/app/profile", icon: UserRound },
   { label: "Leaderboard", href: "/app/community", icon: UsersRound },
+  { label: "Share", href: "/app/share", icon: Share2 },
   { label: "Settings", href: "/app/settings", icon: Settings },
-  { label: "Billing", href: "/app/billing", icon: CreditCard },
 ];
 
 const commands = [
@@ -34,6 +34,7 @@ const commands = [
   { label: "View recap", hint: "G A", href: "/app/analytics", icon: BarChart3 },
   { label: "View achievements", hint: "G H", href: "/app/achievements", icon: Trophy },
   { label: "View leaderboard", hint: "G L", href: "/app/community", icon: UsersRound },
+  { label: "Share card", hint: "G P", href: "/app/share", icon: Share2 },
   { label: "Create a goal", hint: "N G", href: "/app/goals", icon: Goal },
   { label: "Search sessions", hint: "G S", href: "/app/sessions", icon: Search },
   { label: "Open settings", hint: "G ,", href: "/app/settings", icon: Settings },
