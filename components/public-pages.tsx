@@ -7,10 +7,9 @@ import {
   ShieldCheck, Trophy,
 } from "lucide-react";
 import { PublicNav } from "./public-nav";
+import { RedesignedFooter } from "./landing-sections";
 
 const reveal = { initial: { opacity: 0, y: 18 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-70px" }, transition: { duration: .45 } };
-
-import { RedesignedFooter } from "./landing-sections";
 
 const productSignals = [
   { icon: Gauge, title: "Focus signal", detail: "A readable view of time spent in a deliberate session." },
