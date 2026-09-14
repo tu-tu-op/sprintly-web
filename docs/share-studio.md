@@ -16,7 +16,7 @@ The website owns source selection, derived share data, poster rendering and expl
 10. Connect account hydration, retention and navigation entry points.
 11. Verify domain, exports, mobile layouts and production build; fix findings.
 
-Each checkpoint is a separate commit (additional fixes may add commits).
+Checkpoints are grouped into focused implementation commits. The crash recovery completed the export pipeline, Studio UI, account boundary and navigation entry points (checkpoints 8–10). Automated verification for checkpoint 11 is complete; interactive browser/device verification remains pending.
 
 ## Boundaries
 
@@ -34,6 +34,15 @@ PNG rendering is loaded on Share or Download only. A slow render can outlast bro
 - Domain fixtures for derivation, privacy, records/ties, recommendations, timezone weeks, empty/missing sources, remote-source selection and dimensions.
 - Browser checks at 375, 768, 1024 and 1440 pixels, all five templates, three poster dimensions, transparent sticker, download, sharing fallback and cancellation.
 - No generated image upload, automatic publishing, session payload in URLs, or changes to the companion extension.
+
+## Verification status (2026-09-14)
+
+- `pnpm install --frozen-lockfile`: passed with the existing dependency versions. The invalid `allowBuilds.sharp` placeholder is now explicitly `false`; no new install scripts are authorized.
+- `pnpm lint`: passed (TypeScript checking is this repository's lint command).
+- `pnpm test:sprintly`: 41 tests passed, including 16 Share Studio domain, scene and sharing tests.
+- `pnpm build`: passed, including the `/app/share` route and lazy export module.
+- Sharing tests exercise native-share success, cancellation, download fallback and lost activation through an injected navigator. They do not prove an operating-system share sheet opens on a real mobile device.
+- Still required before release: browser checks at the four widths above, visual inspection of all poster formats, actual PNG dimensions/transparency, mobile native sharing, and the same synchronized source in two fresh authenticated browser contexts. These checks were not completed in the interrupted implementation and are not claimed as passing.
 
 ## V1 limits
 
