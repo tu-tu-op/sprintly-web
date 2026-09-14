@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Sprintly Share Mono";
+  src: url("/share-fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sprintly Share Sans";
+  src: url("/share-fonts/ibm-plex-sans-latin-wght-normal.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+}
