@@ -25,7 +25,7 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
       }
       if (cancelled) return;
       if (!authenticated) {
-        router.replace(`/sign-in?next=${encodeURIComponent(pathname || "/app")}`);
+        router.replace(`/sign-in?next=${encodeURIComponent((pathname || "/app") + window.location.search)}`);
         return;
       }
       setChecked(true);
@@ -36,4 +36,3 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
   if (!checked) return <AppSkeleton />;
   return children;
 }
-
