@@ -82,7 +82,7 @@ export async function GET() {
   const [profileResult, preferencesResult, sessionsResult] = await Promise.all([
     admin.from("profiles").select("display_name,handle,bio,avatar_url,avatar_style,country,region,city_label,profile_visibility").eq("user_id", identity.userId).maybeSingle(),
     admin.from("user_preferences").select("leaderboard_opt_in,leaderboard_scope,sync_preference,ai_usage_visibility,terminal_activity_visibility,retention_duration_days,public_profile_consent,timezone").eq("user_id", identity.userId).maybeSingle(),
-    admin.from("sessions").select("id,aggregate_payload,signature,public_key_id,verified,received_at").eq("user_id", identity.userId).order("started_at", { ascending: false }),
+    admin.from("sessions").select("id,aggregate_payload,signature,public_key_id,verified,received_at").eq("user_id", identity.userId).gt("retention_expires_at", new Date().toISOString()).order("started_at", { ascending: false }),
   ]);
 
   if (profileResult.error || preferencesResult.error || sessionsResult.error) {

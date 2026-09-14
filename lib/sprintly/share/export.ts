@@ -87,7 +87,7 @@ export function downloadShareFile(file: File) {
 
 export type ShareOutcome = "shared" | "downloaded" | "cancelled" | "ready";
 type ShareEnvironment = {
-  navigator: Pick<Navigator, "share" | "canShare"> & { userActivation?: { isActive: boolean } };
+  navigator: Partial<Pick<Navigator, "share" | "canShare">> & { userActivation?: { isActive: boolean } };
   download: (file: File) => void;
 };
 
@@ -96,7 +96,7 @@ export async function shareOrDownload(file: File, title: string, justRendered = 
   const nav = environment.navigator;
   let supported = false;
   try { supported = Boolean(nav.share && nav.canShare?.({ files: [file] })); } catch { /* unsupported file capability */ }
-  if (!supported) { environment.download(file); return "downloaded"; }
+  if (!supported || !nav.share) { environment.download(file); return "downloaded"; }
   if (justRendered && nav.userActivation?.isActive === false) return "ready";
   try {
     await nav.share({ files: [file], title });

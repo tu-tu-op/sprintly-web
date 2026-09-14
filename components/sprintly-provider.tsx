@@ -35,6 +35,7 @@ import { useIsoLayoutEffect } from "@/lib/use-iso-layout-effect";
 type SprintlyContextValue = UserData & {
   userId: string;
   hydrated: boolean;
+  repositoryReady: boolean;
   repositoryMode: RepositoryMode;
   syncLoading: boolean;
   syncError: string | null;
@@ -73,6 +74,7 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<string>(DEMO_USER.id);
   const [data, setData] = useState<UserData>(createEmptyUserData);
   const [hydrated, setHydrated] = useState(false);
+  const [repositoryReady, setRepositoryReady] = useState(false);
   const [syncLoading, setSyncLoading] = useState(false);
   const [syncError, setSyncError] = useState<string | null>(null);
   const [lastSyncAt, setLastSyncAt] = useState<string | null>(null);
@@ -93,6 +95,7 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
       if (cancelled) return;
       setUserId(nextUserId);
       setData(loadUserData(nextUserId));
+      setRepositoryReady(repository.mode === "local");
       setHydrated(true);
     })();
 
@@ -109,11 +112,13 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
     }
 
     setSyncLoading(true);
+    setRepositoryReady(false);
     setSyncError(null);
     try {
       const result = await repository.load(userId);
       setData(result.data);
       setLastSyncAt(result.lastSyncAt);
+      setRepositoryReady(true);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unable to refresh synchronized data";
       setSyncError(message);
@@ -139,6 +144,7 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
     ...data,
     userId,
     hydrated,
+    repositoryReady,
     repositoryMode: repository.mode,
     syncLoading,
     syncError,
@@ -220,7 +226,7 @@ export function SprintlyProvider({ children }: { children: React.ReactNode }) {
     revokeExtensionDevice: (deviceId) => repository.revokeDevice(userId, deviceId),
     testConnection: () => repository.testConnection(userId),
     exportSynchronizedData: () => repository.exportSynchronizedData(userId),
-  }), [data, hydrated, lastSyncAt, repository, syncError, syncLoading, userId]);
+  }), [data, hydrated, lastSyncAt, repository, repositoryReady, syncError, syncLoading, userId]);
 
   if (!hydrated) return null;
   return <SprintlyContext.Provider value={value}>{children}</SprintlyContext.Provider>;
