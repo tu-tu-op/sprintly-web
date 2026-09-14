@@ -156,9 +156,11 @@ export function deriveShareSources(input: SprintlySession[], options: { now?: Da
       }),
     };
     const currentWeek = id === getIsoWeek(now, timeZone);
-    const reference = currentWeek ? now : new Date(`${bounds.to}T12:00:00Z`);
+    const noon = new Date(`${bounds.to}T12:00:00Z`);
+    const calendarOffset = Date.parse(`${dateKey(noon, timeZone)}T00:00:00Z`) - Date.parse(`${bounds.to}T00:00:00Z`);
+    const reference = currentWeek ? now : new Date(noon.getTime() - calendarOffset);
     const historical = sessions.filter((s) => dateKey(s.startedAt, timeZone) <= bounds.to);
-    const streak = currentWeek ? streaks.current : getStreakStats(historical, reference, "UTC").current;
+    const streak = currentWeek ? streaks.current : getStreakStats(historical, reference, timeZone).current;
     const data = deriveWeeklyShare(aggregateSessions(records), week, streak, privacy);
     results.push(source(data, `weekly:${id}`, "Recaps", currentWeek ? "This week" : `Week ${id.slice(-2)} · ${id.slice(0, 4)}`, `${data.primaryMetric.value} · ${records.length} sessions`));
   }
